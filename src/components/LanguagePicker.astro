@@ -1,0 +1,48 @@
+---
+import { languages } from '../i18n/ui';
+import { getLangFromUrl, useTranslatedPath } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const tpath = useTranslatedPath(lang);
+---
+
+<div class="relative">
+  <button id="lang-picker-toggle" class="navbar-link flex items-center gap-1 text-sm font-medium text-primary/80 transition-colors duration-300 hover:text-primary" aria-label="Language picker">
+    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m4 13-4-4-4 4M1 19h12M12 19l4-4-4-4"></path></svg>
+    {languages[lang]}
+    <svg class="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+  </button>
+  <div id="lang-picker-menu" class="absolute top-full right-0 mt-2 hidden w-32 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5">
+    <ul class="py-1" role="list">
+      {Object.entries(languages).map(([id, name]) => (
+        <li>
+          <a
+            href={tpath('/', id)}
+            data-astro-reload
+            class:list={[
+              "block px-4 py-2 text-sm",
+              id === lang ? "font-semibold text-secondary" : "text-gray-700 hover:bg-gray-100",
+            ]}
+          >
+            {name}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</div>
+
+<script>
+  const toggle = document.getElementById('lang-picker-toggle');
+  const menu = document.getElementById('lang-picker-menu');
+
+  toggle?.addEventListener('click', () => {
+    menu?.classList.toggle('hidden');
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!toggle?.contains(e.target as Node) && !menu?.contains(e.target as Node)) {
+      menu?.classList.add('hidden');
+    }
+  });
+</script>

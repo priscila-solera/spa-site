@@ -1,0 +1,21 @@
+{
+  "name": "blue-royale-studio",
+  "private": true,
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "sanity dev",
+    "build": "sanity build",
+    "deploy": "sanity deploy",
+    "start": "sanity start"
+  },
+  "dependencies": {
+    "sanity": "3.69.0",
+    "styled-components": "^6.1.13"
+  },
+  "devDependencies": {
+    "@sanity/eslint-config-studio": "^3.0.1"
+  },
+  "overrides": {
+    "@portabletext/editor": "1.20.0"
+  }
+}

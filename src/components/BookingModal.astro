@@ -1,0 +1,24 @@
+---
+import CalBookingOverlay from './CalBookingOverlay.tsx';
+
+interface Props {
+  defaultCalLink?: string;
+  services?: Array<{
+    id: string;
+    title: string;
+    description: string;
+    image: string;
+    imageAlt: string;
+    order: number;
+    calLink?: string;
+    ctaLabel?: string;
+    price?: string;
+    duration?: string;
+  }>;
+}
+
+const { defaultCalLink = import.meta.env.PUBLIC_CAL_LINK ?? 'daniel-torres-calvo/secret', services = [] } = Astro.props;
+---
+
+<CalBookingOverlay client:only="react" defaultCalLink={defaultCalLink} services={services} />
+

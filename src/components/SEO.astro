@@ -1,0 +1,82 @@
+---
+/**
+ * Metadatos SEO y JSON-LD (Schema.org) para Costa Rica.
+ * Uso: pasar title, description, image, canonical; opcional type y jsonLd para páginas concretas.
+ */
+interface Props {
+  title: string;
+  description?: string;
+  /** URL absoluta de la imagen para OG/Twitter (1200×630 recomendado). */
+  image?: string;
+  /** URL canónica de la página. */
+  canonical?: string;
+  /** Tipo OG (por defecto website). */
+  type?: string;
+  /** JSON-LD adicional (ej. Service para página de servicio). Si no se pasa, se usa LocalBusiness. */
+  jsonLd?: object;
+}
+
+const { title, description = 'Blue Royale Spa — Bienestar y belleza en Costa Rica. Masajes, faciales y rituales holísticos en Tamarindo.', image, canonical, type = 'website', jsonLd } = Astro.props;
+
+const site = Astro.site?.href ?? Astro.url.origin;
+const canonicalUrl = canonical ?? new URL(Astro.url.pathname, site).href;
+const ogImage = image?.startsWith('http') ? image : image ? new URL(image, site).href : `${site}/og-default.jpg`;
+
+const localBusiness = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  name: 'Blue Royale Beauty & Spa',
+  description: 'Spa de lujo en Tamarindo, Costa Rica. Masajes, faciales, rituales holísticos y tratamientos de bienestar.',
+  url: site,
+  telephone: '+50684872727',
+  email: 'blueroyalespa@gmail.com',
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Tamarindo',
+    addressRegion: 'Guanacaste',
+    addressCountry: 'CR',
+    streetAddress: 'Frente a Banco Nacional',
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: 10.2990,
+    longitude: -85.8391,
+  },
+  priceRange: '$$',
+  image: ogImage,
+  sameAs: [],
+  openingHoursSpecification: {
+    '@type': 'OpeningHoursSpecification',
+    dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+    opens: '09:00',
+    closes: '18:00',
+  },
+  potentialAction: {
+    '@type': 'ReserveAction',
+    target: {
+      '@type': 'EntryPoint',
+      url: `${site}/#contacto`,
+      actionPlatform: ['https://schema.org/ReserveAction', 'https://cal.com'],
+    },
+  },
+};
+
+const scriptLd = jsonLd ?? localBusiness;
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonicalUrl} />
+<meta property="og:type" content={type} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:locale" content="es_CR" />
+<meta property="og:site_name" content="Blue Royale Spa" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />
+<meta name="geo.region" content="CR-G" />
+<script type="application/ld+json" set:html={JSON.stringify(scriptLd)} />

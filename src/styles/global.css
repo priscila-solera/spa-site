@@ -1,0 +1,86 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    color: theme('colors.beige.700'); /* Color base usando theme() */
+  }
+  body {
+    @apply font-sans antialiased;
+    background-color: theme('colors.primary');
+    letter-spacing: 0.01em;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif tracking-tight;
+    color: theme('colors.beige.800'); /* Títulos usando theme() */
+  }
+  p {
+    line-height: 1.7;
+    color: theme('colors.beige.600'); /* Párrafos usando theme() */
+  }
+  /* Focus visible para accesibilidad */
+  a:focus-visible,
+  button:focus-visible {
+    @apply outline-2 outline-offset-2;
+    outline-color: theme('colors.eucalyptus.500');
+  }
+}
+
+@layer components {
+  .editorial-subtitle {
+    @apply text-xs font-medium uppercase tracking-widest text-beige-500;
+    letter-spacing: 0.2em;
+  }
+  .section-heading {
+    @apply font-serif text-3xl font-semibold tracking-tight sm:text-4xl;
+    color: theme('colors.beige.800');
+  }
+  a, button {
+    @apply cursor-pointer;
+  }
+  /* Capas para efectos sutiles de parallax */
+  .parallax-layer,
+  [data-parallax] {
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
+  }
+  /* Scroll reveal genérico */
+  [data-scroll-reveal] {
+    opacity: 0;
+    transform: translate3d(0, 32px, 0);
+    transition-property: opacity, transform;
+    transition-duration: 0.9s;
+    transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+    transition-delay: var(--scroll-reveal-delay, 0s);
+  }
+  [data-scroll-reveal="left"] {
+    transform: translate3d(-72px, 32px, 0);
+  }
+  [data-scroll-reveal="right"] {
+    transform: translate3d(72px, 32px, 0);
+  }
+  [data-scroll-reveal="up"] {
+    transform: translate3d(0, 52px, 0);
+  }
+  [data-scroll-reveal].is-visible {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* View Transitions - suaves */
+::view-transition-old(root) {
+  animation: fadeOut 0.3s ease-out forwards;
+}
+::view-transition-new(root) {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+@keyframes fadeOut {
+  to { opacity: 0; }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

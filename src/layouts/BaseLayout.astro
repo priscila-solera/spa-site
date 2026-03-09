@@ -1,0 +1,242 @@
+---
+import { ViewTransitions } from 'astro:transitions';
+import '../styles/global.css';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import BookingModal from '../components/BookingModal.astro';
+import SEO from '../components/SEO.astro';
+import { fetchServices, urlFor } from '../lib/sanity.js';
+
+const defaultCalLink = import.meta.env.PUBLIC_CAL_LINK ?? 'daniel-torres-calvo';
+
+let servicesForBooking = null;
+try {
+  servicesForBooking = await fetchServices(urlFor);
+} catch {
+  servicesForBooking = null;
+}
+
+interface Props {
+  title: string;
+  description?: string;
+  /** URL absoluta de la imagen para Open Graph / Twitter (recomendado 1200×630). */
+  ogImage?: string;
+  /** Si no se pasa, se usa la URL canónica de la página actual. */
+  canonicalUrl?: string;
+  /** JSON-LD alternativo (ej. Service); si no se pasa se usa LocalBusiness. */
+  jsonLd?: object;
+  /** og:type (por defecto website). */
+  ogType?: string;
+}
+
+const { title, description = 'Blue Royale Spa — Wellness, beauty, and connection between mind, body, and spirit in a luxury setting.', ogImage, canonicalUrl, jsonLd, ogType } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <meta name="generator" content={Astro.generator} />
+    <SEO
+      title={title}
+      description={description}
+      image={ogImage}
+      canonical={canonicalUrl}
+      type={ogType}
+      jsonLd={jsonLd}
+    />
+    <!-- Tipografía: Playfair Display (serif) + Lato (sans) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://app.cal.com/embed/embed.js" data-cal-origin="https://cal.com" async></script>
+    <script is:inline>
+      // Forzar scroll al inicio de manera agresiva y persistente
+      if ('scrollRestoration' in history) {
+        history.scrollRestoration = 'manual';
+      }
+
+      const forceScrollTop = () => {
+        window.scrollTo(0, 0);
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+      };
+
+      forceScrollTop();
+
+      document.addEventListener('DOMContentLoaded', forceScrollTop);
+      window.addEventListener('load', () => {
+        forceScrollTop();
+        // Un último intento después de un breve retraso para asegurar
+        setTimeout(forceScrollTop, 10);
+      });
+
+      // Manejar también las transiciones de vista de Astro
+      document.addEventListener('astro:after-swap', forceScrollTop);
+    </script>
+  </head>
+  <body class="min-h-screen bg-primary">
+    <ViewTransitions />
+    <BookingModal defaultCalLink={defaultCalLink} services={servicesForBooking ?? undefined} />
+    <Navbar />
+    <main class="relative">
+      <slot />
+    </main>
+    <Footer />
+    <script is:inline>
+      document.body.addEventListener('click', function(e) {
+        var btn = e.target && e.target.closest && e.target.closest('[data-cal-link]');
+        if (!btn) return;
+        var link = btn.getAttribute('data-cal-link');
+        if (!link || typeof link !== 'string') return;
+        var serviceId = btn.getAttribute('data-service-id') || null;
+        e.preventDefault();
+        e.stopPropagation();
+        window.dispatchEvent(new CustomEvent('open-cal-booking', {
+          detail: {
+            calLink: link.trim(),
+            serviceId: serviceId || undefined,
+          }
+        }));
+      }, true);
+    </script>
+    <script is:inline>
+      (function () {
+        try {
+          var mediaQuery = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
+          if (mediaQuery && mediaQuery.matches) return;
+
+          var layers = Array.prototype.slice.call(
+            document.querySelectorAll('[data-parallax]')
+          );
+          if (!layers.length) return;
+
+          var viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0;
+          var viewportWidth = window.innerWidth || document.documentElement.clientWidth || 0;
+          var ticking = false;
+
+          function readViewport() {
+            viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0;
+            viewportWidth = window.innerWidth || document.documentElement.clientWidth || 0;
+          }
+
+          function update() {
+            layers = layers.filter(function (el) { return el && el.isConnected; });
+            if (!layers.length) return;
+
+            var mobileFactor = viewportWidth < 768 ? 0.6 : 1;
+
+            layers.forEach(function (el) {
+              var rect = el.getBoundingClientRect();
+              if (!rect || !rect.height || !viewportHeight) return;
+
+              var centerY = rect.top + rect.height / 2;
+              var progressY = (centerY - viewportHeight / 2) / viewportHeight; // aprox [-1,1]
+
+              var speedYAttr = el.getAttribute('data-parallax-speed-y') || el.getAttribute('data-parallax-speed') || '0.3';
+              var speedXAttr = el.getAttribute('data-parallax-speed-x') || '0';
+              var intensityAttr = el.getAttribute('data-parallax-intensity') || '40';
+              var rotateAttr = el.getAttribute('data-parallax-rotate') || '0';
+              var scaleAttr = el.getAttribute('data-parallax-scale') || '1';
+
+              var speedY = parseFloat(speedYAttr);
+              var speedX = parseFloat(speedXAttr);
+              var intensity = parseFloat(intensityAttr);
+              var rotate = parseFloat(rotateAttr);
+              var baseScale = parseFloat(scaleAttr);
+
+              if (!isFinite(speedY)) speedY = 0.3;
+              if (!isFinite(speedX)) speedX = 0;
+              if (!isFinite(intensity)) intensity = 40;
+              if (!isFinite(rotate)) rotate = 0;
+              if (!isFinite(baseScale)) baseScale = 1;
+
+              var offsetY = -progressY * intensity * speedY * mobileFactor;
+              var offsetX = -progressY * intensity * speedX * mobileFactor;
+              var dynamicScale = baseScale + Math.abs(progressY) * 0.04 * Math.abs(speedY);
+
+              el.style.transform =
+                'translate3d(' +
+                offsetX.toFixed(2) +
+                'px,' +
+                offsetY.toFixed(2) +
+                'px,0) rotate(' +
+                rotate.toFixed(2) +
+                'deg) scale(' +
+                dynamicScale.toFixed(3) +
+                ')';
+            });
+
+            ticking = false;
+          }
+
+          function requestTick() {
+            if (!ticking) {
+              window.requestAnimationFrame(update);
+              ticking = true;
+            }
+          }
+
+          window.addEventListener('scroll', requestTick, { passive: true });
+          window.addEventListener('resize', function () {
+            readViewport();
+            requestTick();
+          });
+
+          readViewport();
+          update();
+        } catch (_) {
+          // Si algo falla, simplemente no aplicamos parallax.
+        }
+      })();
+    </script>
+    <script is:inline>
+      (function () {
+        try {
+          var nodes = Array.prototype.slice.call(
+            document.querySelectorAll('[data-scroll-reveal]')
+          );
+          if (!nodes.length) return;
+
+          nodes.forEach(function (el) {
+            var delay = el.getAttribute('data-scroll-delay');
+            if (delay) {
+              el.style.setProperty('--scroll-reveal-delay', delay);
+            }
+          });
+
+          var observer = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+              } else {
+                entry.target.classList.remove('is-visible');
+              }
+            });
+          }, {
+            threshold: 0.15,
+            rootMargin: '0px 0px -10% 0px',
+          });
+
+          nodes.forEach(function (el) {
+            observer.observe(el);
+          });
+        } catch (_) {
+          // Si algo falla, simplemente mostramos todo sin animación.
+          document
+            .querySelectorAll
+            ?.('[data-scroll-reveal]')
+            .forEach(function (el) {
+              el.classList.add('is-visible');
+            });
+        }
+      })();
+    </script>
+  </body>
+</html>

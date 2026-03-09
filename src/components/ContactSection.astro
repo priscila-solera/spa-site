@@ -1,0 +1,97 @@
+---
+import BookingButton from './BookingButton.astro';
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+interface Props {
+  calLink?: string;
+}
+const { calLink = import.meta.env.PUBLIC_CAL_LINK ?? 'daniel-torres-calvo' } = Astro.props;
+
+const LAT = 10.296418392435415;
+const LNG = -85.83899665213521;
+const mapsEmbedUrl =
+  import.meta.env.PUBLIC_GOOGLE_MAPS_EMBED ||
+  `https://www.google.com/maps?q=${LAT},${LNG}&z=17&output=embed`;
+const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${LAT},${LNG}`;
+const viewOnMapsUrl =
+  'https://www.google.com/maps/place/Blue+Royale+Spa/@10.2965727,-85.8392338,20.44z/data=!4m12!1m5!3m4!2zMTDCsDE3JzQ3LjEiTiA4NcKwNTAnMjAuNCJX!8m2!3d10.2964184!4d-85.8389967!3m5!1s0x8f9e39db4ebe2a95:0x1ec618cee89d514!8m2!3d10.2963445!4d-85.8392005!16s%2Fg%2F11rq_4tf1j?entry=ttu';
+---
+
+<section
+  id="contacto"
+  class="scroll-mt-20 border-t border-beige-200/50 bg-cream-100 px-4 py-24 sm:px-6 sm:py-32 lg:px-8"
+  aria-labelledby="contacto-heading"
+>
+  <div class="mx-auto max-w-5xl">
+    <div
+      class="text-center"
+      data-scroll-reveal="up"
+    >
+      <p class="editorial-subtitle">{t('contact.subtitle')}</p>
+      <h2 id="contacto-heading" class="section-heading mt-2">
+        {t('contact.title')}
+      </h2>
+      <p class="mt-4 text-sm text-beige-500">
+        {t('contact.info')}
+      </p>
+      <div class="mt-8 flex flex-wrap items-center justify-center gap-6">
+        <BookingButton calLink={calLink} variant="primary" class="px-6 py-3">
+          {t('contact.cta')}
+        </BookingButton>
+      </div>
+    </div>
+
+    <div
+      class="mt-16"
+      data-scroll-reveal="up"
+      data-scroll-delay="0.12s"
+    >
+      <h3 class="sr-only">How to get there</h3>
+      <div class="overflow-hidden rounded-2xl border-2 border-beige-200/80 bg-cream-50 shadow-lg ring-1 ring-black/[0.04]">
+        <div class="flex flex-col gap-3 border-b border-beige-200/60 bg-gradient-to-r from-cream-100 to-beige-100/50 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+          <p class="flex items-center gap-2 text-sm font-medium text-beige-700">
+            <span class="text-brandGold" aria-hidden="true">📍</span>
+            {t('contact.location')}
+          </p>
+          <div class="flex flex-wrap gap-2">
+            <a
+              href={directionsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 rounded-full bg-brandGold/10 px-4 py-2 text-sm font-medium text-beige-700 transition-colors hover:bg-brandGold/20"
+            >
+              <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.446-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+              </svg>
+              {t('contact.directions')}
+            </a>
+            <a
+              href={viewOnMapsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 rounded-full border border-beige-200 bg-cream-100 px-4 py-2 text-sm font-medium text-beige-600 transition-colors hover:border-brandGold/40 hover:bg-cream-200"
+            >
+              {t('contact.maps')}
+            </a>
+          </div>
+        </div>
+        <div class="relative aspect-[16/10] w-full sm:aspect-video">
+          <iframe
+            src={mapsEmbedUrl}
+            width="100%"
+            height="100%"
+            style="border:0;"
+            allowFullScreen
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            title="Blue Royale Spa location on Google Maps"
+            class="absolute inset-0 h-full w-full"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

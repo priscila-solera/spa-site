@@ -1,0 +1,50 @@
+---
+import BookingButton from './BookingButton.astro';
+import CalendarIcon from './icons/CalendarIcon.astro';
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+interface Props {
+  calLink?: string;
+}
+const { calLink = import.meta.env.PUBLIC_CAL_LINK ?? 'daniel-torres-calvo' } = Astro.props;
+---
+
+<section
+  class="relative flex items-center justify-center min-h-screen bg-secondary text-white text-center px-4"
+  aria-label={t('hero.title')}
+>
+  <!-- Background Image -->
+  <div class="absolute inset-0 z-0">
+    <img
+      src="https://images.unsplash.com/photo-1515377905703-c4788e51af15?q=80&w=2070&auto=format&fit=crop"
+      alt="Woman receiving a relaxing massage in a tranquil spa environment."
+      class="h-full w-full object-cover"
+      loading="eager"
+      fetchpriority="high"
+    />
+    <!-- Overlay -->
+    <div class="absolute inset-0 bg-black/50" aria-hidden="true"></div>
+  </div>
+
+  <!-- Content -->
+  <div class="relative z-10 flex flex-col items-center" data-scroll-reveal="up">
+    <p class="font-sans text-sm font-medium uppercase tracking-[0.3em] text-white/80 mb-4">
+      {t('hero.subtitle')}
+    </p>
+    <h1 class="font-serif text-5xl font-medium tracking-tight text-white sm:text-6xl md:text-7xl lg:text-8xl">
+      {t('hero.title')}
+    </h1>
+    <p class="mt-6 max-w-2xl text-lg text-white/90 leading-relaxed">
+      {t('hero.desc')}
+    </p>
+    <div class="mt-10">
+      <BookingButton calLink={calLink} variant="primary" class="px-10 py-4 text-base font-semibold">
+        <CalendarIcon className="text-cream-50" size={20} />
+        {t('hero.cta')}
+      </BookingButton>
+    </div>
+  </div>
+</section>

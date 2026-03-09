@@ -1,0 +1,208 @@
+---
+import BookingButton from './BookingButton.astro';
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+interface Props {
+  services?: Array<{
+    id: string;
+    title: string;
+    description: string;
+    image: string;
+    imageAlt: string;
+    order: number;
+    calLink?: string;
+    ctaLabel?: string;
+    ctaLink?: string;
+    category?: { title: string; order: number };
+  }>;
+  defaultCalLink?: string;
+}
+
+const { services = [], defaultCalLink = import.meta.env.PUBLIC_CAL_LINK ?? 'daniel-torres-calvo' } = Astro.props;
+
+// Agrupar servicios por categoría
+const groupedServices = services.reduce((acc, service) => {
+  const catTitle = service.category?.title || 'General';
+  const catOrder = service.category?.order || 999;
+
+  if (!acc[catTitle]) {
+    acc[catTitle] = { order: catOrder, items: [] };
+  }
+  acc[catTitle].items.push(service);
+  return acc;
+}, {});
+
+// Convertir a array y ordenar por el orden de la categoría
+const sortedCategories = Object.entries(groupedServices)
+  .map(([title, data]) => ({ title, ...data }))
+  .sort((a, b) => a.order - b.order);
+---
+
+<section
+  id="servicios"
+  class="scroll-mt-20 bg-cream-100 px-4 py-24 sm:px-6 sm:py-32 lg:px-8"
+  aria-labelledby="servicios-heading"
+  data-reveal
+>
+  <div class="mx-auto max-w-7xl">
+    <header class="mx-auto flex max-w-6xl flex-col items-start justify-between gap-6 text-left lg:flex-row lg:items-end mb-16">
+      <div>
+        <p class="editorial-subtitle">{t('services.subtitle')}</p>
+        <h2 id="servicios-heading" class="section-heading mt-3">
+          {t('services.title')}
+        </h2>
+        <p class="mt-4 max-w-xl text-lg text-beige-600 leading-relaxed">
+          {t('services.desc')}
+        </p>
+      </div>
+      <p class="max-w-sm text-sm text-beige-600 leading-relaxed">
+        {t('services.subdesc')}
+      </p>
+    </header>
+
+    {sortedCategories.length > 0 ? (
+      <div class="space-y-24">
+        {sortedCategories.map((category) => (
+          <div class="category-block">
+            <h3 class="mb-10 font-serif text-2xl font-medium text-beige-800 border-b border-beige-200 pb-4">
+              {category.title}
+            </h3>
+            <ul
+              class="services-reveal grid gap-x-8 gap-y-16 sm:grid-cols-2 lg:grid-cols-4"
+              role="list"
+            >
+              {category.items.map((service, i) => (
+                <li
+                  class="service-card group flex flex-col items-center text-center"
+                  data-delay={i % 4}
+                  data-direction={i % 2 === 0 ? 'left' : 'right'}
+                >
+                  <div
+                    class="relative flex h-44 w-44 items-center justify-center overflow-hidden rounded-full bg-cream-100 shadow-spa-soft border-4 border-white"
+                    data-parallax
+                    data-parallax-speed-y="0.3"
+                    data-parallax-speed-x={i % 2 === 0 ? -0.12 : 0.12}
+                    data-parallax-intensity="35"
+                  >
+                    <img
+                      src={service.image}
+                      alt={service.imageAlt}
+                      class="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div class="mt-6 px-2 sm:px-4">
+                    <h4 class="font-serif text-xl font-semibold tracking-tight text-beige-800">
+                      {service.title}
+                    </h4>
+                    <p class="mt-3 text-sm text-beige-600 leading-relaxed">
+                      {service.description}
+                    </p>
+                    <BookingButton
+                      calLink={service.calLink ?? defaultCalLink}
+                      serviceId={service.id}
+                      variant="text"
+                      class="mt-5 p-0 text-eucalyptus-600 transition-colors group-hover:text-eucalyptus-500 font-medium"
+                    >
+                      {service.ctaLabel || t('services.cta')}
+                      <span class="ml-1.5 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true">→</span>
+                    </BookingButton>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    ) : (
+      <div class="mt-20 text-center text-beige-500">
+        <p>{t('services.loading')}</p>
+      </div>
+    )}
+  </div>
+</section>
+
+<script>
+  (function () {
+    const section = document.querySelector('#servicios[data-reveal]');
+    if (!section) return;
+
+    // Observar cada bloque de categoría por separado para animar a medida que se hace scroll
+    const categories = section.querySelectorAll('.category-block');
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+            // Animar los hijos
+            const list = entry.target.querySelector('.services-reveal');
+            if (list) list.classList.add('revealed');
+          }
+        });
+      },
+      { rootMargin: '0px 0px -100px 0px', threshold: 0.1 }
+    );
+
+    categories.forEach(cat => observer.observe(cat));
+  })();
+</script>
+
+<style>
+  .services-reveal .service-card {
+    opacity: 0;
+    transform: translate3d(0, 32px, 0) scale(0.96);
+  }
+  .services-reveal.revealed .service-card {
+    animation-duration: 0.9s;
+    animation-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+    animation-fill-mode: forwards;
+    animation-name: serviceRevealCenter;
+  }
+  .services-reveal.revealed .service-card[data-direction="left"] {
+    animation-name: serviceRevealFromLeft;
+  }
+  .services-reveal.revealed .service-card[data-direction="right"] {
+    animation-name: serviceRevealFromRight;
+  }
+  .services-reveal.revealed .service-card[data-delay="0"] { animation-delay: 0s; }
+  .services-reveal.revealed .service-card[data-delay="1"] { animation-delay: 0.12s; }
+  .services-reveal.revealed .service-card[data-delay="2"] { animation-delay: 0.24s; }
+  .services-reveal.revealed .service-card[data-delay="3"] { animation-delay: 0.36s; }
+
+  @keyframes serviceRevealFromLeft {
+    0% {
+      opacity: 0;
+      transform: translate3d(-60px, 30px, 0) scale(0.9);
+    }
+    60% {
+      opacity: 1;
+      transform: translate3d(6px, -6px, 0) scale(1.02);
+    }
+    100% {
+      opacity: 1;
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+  }
+
+  @keyframes serviceRevealFromRight {
+    0% {
+      opacity: 0;
+      transform: translate3d(60px, 30px, 0) scale(0.9);
+    }
+    60% {
+      opacity: 1;
+      transform: translate3d(-6px, -6px, 0) scale(1.02);
+    }
+    100% {
+      opacity: 1;
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+  }
+  .service-card:hover [data-cal-link] {
+    color: rgb(72 109 95); /* eucalyptus-600 */
+  }
+</style>

@@ -1,0 +1,91 @@
+---
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<section
+  id="experiencia"
+  class="scroll-mt-20 bg-beige-100/60 px-4 py-24 sm:px-6 sm:py-32 lg:px-8"
+  aria-labelledby="experiencia-heading"
+>
+  <div class="mx-auto max-w-7xl">
+    <div
+      class="mb-16 grid gap-6 rounded-2xl bg-eucalyptus-600 px-6 py-8 text-cream-50 shadow-spa-soft sm:grid-cols-2 lg:grid-cols-4 sm:px-8"
+      data-scroll-reveal="up"
+    >
+      <div>
+        <p class="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-cream-200/90">
+          {t('experience.satisfaction')}
+        </p>
+        <p class="mt-2 font-serif text-2xl tracking-tight">100%</p>
+        <p class="mt-1 text-sm text-cream-100/90">{t('experience.satisfaction.desc')}</p>
+      </div>
+      <div>
+        <p class="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-cream-200/90">
+          {t('experience.years')}
+        </p>
+        <p class="mt-2 font-serif text-2xl tracking-tight">10+</p>
+        <p class="mt-1 text-sm text-cream-100/90">{t('experience.years.desc')}</p>
+      </div>
+      <div>
+        <p class="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-cream-200/90">
+          {t('experience.treatments')}
+        </p>
+        <p class="mt-2 font-serif text-2xl tracking-tight">30+</p>
+        <p class="mt-1 text-sm text-cream-100/90">{t('experience.treatments.desc')}</p>
+      </div>
+      <div>
+        <p class="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-cream-200/90">
+          {t('experience.booking')}
+        </p>
+        <p class="mt-2 font-serif text-2xl tracking-tight">24/7</p>
+        <p class="mt-1 text-sm text-cream-100/90">{t('experience.booking.desc')}</p>
+      </div>
+    </div>
+    <div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+      <div
+        class="order-2 lg:order-1"
+        data-scroll-reveal="left"
+      >
+        <p class="editorial-subtitle">{t('experience.retreat.subtitle')}</p>
+        <h2 id="experiencia-heading" class="section-heading mt-2">
+          {t('experience.retreat.title')}
+        </h2>
+        <p class="mt-6 text-base text-beige-500">
+          {t('experience.retreat.desc1')}
+        </p>
+        <p class="mt-4 text-base text-beige-500">
+          {t('experience.retreat.desc2')}
+        </p>
+        <div class="mt-8">
+          <a
+            href="/#contacto"
+            class="inline-flex items-center rounded-spa-lg border border-eucalyptus-500/50 bg-transparent px-6 py-3 text-sm font-medium text-eucalyptus-600 transition-all duration-500 hover:bg-eucalyptus-50 hover:border-eucalyptus-500/70"
+          >
+            {t('experience.retreat.cta')}
+          </a>
+        </div>
+      </div>
+      <div
+        class="order-1 overflow-hidden rounded-2xl border border-black/[0.06] shadow-spa-soft lg:order-2"
+        data-scroll-reveal="right"
+      >
+        <div
+          class="parallax-layer h-full w-full"
+          data-parallax
+          data-parallax-speed-y="0.5"
+          data-parallax-intensity="50"
+        >
+          <img
+            src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=1200&q=80&auto=format&fit=crop"
+            alt="Relaxing spa ambiance"
+            class="h-full w-full scale-105 object-cover"
+            loading="lazy"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

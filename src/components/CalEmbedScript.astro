@@ -1,0 +1,47 @@
+---
+/** Loader oficial de Cal.com: define Cal como cola antes de cargar embed.js, así Cal nunca está "undefined". */
+---
+
+<script is:inline>
+  (function (C, A, L) {
+    C[L] = C[L] || function () {
+      (C[L].q = C[L].q || []).push(arguments);
+    };
+    var S = A.createElement('script');
+    S.async = true;
+    S.src = 'https://cal.com/embed/embed.js';
+    var H = A.getElementsByTagName('script')[0];
+    H.parentNode.insertBefore(S, H);
+  })(window, document, 'Cal');
+</script>
+<script is:inline>
+  (function () {
+    function setupCal() {
+      if (typeof window.Cal !== 'function') return;
+      try {
+        window.Cal('ui', { styles: { branding: { brandColor: '#D4AF37' } } });
+      } catch (_) {}
+      document.body.addEventListener('click', function (e) {
+        var btn = e.target && e.target.closest && e.target.closest('[data-cal-link]');
+        if (!btn) return;
+        var link = btn.getAttribute('data-cal-link');
+        if (!link || typeof link !== 'string' || link.trim() === '') return;
+        e.preventDefault();
+        e.stopPropagation();
+        var calLink = link.trim();
+        try {
+          window.Cal('modal', calLink);
+        } catch (err1) {
+          try {
+            window.Cal('modal', { calLink: calLink });
+          } catch (err2) {}
+        }
+      }, true);
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', setupCal);
+    } else {
+      setupCal();
+    }
+  })();
+</script>

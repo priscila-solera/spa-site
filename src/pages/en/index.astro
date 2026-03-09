@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/Hero.astro';
+import PhilosophySection from '../../components/PhilosophySection.astro';
+import ServicesSection from '../../components/ServicesSection.astro';
+import ExperienceSection from '../../components/ExperienceSection.astro';
+import ReasonsSection from '../../components/ReasonsSection.astro';
+import Testimonials from '../../components/Testimonials.astro';
+import BookingFormSection from '../../components/BookingFormSection.astro';
+import ContactSection from '../../components/ContactSection.astro';
+import WhatsAppFab from '../../components/WhatsAppFab.astro';
+import { fetchServices, urlFor } from '../../lib/sanity.js';
+
+let servicesFromSanity = null;
+try {
+  // Pasamos 'en' explícitamente
+  servicesFromSanity = await fetchServices(urlFor, 'en');
+} catch {
+  servicesFromSanity = null;
+}
+---
+
+<BaseLayout
+  title="Blue Royale Spa | Wellness & Beauty in Costa Rica"
+  description="Luxury spa in Tamarindo, Costa Rica. Massages, facials, and holistic rituals to connect mind, body, and spirit."
+  lang="en"
+>
+  <Hero />
+  <PhilosophySection />
+  <ServicesSection services={servicesFromSanity ?? undefined} />
+  <ExperienceSection />
+   <ReasonsSection />
+  <Testimonials />
+  <BookingFormSection />
+  <ContactSection />
+  <WhatsAppFab />
+</BaseLayout>

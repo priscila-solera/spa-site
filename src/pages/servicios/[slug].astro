@@ -1,0 +1,94 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BookingButton from '../../components/BookingButton.astro';
+import CalendarIcon from '../../components/icons/CalendarIcon.astro';
+
+export async function getStaticPaths() {
+  const services = await getCollection('services');
+  return services.map((service) => ({
+    params: { slug: service.slug },
+    props: { service },
+  }));
+}
+
+const { service } = Astro.props;
+const { Content } = await service.render();
+
+// Usar el enlace específico del servicio o el general como fallback
+const calLink = service.data.calLink || import.meta.env.PUBLIC_CAL_LINK || 'daniel-torres-calvo';
+---
+
+<BaseLayout title={`${service.data.title} | Blue Royale Spa`} description={service.data.description}>
+  <article>
+    {/* Hero Section */}
+    <div class="relative h-[60vh] min-h-[400px] w-full overflow-hidden bg-secondary">
+      <div class="absolute inset-0">
+        <img
+          src={service.data.image}
+          alt={service.data.imageAlt}
+          class="h-full w-full object-cover opacity-60"
+        />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+      </div>
+      <div class="relative z-10 flex h-full flex-col items-center justify-center px-4 text-center text-white">
+        <p class="font-sans text-sm font-medium uppercase tracking-[0.2em] text-white/80 mb-4">
+          Servicio Exclusivo
+        </p>
+        <h1 class="font-serif text-4xl font-medium tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
+          {service.data.title}
+        </h1>
+        <p class="mt-6 max-w-2xl text-lg text-white/90 leading-relaxed font-light">
+          {service.data.description}
+        </p>
+      </div>
+    </div>
+
+    {/* Content Section */}
+    <div class="bg-primary px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
+      <div class="mx-auto max-w-3xl">
+        <div class="prose prose-lg prose-beige mx-auto text-beige-600">
+          <Content />
+        </div>
+
+        {/* Booking CTA */}
+        <div class="mt-16 flex flex-col items-center gap-6 rounded-2xl border border-beige-200 bg-cream-50 p-8 text-center shadow-spa-soft sm:p-12">
+          <h2 class="font-serif text-2xl font-semibold text-beige-800 sm:text-3xl">
+            Reserva tu momento de paz
+          </h2>
+          <p class="max-w-md text-base text-beige-600">
+            Permítenos cuidar de ti con nuestro {service.data.title.toLowerCase()}.
+          </p>
+          <div class="mt-2">
+            <BookingButton calLink={calLink} variant="primary" class="px-8 py-3.5 text-base">
+              <CalendarIcon className="text-cream-50" size={20} />
+              Reservar Cita
+            </BookingButton>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<style is:global>
+  /* Estilos para el contenido Markdown */
+  .prose-beige h2 {
+    @apply font-serif text-2xl font-semibold text-beige-800 mt-10 mb-4;
+  }
+  .prose-beige h3 {
+    @apply font-serif text-xl font-medium text-beige-700 mt-8 mb-3;
+  }
+  .prose-beige p {
+    @apply text-beige-600 leading-relaxed mb-4;
+  }
+  .prose-beige ul {
+    @apply list-disc list-outside ml-5 mb-6 text-beige-600 space-y-2;
+  }
+  .prose-beige li::marker {
+    @apply text-accent;
+  }
+  .prose-beige strong {
+    @apply font-semibold text-beige-800;
+  }
+</style>

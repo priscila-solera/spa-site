@@ -1,0 +1,79 @@
+---
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<section
+  id="filosofia"
+  class="scroll-mt-20 bg-primary px-4 py-24 sm:px-6 sm:py-32 lg:px-8"
+  aria-labelledby="filosofia-heading"
+>
+  <div class="mx-auto max-w-6xl grid items-center gap-16 lg:grid-cols-2">
+    <div
+      class="text-left"
+      data-scroll-reveal="left"
+    >
+      <p class="editorial-subtitle">{t('philosophy.subtitle')}</p>
+      <h2 id="filosofia-heading" class="section-heading mt-4">
+        {t('philosophy.title')}
+      </h2>
+      <p class="mt-6 text-lg text-beige-600 leading-relaxed">
+        {t('philosophy.desc1')}
+      </p>
+      <p class="mt-4 text-base text-beige-600 leading-relaxed">
+        {t('philosophy.desc2')}
+      </p>
+      <ul class="mt-8 grid gap-4 text-sm text-beige-700 sm:grid-cols-2">
+        <li class="flex items-start gap-3">
+          <span class="mt-1.5 h-1.5 w-1.5 rounded-full bg-brandGold flex-shrink-0" aria-hidden="true" />
+          <span>{t('philosophy.list1')}</span>
+        </li>
+        <li class="flex items-start gap-3">
+          <span class="mt-1.5 h-1.5 w-1.5 rounded-full bg-brandGold flex-shrink-0" aria-hidden="true" />
+          <span>{t('philosophy.list2')}</span>
+        </li>
+        <li class="flex items-start gap-3">
+          <span class="mt-1.5 h-1.5 w-1.5 rounded-full bg-brandGold flex-shrink-0" aria-hidden="true" />
+          <span>{t('philosophy.list3')}</span>
+        </li>
+        <li class="flex items-start gap-3">
+          <span class="mt-1.5 h-1.5 w-1.5 rounded-full bg-brandGold flex-shrink-0" aria-hidden="true" />
+          <span>{t('philosophy.list4')}</span>
+        </li>
+      </ul>
+    </div>
+
+    <div
+      class="relative pl-4 sm:pl-10"
+      data-scroll-reveal="right"
+      data-scroll-delay="0.12s"
+    >
+      <div
+        class="relative overflow-hidden rounded-2xl border border-black/[0.06] bg-cream-100 shadow-spa-soft"
+        data-parallax
+        data-parallax-speed-y="0.45"
+        data-parallax-intensity="45"
+      >
+        <img
+          src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=1200&q=80&auto=format&fit=crop"
+          alt="Warm and cozy treatment room at Blue Royale Spa."
+          class="h-full w-full object-cover aspect-[4/5]"
+          loading="lazy"
+        />
+      </div>
+      <div
+        class="pointer-events-none absolute -bottom-8 -left-0 hidden max-w-xs rounded-2xl border border-white/60 bg-cream-50/90 px-6 py-5 text-sm text-beige-700 shadow-spa-md backdrop-blur-sm sm:block"
+        data-parallax
+        data-parallax-speed-y="-0.25"
+        data-parallax-speed-x="-0.12"
+        data-parallax-intensity="35"
+      >
+        <p class="font-serif text-lg italic text-beige-800">
+          {t('philosophy.quote')}
+        </p>
+      </div>
+    </div>
+  </div>
+</section>

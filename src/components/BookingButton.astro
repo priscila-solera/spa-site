@@ -1,0 +1,36 @@
+---
+/**
+ * Botón que abre el modal de reserva de Cal.com (overlay en la misma web).
+ * No redirige: usa data-cal-link + script global para abrir el embed en modal.
+ */
+interface Props {
+  /** Enlace Cal.com: usuario (ej. daniel-torres-calvo) o routing form / team link para add-ons */
+  calLink: string;
+  /** ID de servicio (Sanity) para preseleccionar en el modal */
+  serviceId?: string;
+  variant?: 'primary' | 'secondary' | 'text';
+  class?: string;
+}
+
+const { calLink, serviceId, variant = 'primary', class: className = '' } = Astro.props;
+
+const baseClass = 'inline-flex items-center justify-center gap-2 rounded-spa-lg text-sm font-medium transition-all duration-500 focus:outline-none focus:ring-2 focus:ring-offset-2';
+const variants = {
+  primary:
+    'bg-secondary px-8 py-3.5 font-medium text-primary shadow-md hover:bg-secondary/90 hover:shadow-lg focus:ring-accent',
+  secondary:
+    'border border-secondary/20 bg-transparent px-8 py-3.5 text-secondary hover:bg-secondary/5 focus:ring-secondary/40',
+  text: 'font-medium text-secondary hover:text-secondary/80 focus:ring-secondary/30',
+};
+const buttonClass = `${baseClass} ${variants[variant]} ${className}`.trim();
+---
+
+<button
+  type="button"
+  class={buttonClass}
+  data-cal-link={calLink.trim()}
+  data-service-id={serviceId}
+  aria-label="Abrir reserva de cita"
+>
+  <slot />
+</button>

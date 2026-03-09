@@ -1,0 +1,161 @@
+---
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<section
+  id="reserva-home"
+  class="scroll-mt-20 bg-cream-50 px-4 py-24 sm:px-6 sm:py-32 lg:px-8"
+  aria-labelledby="reserva-heading"
+>
+  <div class="mx-auto max-w-6xl grid gap-12 lg:grid-cols-2 lg:items-stretch">
+    <div
+      class="flex flex-col justify-between rounded-2xl border border-black/[0.06] bg-cream-100 px-6 py-8 shadow-spa-soft sm:px-8"
+      data-scroll-reveal="left"
+    >
+      <div>
+        <p class="editorial-subtitle">{t('booking.subtitle')}</p>
+        <h2 id="reserva-heading" class="section-heading mt-3">
+          {t('booking.title')}
+        </h2>
+        <p class="mt-4 text-sm text-beige-600 sm:text-base leading-relaxed">
+          {t('booking.desc')}
+        </p>
+      </div>
+
+      <form id="booking-form" class="mt-8 grid gap-6 sm:grid-cols-2">
+        <div class="sm:col-span-2">
+          <label for="nombre" class="block text-xs font-semibold uppercase tracking-[0.15em] text-beige-500 mb-2">
+            {t('booking.name')}
+          </label>
+          <input
+            id="nombre"
+            name="nombre"
+            type="text"
+            required
+            class="w-full rounded-spa border border-beige-200 bg-white px-4 py-3 text-sm text-beige-800 shadow-sm outline-none ring-0 transition-all focus:border-eucalyptus-500 focus:ring-1 focus:ring-eucalyptus-300 placeholder:text-beige-300"
+            placeholder={t('booking.name.placeholder')}
+          />
+        </div>
+
+        <div class="sm:col-span-1">
+          <label for="servicio" class="block text-xs font-semibold uppercase tracking-[0.15em] text-beige-500 mb-2">
+            {t('booking.service')}
+          </label>
+          <div class="relative">
+            <select
+              id="servicio"
+              name="servicio"
+              class="w-full appearance-none rounded-spa border border-beige-200 bg-white px-4 py-3 text-sm text-beige-800 shadow-sm outline-none ring-0 transition-all focus:border-eucalyptus-500 focus:ring-1 focus:ring-eucalyptus-300 cursor-pointer"
+            >
+              <option value="" disabled selected>{t('booking.service.placeholder')}</option>
+              <option value={t('booking.service.relaxing')}>{t('booking.service.relaxing')}</option>
+              <option value={t('booking.service.deep')}>{t('booking.service.deep')}</option>
+              <option value={t('booking.service.facial')}>{t('booking.service.facial')}</option>
+              <option value={t('booking.service.ritual')}>{t('booking.service.ritual')}</option>
+              <option value={t('booking.service.general')}>{t('booking.service.unsure')}</option>
+            </select>
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-beige-500">
+              <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="sm:col-span-1">
+          <label for="horario" class="block text-xs font-semibold uppercase tracking-[0.15em] text-beige-500 mb-2">
+            {t('booking.time')}
+          </label>
+          <input
+            id="horario"
+            name="horario"
+            type="text"
+            class="w-full rounded-spa border border-beige-200 bg-white px-4 py-3 text-sm text-beige-800 shadow-sm outline-none ring-0 transition-all focus:border-eucalyptus-500 focus:ring-1 focus:ring-eucalyptus-300 placeholder:text-beige-300"
+            placeholder={t('booking.time.placeholder')}
+          />
+        </div>
+
+        <div class="sm:col-span-2">
+          <label for="mensaje" class="block text-xs font-semibold uppercase tracking-[0.15em] text-beige-500 mb-2">
+            {t('booking.notes')}
+          </label>
+          <textarea
+            id="mensaje"
+            name="mensaje"
+            rows="3"
+            class="w-full rounded-spa border border-beige-200 bg-white px-4 py-3 text-sm text-beige-800 shadow-sm outline-none ring-0 transition-all focus:border-eucalyptus-500 focus:ring-1 focus:ring-eucalyptus-300 placeholder:text-beige-300 resize-none"
+            placeholder={t('booking.notes.placeholder')}
+          ></textarea>
+        </div>
+
+        <div class="sm:col-span-2 mt-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <p class="text-xs text-beige-500 sm:max-w-xs leading-relaxed">
+            {t('booking.info')}
+          </p>
+          <button
+            type="submit"
+            class="inline-flex w-full items-center justify-center gap-2 rounded-spa-lg bg-secondary px-8 py-3.5 text-sm font-medium text-primary shadow-md transition-all duration-300 hover:bg-secondary/90 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 sm:w-auto"
+          >
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+            {t('booking.cta')}
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div
+      class="relative hidden lg:block"
+      data-scroll-reveal="right"
+      data-scroll-delay="0.16s"
+    >
+      <div
+        class="h-full overflow-hidden rounded-2xl border border-black/[0.06] bg-cream-100 shadow-spa-soft"
+        data-parallax
+        data-parallax-speed-y="0.1"
+        data-parallax-intensity="20"
+      >
+        <img
+          src="https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?w=1200&q=80&auto=format&fit=crop"
+          alt="Detail of hands receiving spa treatment with essential oils."
+          class="h-full w-full object-cover"
+          loading="lazy"
+        />
+      </div>
+    </div>
+  </div>
+</section>
+
+<script define:vars={{ t }}>
+  const form = document.getElementById('booking-form') as HTMLFormElement;
+
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+    const nombre = formData.get('nombre') as string;
+    const servicio = formData.get('servicio') as string || t('booking.service.general');
+    const horario = formData.get('horario') as string;
+    const mensaje = formData.get('mensaje') as string;
+
+    const spaEmail = 'info@blueroyalespa.com';
+
+    const subject = t('booking.email.subject')
+      .replace('{service}', servicio)
+      .replace('{name}', nombre);
+
+    const body = t('booking.email.body')
+      .replace('{name}', nombre)
+      .replace('{service}', servicio)
+      .replace('{time}', horario || 'To be discussed')
+      .replace('{notes}', mensaje || 'None');
+
+    const mailtoLink = `mailto:${spaEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    window.location.href = mailtoLink;
+  });
+</script>

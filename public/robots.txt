@@ -1,0 +1,6 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+
+# Sitemap (actualizar la URL si tu dominio es otro)
+Sitemap: https://www.blueroyalespa.com/sitemap-index.xml

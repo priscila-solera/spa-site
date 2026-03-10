@@ -53,16 +53,18 @@ const t = useTranslations(lang);
         <h2 id="experiencia-heading" class="section-heading mt-2">
           {t('experience.retreat.title')}
         </h2>
-        <p class="mt-6 text-base text-beige-500">
-          {t('experience.retreat.desc1')}
-        </p>
-        <p class="mt-4 text-base text-beige-500">
-          {t('experience.retreat.desc2')}
-        </p>
+        <div class="mt-6 space-y-6">
+          <p class="text-base leading-relaxed text-beige-600">
+            {t('experience.retreat.desc1')}
+          </p>
+          <p class="text-base leading-relaxed text-beige-600 border-l-2 border-eucalyptus-400/50 pl-5">
+            {t('experience.retreat.desc2')}
+          </p>
+        </div>
         <div class="mt-8">
           <a
-            href="/#contacto"
-            class="inline-flex items-center rounded-spa-lg border border-eucalyptus-500/50 bg-transparent px-6 py-3 text-sm font-medium text-eucalyptus-600 transition-all duration-500 hover:bg-eucalyptus-50 hover:border-eucalyptus-500/70"
+            href="#reserva-home"
+            class="experience-retreat-cta inline-flex items-center rounded-full border-2 border-eucalyptus-600 bg-eucalyptus-600 px-6 py-3 text-sm font-medium text-white shadow-spa transition-all duration-300 hover:bg-eucalyptus-500 hover:border-eucalyptus-500"
           >
             {t('experience.retreat.cta')}
           </a>
@@ -89,3 +91,15 @@ const t = useTranslations(lang);
     </div>
   </div>
 </section>
+
+<script>
+  document.querySelectorAll('.experience-retreat-cta').forEach((link) => {
+    link.addEventListener('click', (e) => {
+      const target = document.getElementById('reserva-home');
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+</script>

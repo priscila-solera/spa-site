@@ -74,6 +74,20 @@ export const ui = {
     'testimonials.google': 'See more on Google',
     'testimonials.config': 'Configure PUBLIC_GOOGLE_PLACE_ID and PUBLIC_GOOGLE_PLACES_API_KEY to show Google reviews.',
 
+    'extras.subtitle': 'More Experiences',
+    'extras.title': 'Beyond the Treatment Room',
+    'extras.desc': 'Make-up, private experiences, and curated products to complement your spa ritual.',
+    'extras.makeup.title': 'Make-up & Hairstyling',
+    'extras.makeup.body':
+      'Priscila is a certified make-up artist working with Sormé Co. products — cruelty free, ethically made, and free from harsh chemicals.\n\nWe offer make-up and hairstyling for weddings, formal gatherings, and special events. Pricing varies based on group size and services.',
+    'extras.home.title': 'Home Services & Private Parties',
+    'extras.home.body':
+      'Ask about our home services and private spa parties. Home visits include an additional service fee, calculated based on group size, location, and chosen treatments.\n\nYou can also reserve the spa exclusively for you and your loved ones to celebrate and unwind.',
+    'extras.shop.title': 'Gift Shop',
+    'extras.shop.body':
+      'Visit our boutique gift shop curated by founder Priscila Solera Castañeda. Discover locally made organic creams, skin therapy lotions, and Basha luck and healing jewelry handcrafted in Costa Rica.',
+    'extras.cta': 'Contact us',
+
     'booking.subtitle': 'Schedule Your Moment',
     'booking.title': 'Request Your Appointment',
     'booking.desc': 'Tell us what kind of experience you\'re looking for and the best time for you. We will contact you to confirm the details and personalize your visit.',
@@ -87,6 +101,9 @@ export const ui = {
     'booking.service.deep': 'Deep Tissue Massage',
     'booking.service.facial': 'Facial',
     'booking.service.ritual': 'Holistic Ritual',
+    'booking.service.makeup': 'Make-up & Hairstyling',
+    'booking.service.home': 'Home Services & Private Parties',
+    'booking.service.giftshop': 'Gift Shop',
     'booking.service.general': 'General Inquiry',
     'booking.service.unsure': 'Not sure yet',
     'booking.time': 'Ideal Day / Time',
@@ -192,6 +209,9 @@ export const ui = {
     'booking.service.deep': 'Masaje Descontracturante',
     'booking.service.facial': 'Facial',
     'booking.service.ritual': 'Ritual Holístico',
+    'booking.service.makeup': 'Make-up & Peinado',
+    'booking.service.home': 'Servicios a Domicilio y Fiestas Privadas',
+    'booking.service.giftshop': 'Gift Shop',
     'booking.service.general': 'Consulta General',
     'booking.service.unsure': 'Aún no estoy seguro(a)',
     'booking.time': 'Día / Horario Ideal',
@@ -210,6 +230,20 @@ export const ui = {
     'contact.directions': 'Cómo llegar',
     'contact.maps': 'Ver en Google Maps',
     'contact.location': 'Tamarindo, Guanacaste — Frente a Banco Nacional',
+
+    'extras.subtitle': 'Más Experiencias',
+    'extras.title': 'Servicios que Complementan Tu Ritual',
+    'extras.desc': 'Maquillaje, eventos privados y una tienda con productos seleccionados para llevarte un pedacito del spa a casa.',
+    'extras.makeup.title': 'Make-up & Hairstyling',
+    'extras.makeup.body':
+      'Priscila es maquillista certificada y trabaja con productos Sormé Co., una marca libre de crueldad animal, elaborada de forma ética y sin parabenos ni químicos agresivos.\n\nOfrecemos servicios de maquillaje y peinado para bodas, eventos formales y ocasiones especiales. Los precios se definen según el tamaño del grupo y los servicios elegidos.',
+    'extras.home.title': 'Home Services & Private Parties',
+    'extras.home.body':
+      'Pregúntanos por nuestros servicios a domicilio y spa parties privadas. El servicio a domicilio incluye un recargo adicional, calculado según el tamaño del grupo, la ubicación y los tratamientos seleccionados.\n\nTambién puedes reservar el spa en exclusiva para ti y tus personas favoritas, para celebrar y relajarse juntos.',
+    'extras.shop.title': 'Gift Shop',
+    'extras.shop.body':
+      'Visita nuestra tienda, curada por la fundadora Priscila Solera Castañeda. Encontrarás productos orgánicos elaborados localmente, como cremas, lociones terapéuticas para la piel y joyería Basha de suerte y sanación hecha a mano en Costa Rica.',
+    'extras.cta': 'Contáctanos',
 
     'footer.rights': '© {year} Blue Royale Beauty & Spa. Todos los derechos reservados.',
     'footer.design': 'Diseño web por',

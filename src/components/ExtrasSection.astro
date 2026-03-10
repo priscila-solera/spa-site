@@ -1,0 +1,82 @@
+---
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<section class="bg-primary px-4 py-20 sm:px-6 sm:py-24 lg:px-8" aria-labelledby="extras-heading" id="extras">
+  <div class="mx-auto max-w-7xl">
+    <header class="mx-auto max-w-3xl text-center mb-14">
+      <p class="editorial-subtitle">{t('extras.subtitle')}</p>
+      <h2 id="extras-heading" class="section-heading mt-3">
+        {t('extras.title')}
+      </h2>
+      <p class="mt-4 text-lg text-beige-600 leading-relaxed">
+        {t('extras.desc')}
+      </p>
+    </header>
+
+    <div class="grid gap-10 md:grid-cols-3">
+      <!-- Make-up & hairstyling -->
+      <article class="flex flex-col rounded-spa-xl bg-cream-100/80 p-6 shadow-spa-md border border-beige-200/70">
+        <h3 class="font-serif text-xl font-semibold text-beige-800">
+          {t('extras.makeup.title')}
+        </h3>
+        <p class="mt-3 text-sm text-beige-600 leading-relaxed whitespace-pre-line flex-1">
+          {t('extras.makeup.body')}
+        </p>
+        <a
+          href="#reserva-home"
+          class="extras-cta mt-6 inline-flex items-center justify-center rounded-full border border-secondary bg-secondary px-5 py-2.5 text-sm font-medium text-primary shadow-sm transition-colors hover:bg-secondary/90"
+        >
+          {t('extras.cta')}
+        </a>
+      </article>
+
+      <!-- Home services & private parties -->
+      <article class="flex flex-col rounded-spa-xl bg-cream-100/80 p-6 shadow-spa-md border border-beige-200/70">
+        <h3 class="font-serif text-xl font-semibold text-beige-800">
+          {t('extras.home.title')}
+        </h3>
+        <p class="mt-3 text-sm text-beige-600 leading-relaxed whitespace-pre-line flex-1">
+          {t('extras.home.body')}
+        </p>
+        <a
+          href="#reserva-home"
+          class="extras-cta mt-6 inline-flex items-center justify-center rounded-full border border-secondary bg-secondary px-5 py-2.5 text-sm font-medium text-primary shadow-sm transition-colors hover:bg-secondary/90"
+        >
+          {t('extras.cta')}
+        </a>
+      </article>
+
+      <!-- Gift shop -->
+      <article class="flex flex-col rounded-spa-xl bg-cream-100/80 p-6 shadow-spa-md border border-beige-200/70">
+        <h3 class="font-serif text-xl font-semibold text-beige-800">
+          {t('extras.shop.title')}
+        </h3>
+        <p class="mt-3 text-sm text-beige-600 leading-relaxed whitespace-pre-line flex-1">
+          {t('extras.shop.body')}
+        </p>
+        <a
+          href="#reserva-home"
+          class="extras-cta mt-6 inline-flex items-center justify-center rounded-full border border-secondary bg-secondary px-5 py-2.5 text-sm font-medium text-primary shadow-sm transition-colors hover:bg-secondary/90"
+        >
+          {t('extras.cta')}
+        </a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll('.extras-cta').forEach((link) => {
+    link.addEventListener('click', (e) => {
+      const target = document.getElementById('reserva-home');
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+</script>

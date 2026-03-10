@@ -8,6 +8,7 @@ import ReasonsSection from '../../components/ReasonsSection.astro';
 import Testimonials from '../../components/Testimonials.astro';
 import BookingFormSection from '../../components/BookingFormSection.astro';
 import ContactSection from '../../components/ContactSection.astro';
+import ExtrasSection from '../../components/ExtrasSection.astro';
 import WhatsAppFab from '../../components/WhatsAppFab.astro';
 import { fetchServices, urlFor } from '../../lib/sanity.js';
 
@@ -30,6 +31,7 @@ try {
   <ServicesSection services={servicesFromSanity ?? undefined} />
   <ExperienceSection />
    <ReasonsSection />
+  <ExtrasSection />
   <Testimonials />
   <BookingFormSection />
   <ContactSection />

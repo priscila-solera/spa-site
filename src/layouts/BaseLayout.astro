@@ -92,7 +92,7 @@ const {
       document.addEventListener('astro:after-swap', forceScrollTop);
     </script>
   </head>
-  <body class="min-h-screen bg-primary">
+  <body class="min-h-screen bg-primary overflow-x-hidden">
     <ViewTransitions />
     <BookingModal defaultCalLink={defaultCalLink} services={servicesForBooking ?? undefined} />
     <Navbar />

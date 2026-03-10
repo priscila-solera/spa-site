@@ -20,10 +20,17 @@ export const serviceSchema = {
       validation: (Rule) => Rule.required(),
     },
     {
-      name: 'description',
-      title: 'Descripción',
+      name: 'shortDescription',
+      title: 'Descripción corta',
       type: 'localeText',
+      description: 'Para la tarjeta en la sección Tratamientos (1-2 frases). Obligatoria.',
       validation: (Rule) => Rule.required(),
+    },
+    {
+      name: 'description',
+      title: 'Descripción larga',
+      type: 'localeText',
+      description: 'Texto completo del servicio; se muestra en el modal al hacer clic en "Leer más". Opcional.',
     },
     {
       name: 'price',

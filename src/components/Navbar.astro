@@ -39,7 +39,9 @@ const navLinks = [
         ))}
       </ul>
 
-      <LanguagePicker />
+      <div class="navbar-lang-picker">
+        <LanguagePicker />
+      </div>
 
       <button
         type="button"
@@ -171,6 +173,12 @@ const navLinks = [
     @apply text-secondary/80;
   }
   header.scrolled .navbar-link:hover {
+    @apply text-secondary;
+  }
+  header.scrolled .navbar-lang-picker :global(button) {
+    @apply text-secondary/80;
+  }
+  header.scrolled .navbar-lang-picker :global(button:hover) {
     @apply text-secondary;
   }
   header.scrolled .navbar-cta {

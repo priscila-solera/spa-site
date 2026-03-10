@@ -39,6 +39,7 @@ export { projectId, dataset, apiVersion };
 const SERVICES_QUERY = `*[_type == "service"] | order(category->order asc, order asc) {
   _id,
   "title": coalesce(title[$lang], title.en),
+  "shortDescription": coalesce(shortDescription[$lang], shortDescription.en),
   "description": coalesce(description[$lang], description.en),
   price,
   duration, // Duración directa, sin traducción
@@ -80,6 +81,7 @@ export async function fetchServices(urlForBuilder, lang = 'en') {
       return {
         id: doc._id,
         title: doc.title ?? '',
+        shortDescription: doc.shortDescription ?? null,
         description: doc.description ?? '',
         image: imgSrc,
         imageAlt: doc.imageAlt ?? doc.title ?? 'Service',

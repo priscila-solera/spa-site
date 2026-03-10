@@ -6,9 +6,10 @@
   html {
     scroll-behavior: smooth;
     color: theme('colors.beige.700'); /* Color base usando theme() */
+    overflow-x: hidden;
   }
   body {
-    @apply font-sans antialiased;
+    @apply font-sans antialiased overflow-x-hidden;
     background-color: theme('colors.primary');
     letter-spacing: 0.01em;
   }

@@ -14,9 +14,19 @@ interface Props {
   type?: string;
   /** JSON-LD adicional (ej. Service para página de servicio). Si no se pasa, se usa LocalBusiness. */
   jsonLd?: object;
+  /** Locale OG (ej. es_CR, en_CR). */
+  locale?: string;
 }
 
-const { title, description = 'Blue Royale Spa — Bienestar y belleza en Costa Rica. Masajes, faciales y rituales holísticos en Tamarindo.', image, canonical, type = 'website', jsonLd } = Astro.props;
+const {
+  title,
+  description = 'Blue Royale Spa — Bienestar y belleza en Costa Rica. Masajes, faciales y rituales holísticos en Tamarindo.',
+  image,
+  canonical,
+  type = 'website',
+  jsonLd,
+  locale = 'es_CR',
+} = Astro.props;
 
 const site = Astro.site?.href ?? Astro.url.origin;
 const canonicalUrl = canonical ?? new URL(Astro.url.pathname, site).href;
@@ -44,7 +54,10 @@ const localBusiness = {
   },
   priceRange: '$$',
   image: ogImage,
-  sameAs: [],
+  sameAs: [
+    'https://www.instagram.com/blueroyalespa',
+    'https://www.facebook.com/blueroyalespa',
+  ],
   openingHoursSpecification: {
     '@type': 'OpeningHoursSpecification',
     dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
@@ -72,7 +85,7 @@ const scriptLd = jsonLd ?? localBusiness;
 <meta property="og:description" content={description} />
 <meta property="og:url" content={canonicalUrl} />
 <meta property="og:image" content={ogImage} />
-<meta property="og:locale" content="es_CR" />
+<meta property="og:locale" content={locale} />
 <meta property="og:site_name" content="Blue Royale Spa" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={title} />

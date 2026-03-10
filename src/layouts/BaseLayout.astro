@@ -27,13 +27,23 @@ interface Props {
   jsonLd?: object;
   /** og:type (por defecto website). */
   ogType?: string;
+  /** Idioma del documento (html lang). */
+  lang: 'en' | 'es';
 }
 
-const { title, description = 'Blue Royale Spa — Wellness, beauty, and connection between mind, body, and spirit in a luxury setting.', ogImage, canonicalUrl, jsonLd, ogType } = Astro.props;
+const {
+  title,
+  description = 'Blue Royale Spa — Wellness, beauty, and connection between mind, body, and spirit in a luxury setting.',
+  ogImage,
+  canonicalUrl,
+  jsonLd,
+  ogType,
+  lang,
+} = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={lang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -46,6 +56,7 @@ const { title, description = 'Blue Royale Spa — Wellness, beauty, and connecti
       image={ogImage}
       canonical={canonicalUrl}
       type={ogType}
+      locale={lang === 'es' ? 'es_CR' : 'en_CR'}
       jsonLd={jsonLd}
     />
     <!-- Tipografía: Playfair Display (serif) + Lato (sans) -->

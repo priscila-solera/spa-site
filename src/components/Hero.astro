@@ -26,7 +26,7 @@ const {
 ---
 
 <section
-  class="relative flex items-center justify-center min-h-screen bg-secondary text-white text-center px-4"
+  class="hero-section relative flex items-center justify-center min-h-screen bg-secondary text-white text-center px-4"
   aria-label={t('hero.title')}
 >
   <!-- Background Video / Image (video se carga con delay para ahorrar Blob data transfer) -->
@@ -81,8 +81,9 @@ const {
 {videoSrc && (
   <script>
     (function () {
+      const section = document.querySelector('.hero-section');
       const video = document.querySelector('.hero-bg-video[data-video-src]');
-      if (!video) return;
+      if (!section || !video) return;
       const src = video.getAttribute('data-video-src');
       if (!src) return;
 
@@ -94,7 +95,25 @@ const {
         source.type = 'video/mp4';
         video.appendChild(source);
         video.load();
+        setupVisibilityPause();
       };
+
+      // Pausar cuando el hero sale de vista para dejar de consumir ancho de banda y CPU
+      function setupVisibilityPause() {
+        const obs = new IntersectionObserver(
+          (entries) => {
+            const entry = entries[0];
+            if (!entry) return;
+            if (entry.isIntersecting) {
+              video.play().catch(() => {});
+            } else {
+              video.pause();
+            }
+          },
+          { rootMargin: '0px', threshold: 0.1 }
+        );
+        obs.observe(section);
+      }
 
       // Cargar solo tras 1.5s para no consumir Blob en visitantes que rebotan
       setTimeout(loadVideo, 1500);

@@ -34,7 +34,7 @@ const {
     {videoSrc ? (
       <>
         <video
-          class="hero-bg-video h-full w-full object-cover transition-opacity duration-300"
+          class="hero-bg-video h-full w-full object-cover transition-opacity duration-500 ease-out"
           autoplay
           muted
           loop
@@ -46,9 +46,9 @@ const {
         >
           <!-- src se asigna por JS tras un breve delay para no gastar ancho de banda en rebotes -->
         </video>
-        <!-- Overlay del poster: se oculta solo cuando el video tiene el primer frame listo, evita parpadeo negro -->
+        <!-- Overlay del poster: misma transición que el video para que el cambio no se note -->
         <img
-          class="hero-poster-overlay absolute inset-0 z-[1] h-full w-full object-cover transition-opacity duration-300"
+          class="hero-poster-overlay absolute inset-0 z-[1] h-full w-full object-cover transition-opacity duration-500 ease-out"
           src={fallbackImage}
           alt=""
           aria-hidden="true"

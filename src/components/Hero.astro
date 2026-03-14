@@ -32,19 +32,28 @@ const {
   <!-- Background Video / Image (video se carga con delay para ahorrar Blob data transfer) -->
   <div class="absolute inset-0 z-0">
     {videoSrc ? (
-      <video
-        class="hero-bg-video h-full w-full object-cover"
-        autoplay
-        muted
-        loop
-        playsinline
-        preload="metadata"
-        poster={fallbackImage}
-        aria-hidden="true"
-        data-video-src={videoSrc}
-      >
-        <!-- src se asigna por JS tras un breve delay para no gastar ancho de banda en rebotes -->
-      </video>
+      <>
+        <video
+          class="hero-bg-video h-full w-full object-cover transition-opacity duration-300"
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="metadata"
+          poster={fallbackImage}
+          aria-hidden="true"
+          data-video-src={videoSrc}
+        >
+          <!-- src se asigna por JS tras un breve delay para no gastar ancho de banda en rebotes -->
+        </video>
+        <!-- Overlay del poster: se oculta solo cuando el video tiene el primer frame listo, evita parpadeo negro -->
+        <img
+          class="hero-poster-overlay absolute inset-0 z-[1] h-full w-full object-cover transition-opacity duration-300"
+          src={fallbackImage}
+          alt=""
+          aria-hidden="true"
+        />
+      </>
     ) : (
       <img
         src={fallbackImage}
@@ -87,15 +96,29 @@ const {
       const src = video.getAttribute('data-video-src');
       if (!src) return;
 
+      const posterOverlay = document.querySelector('.hero-poster-overlay');
+
       const loadVideo = () => {
         if (video.getAttribute('data-loaded')) return;
         video.setAttribute('data-loaded', '1');
+        video.style.opacity = '0';
         const source = document.createElement('source');
         source.src = src;
         source.type = 'video/mp4';
         video.appendChild(source);
         video.load();
         setupVisibilityPause();
+
+        const onCanPlay = () => {
+          video.removeEventListener('canplay', onCanPlay);
+          video.style.opacity = '1';
+          if (posterOverlay) {
+            posterOverlay.style.opacity = '0';
+            posterOverlay.style.pointerEvents = 'none';
+          }
+        };
+        video.addEventListener('canplay', onCanPlay);
+        if (video.readyState >= 2) onCanPlay();
       };
 
       // Pausar cuando el hero sale de vista para dejar de consumir ancho de banda y CPU

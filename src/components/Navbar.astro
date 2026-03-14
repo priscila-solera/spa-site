@@ -94,7 +94,7 @@ const navLinks = [
       <li class="pt-2">
         <button
           type="button"
-          class="inline-flex w-full items-center justify-center rounded-full bg-secondary px-5 py-3 text-base font-medium text-primary shadow-sm transition-colors duration-300 hover:bg-secondary/90 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-primary"
+          class="navbar-cta-mobile inline-flex w-full items-center justify-center rounded-full border border-secondary bg-transparent px-5 py-3 text-base font-medium text-secondary transition-colors duration-300 hover:bg-secondary hover:text-primary focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-primary"
           data-cal-link="/"
         >
           {t('nav.book')}
@@ -182,9 +182,9 @@ const navLinks = [
     @apply text-secondary;
   }
   header.scrolled .navbar-cta {
-    @apply bg-secondary text-primary border-transparent;
+    @apply border-secondary text-secondary bg-transparent;
   }
   header.scrolled .navbar-cta:hover {
-    @apply bg-secondary/90 text-primary;
+    @apply bg-secondary text-primary border-secondary;
   }
 </style>

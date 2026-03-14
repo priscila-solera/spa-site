@@ -17,7 +17,7 @@ const { calLink, serviceId, variant = 'primary', class: className = '' } = Astro
 const baseClass = 'inline-flex items-center justify-center gap-2 rounded-spa-lg text-sm font-medium transition-all duration-500 focus:outline-none focus:ring-2 focus:ring-offset-2';
 const variants = {
   primary:
-    'bg-secondary px-8 py-3.5 font-medium text-primary shadow-md hover:bg-secondary/90 hover:shadow-lg focus:ring-accent',
+    'border border-accent bg-accent px-8 py-3.5 font-medium text-white shadow-md hover:bg-accent/90 hover:border-accent/90 hover:shadow-lg focus:ring-accent',
   secondary:
     'border border-secondary/20 bg-transparent px-8 py-3.5 text-secondary hover:bg-secondary/5 focus:ring-secondary/40',
   text: 'font-medium text-secondary hover:text-secondary/80 focus:ring-secondary/30',

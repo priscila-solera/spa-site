@@ -7,23 +7,23 @@ const t = useTranslations(lang);
 
 <section
   id="filosofia"
-  class="scroll-mt-20 bg-primary px-4 py-24 sm:px-6 sm:py-32 lg:px-8"
+  class="scroll-mt-20 bg-primary px-4 py-16 sm:px-6 sm:py-20 lg:px-8"
   aria-labelledby="filosofia-heading"
 >
-  <div class="mx-auto max-w-6xl grid items-center gap-16 lg:grid-cols-2">
+  <div class="mx-auto max-w-6xl grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
     <div
       class="text-left"
       data-scroll-reveal="left"
     >
-      <p class="editorial-subtitle">{t('philosophy.subtitle')}</p>
-      <h2 id="filosofia-heading" class="section-heading mt-4">
+      <p class="editorial-subtitle text-accent">{t('philosophy.subtitle')}</p>
+      <h2 id="filosofia-heading" class="section-heading mt-3">
         {t('philosophy.title')}
       </h2>
       <p class="mt-6 text-lg text-beige-600 leading-relaxed">
-        {t('philosophy.desc1')}
+        {t('philosophy.intro1')}
       </p>
       <p class="mt-4 text-base text-beige-600 leading-relaxed">
-        {t('philosophy.desc2')}
+        {t('philosophy.intro2')}
       </p>
       <ul class="mt-8 grid gap-4 text-sm text-beige-700 sm:grid-cols-2">
         <li class="flex items-start gap-3">
@@ -57,21 +57,25 @@ const t = useTranslations(lang);
         data-parallax-intensity="45"
       >
         <img
-          src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=1200&q=80&auto=format&fit=crop"
-          alt="Warm and cozy treatment room at Blue Royale Spa."
-          class="h-full w-full object-cover aspect-[4/5]"
+          src="/images/priscila.png"
+          alt={t('philosophy.priscila.name')}
+          class="h-full w-full object-cover object-top aspect-[4/5]"
           loading="lazy"
+          width="600"
+          height="750"
         />
       </div>
       <div
-        class="pointer-events-none absolute -bottom-8 -left-0 hidden max-w-xs rounded-2xl border border-white/60 bg-cream-50/90 px-6 py-5 text-sm text-beige-700 shadow-spa-md backdrop-blur-sm sm:block"
+        class="absolute -bottom-6 left-0 right-4 rounded-2xl border border-black/[0.06] bg-cream-50/95 px-6 py-5 shadow-spa-md backdrop-blur-sm sm:right-8"
         data-parallax
         data-parallax-speed-y="-0.25"
-        data-parallax-speed-x="-0.12"
         data-parallax-intensity="35"
       >
-        <p class="font-serif text-lg italic text-beige-800">
-          {t('philosophy.quote')}
+        <p class="font-sans font-semibold text-secondary text-base">
+          {t('philosophy.priscila.name')}
+        </p>
+        <p class="mt-2 text-sm text-beige-700 leading-relaxed">
+          {t('philosophy.priscila.bio')}
         </p>
       </div>
     </div>

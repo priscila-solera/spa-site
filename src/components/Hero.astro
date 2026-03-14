@@ -8,23 +8,51 @@ const t = useTranslations(lang);
 
 interface Props {
   calLink?: string;
+  /** URL del video de fondo (MP4 recomendado). Si no se pasa, se muestra la imagen de respaldo. */
+  videoSrc?: string;
+  /** URL de la imagen de respaldo cuando no hay video o no está soportado */
+  fallbackImage?: string;
 }
-const { calLink = import.meta.env.PUBLIC_CAL_LINK ?? 'daniel-torres-calvo' } = Astro.props;
+const envVideo = import.meta.env.PUBLIC_HERO_VIDEO;
+const urlVideo = typeof envVideo === 'string' ? envVideo.trim() : '';
+const envPoster = import.meta.env.PUBLIC_HERO_POSTER;
+const urlPoster = typeof envPoster === 'string' ? envPoster.trim() : '';
+const defaultFallback = urlPoster || 'https://images.unsplash.com/photo-1515377905703-c4788e51af15?q=80&w=2070&auto=format&fit=crop';
+const {
+  calLink = import.meta.env.PUBLIC_CAL_LINK ?? 'daniel-torres-calvo',
+  videoSrc = urlVideo || undefined,
+  fallbackImage = defaultFallback,
+} = Astro.props;
 ---
 
 <section
   class="relative flex items-center justify-center min-h-screen bg-secondary text-white text-center px-4"
   aria-label={t('hero.title')}
 >
-  <!-- Background Image -->
+  <!-- Background Video / Image -->
   <div class="absolute inset-0 z-0">
-    <img
-      src="https://images.unsplash.com/photo-1515377905703-c4788e51af15?q=80&w=2070&auto=format&fit=crop"
-      alt="Woman receiving a relaxing massage in a tranquil spa environment."
-      class="h-full w-full object-cover"
-      loading="eager"
-      fetchpriority="high"
-    />
+    {videoSrc ? (
+      <video
+        class="h-full w-full object-cover"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="auto"
+        poster={fallbackImage}
+        aria-hidden="true"
+      >
+        <source src={videoSrc} type="video/mp4" />
+      </video>
+    ) : (
+      <img
+        src={fallbackImage}
+        alt="Woman receiving a relaxing massage in a tranquil spa environment."
+        class="h-full w-full object-cover"
+        loading="eager"
+        fetchpriority="high"
+      />
+    )}
     <!-- Overlay -->
     <div class="absolute inset-0 bg-black/50" aria-hidden="true"></div>
   </div>

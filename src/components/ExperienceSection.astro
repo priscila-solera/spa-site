@@ -7,41 +7,41 @@ const t = useTranslations(lang);
 
 <section
   id="experiencia"
-  class="scroll-mt-20 bg-beige-100/60 px-4 py-24 sm:px-6 sm:py-32 lg:px-8"
+  class="experience-section scroll-mt-20 bg-beige-100/60 px-4 py-24 sm:px-6 sm:py-32 lg:px-8"
   aria-labelledby="experiencia-heading"
 >
-  <div class="mx-auto max-w-7xl">
+  <div class="mx-auto max-w-7xl relative z-10">
     <div
-      class="mb-16 grid gap-6 rounded-2xl bg-eucalyptus-600 px-6 py-8 text-cream-50 shadow-spa-soft sm:grid-cols-2 lg:grid-cols-4 sm:px-8"
+      class="mb-16 grid gap-6 rounded-2xl bg-sand px-6 py-8 shadow-spa-soft sm:grid-cols-2 lg:grid-cols-4 sm:px-8"
       data-scroll-reveal="up"
     >
       <div>
-        <p class="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-cream-200/90">
+        <p class="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-beige-600">
           {t('experience.satisfaction')}
         </p>
-        <p class="mt-2 font-serif text-2xl tracking-tight">100%</p>
-        <p class="mt-1 text-sm text-cream-100/90">{t('experience.satisfaction.desc')}</p>
+        <p class="mt-2 font-serif text-2xl tracking-tight text-secondary">100%</p>
+        <p class="mt-1 text-sm text-beige-700">{t('experience.satisfaction.desc')}</p>
       </div>
       <div>
-        <p class="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-cream-200/90">
+        <p class="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-beige-600">
           {t('experience.years')}
         </p>
-        <p class="mt-2 font-serif text-2xl tracking-tight">10+</p>
-        <p class="mt-1 text-sm text-cream-100/90">{t('experience.years.desc')}</p>
+        <p class="mt-2 font-serif text-2xl tracking-tight text-secondary">10+</p>
+        <p class="mt-1 text-sm text-beige-700">{t('experience.years.desc')}</p>
       </div>
       <div>
-        <p class="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-cream-200/90">
+        <p class="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-beige-600">
           {t('experience.treatments')}
         </p>
-        <p class="mt-2 font-serif text-2xl tracking-tight">30+</p>
-        <p class="mt-1 text-sm text-cream-100/90">{t('experience.treatments.desc')}</p>
+        <p class="mt-2 font-serif text-2xl tracking-tight text-secondary">30+</p>
+        <p class="mt-1 text-sm text-beige-700">{t('experience.treatments.desc')}</p>
       </div>
       <div>
-        <p class="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-cream-200/90">
+        <p class="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-beige-600">
           {t('experience.booking')}
         </p>
-        <p class="mt-2 font-serif text-2xl tracking-tight">24/7</p>
-        <p class="mt-1 text-sm text-cream-100/90">{t('experience.booking.desc')}</p>
+        <p class="mt-2 font-serif text-2xl tracking-tight text-secondary">24/7</p>
+        <p class="mt-1 text-sm text-beige-700">{t('experience.booking.desc')}</p>
       </div>
     </div>
     <div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
@@ -57,14 +57,14 @@ const t = useTranslations(lang);
           <p class="text-base leading-relaxed text-beige-600">
             {t('experience.retreat.desc1')}
           </p>
-          <p class="text-base leading-relaxed text-beige-600 border-l-2 border-eucalyptus-400/50 pl-5">
+          <p class="text-base leading-relaxed text-beige-600 border-l-2 border-accent/60 pl-5">
             {t('experience.retreat.desc2')}
           </p>
         </div>
         <div class="mt-8">
           <a
             href="#reserva-home"
-            class="experience-retreat-cta inline-flex items-center rounded-full border-2 border-eucalyptus-600 bg-eucalyptus-600 px-6 py-3 text-sm font-medium text-white shadow-spa transition-all duration-300 hover:bg-eucalyptus-500 hover:border-eucalyptus-500"
+            class="experience-retreat-cta inline-flex items-center rounded-full border-2 border-accent bg-accent px-6 py-3 text-sm font-medium text-white shadow-spa transition-all duration-300 hover:bg-accent/90 hover:border-accent/90"
           >
             {t('experience.retreat.cta')}
           </a>
@@ -91,6 +91,21 @@ const t = useTranslations(lang);
     </div>
   </div>
 </section>
+
+<style>
+  .experience-section {
+    background-image: url('/images/fondo.PNG');
+    background-repeat: no-repeat;
+    background-position: 15% bottom;
+    background-size: min(55%, 420px) auto;
+    padding-bottom: 11rem;
+  }
+  @media (min-width: 640px) {
+    .experience-section {
+      padding-bottom: 12rem;
+    }
+  }
+</style>
 
 <script>
   document.querySelectorAll('.experience-retreat-cta').forEach((link) => {

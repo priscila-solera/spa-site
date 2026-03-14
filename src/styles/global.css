@@ -2,10 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Tahu! Regular (script) – public/fonts/Tahu!.ttf */
+@font-face {
+  font-family: 'Tahu';
+  src: url('/fonts/Tahu%21.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;
-    color: theme('colors.beige.700'); /* Color base usando theme() */
+    color: theme('colors.secondary');
     overflow-x: hidden;
   }
   body {
@@ -14,18 +23,18 @@
     letter-spacing: 0.01em;
   }
   h1, h2, h3, h4, h5, h6 {
-    @apply font-serif tracking-tight;
-    color: theme('colors.beige.800'); /* Títulos usando theme() */
+    @apply font-sans font-semibold tracking-tight;
+    color: theme('colors.secondary');
   }
   p {
     line-height: 1.7;
-    color: theme('colors.beige.600'); /* Párrafos usando theme() */
+    color: theme('colors.beige.700');
   }
   /* Focus visible para accesibilidad */
   a:focus-visible,
   button:focus-visible {
     @apply outline-2 outline-offset-2;
-    outline-color: theme('colors.eucalyptus.500');
+    outline-color: theme('colors.gold.DEFAULT');
   }
 }
 
@@ -35,8 +44,8 @@
     letter-spacing: 0.2em;
   }
   .section-heading {
-    @apply font-serif text-3xl font-semibold tracking-tight sm:text-4xl;
-    color: theme('colors.beige.800');
+    @apply font-sans font-semibold text-3xl tracking-tight sm:text-4xl;
+    color: theme('colors.secondary');
   }
   a, button {
     @apply cursor-pointer;

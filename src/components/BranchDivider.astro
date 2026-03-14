@@ -1,0 +1,24 @@
+---
+/**
+ * Ilustración de rama en línea como elemento decorativo entre secciones o bajo títulos.
+ * Uso: <BranchDivider /> o <BranchDivider variant="small" />
+ */
+interface Props {
+  /** "default" = más ancho para entre secciones; "small" = bajo títulos */
+  variant?: 'default' | 'small';
+  class?: string;
+}
+const { variant = 'default', class: className = '' } = Astro.props;
+const sizeClass = variant === 'small' ? 'max-w-[120px] opacity-60' : 'max-w-[200px] sm:max-w-[260px] opacity-50';
+---
+
+<div class={`flex justify-center py-8 ${className}`} aria-hidden="true">
+  <img
+    src="/images/branch-divider.png"
+    alt=""
+    class={`${sizeClass} h-auto w-full object-contain`}
+    width={variant === 'small' ? 120 : 260}
+    height={variant === 'small' ? 48 : 80}
+    loading="lazy"
+  />
+</div>

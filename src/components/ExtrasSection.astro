@@ -5,8 +5,8 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 ---
 
-<section class="bg-primary px-4 py-20 sm:px-6 sm:py-24 lg:px-8" aria-labelledby="extras-heading" id="extras">
-  <div class="mx-auto max-w-7xl">
+<section class="extras-section relative bg-primary px-4 py-20 sm:px-6 sm:py-24 lg:px-8" aria-labelledby="extras-heading" id="extras">
+  <div class="relative z-10 mx-auto max-w-7xl">
     <header class="mx-auto max-w-3xl text-center mb-14">
       <p class="editorial-subtitle">{t('extras.subtitle')}</p>
       <h2 id="extras-heading" class="section-heading mt-3">
@@ -28,7 +28,7 @@ const t = useTranslations(lang);
         </p>
         <a
           href="#reserva-home"
-          class="extras-cta mt-6 inline-flex items-center justify-center rounded-full border border-secondary bg-secondary px-5 py-2.5 text-sm font-medium text-primary shadow-sm transition-colors hover:bg-secondary/90"
+          class="extras-cta mt-6 inline-flex items-center justify-center rounded-full border border-accent bg-accent px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-accent/90 hover:border-accent/90"
         >
           {t('extras.cta')}
         </a>
@@ -44,7 +44,7 @@ const t = useTranslations(lang);
         </p>
         <a
           href="#reserva-home"
-          class="extras-cta mt-6 inline-flex items-center justify-center rounded-full border border-secondary bg-secondary px-5 py-2.5 text-sm font-medium text-primary shadow-sm transition-colors hover:bg-secondary/90"
+          class="extras-cta mt-6 inline-flex items-center justify-center rounded-full border border-accent bg-accent px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-accent/90 hover:border-accent/90"
         >
           {t('extras.cta')}
         </a>
@@ -60,7 +60,7 @@ const t = useTranslations(lang);
         </p>
         <a
           href="#reserva-home"
-          class="extras-cta mt-6 inline-flex items-center justify-center rounded-full border border-secondary bg-secondary px-5 py-2.5 text-sm font-medium text-primary shadow-sm transition-colors hover:bg-secondary/90"
+          class="extras-cta mt-6 inline-flex items-center justify-center rounded-full border border-accent bg-accent px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-accent/90 hover:border-accent/90"
         >
           {t('extras.cta')}
         </a>
@@ -68,6 +68,30 @@ const t = useTranslations(lang);
     </div>
   </div>
 </section>
+
+<style>
+  .extras-section::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 70%;
+    max-width: 900px;
+    height: 28rem;
+    background-image: url('/images/fondo.PNG');
+    background-repeat: no-repeat;
+    background-position: right bottom;
+    background-size: contain;
+    transform: scaleX(-1);
+    pointer-events: none;
+  }
+  @media (min-width: 640px) {
+    .extras-section::after {
+      height: 32rem;
+      width: 65%;
+    }
+  }
+</style>
 
 <script>
   document.querySelectorAll('.extras-cta').forEach((link) => {

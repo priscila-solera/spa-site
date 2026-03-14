@@ -26,7 +26,7 @@ try {
   description="Spa de lujo en Tamarindo, Costa Rica. Masajes, faciales y rituales holísticos para conectar mente, cuerpo y espíritu."
   lang="es"
 >
-  <Hero />
+  <Hero videoSrc={import.meta.env.PUBLIC_HERO_VIDEO} />
   <PhilosophySection />
   <ServicesSection services={servicesFromSanity ?? undefined} />
   <ExperienceSection />

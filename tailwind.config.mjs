@@ -7,10 +7,23 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Paleta de lujo: beige, crema, verde eucalipto, dorado apagado
-        primary: '#fefdfb', // Fondo principal muy claro (antes #F5F5F0)
-        secondary: '#1C2B22', // Verde bosque profundo para textos / bloques oscuros
-        accent: '#D4AF37', // Dorado apagado para botones y detalles
+        // Paleta de marca: colores proporcionados (# / CMYK / RGB)
+        primary: '#d5eef1', // Fondo principal (muy claro cyan)
+        secondary: '#1A1F1C', // Oscuro para nav, textos y contraste
+        accent: '#c3952e', // Dorado marca (CTAs, acentos)
+        // Colores de la guía
+        sky: '#9fdae7',   // Cyan claro
+        ice: '#d5eef1',   // Cyan muy claro (= primary)
+        stone: '#bebdbc', // Gris neutro
+        sand: '#e3d7ac', // Beige/tan
+        gold: {
+          light: '#fde483',
+          DEFAULT: '#c3952e',
+          bright: '#fde25c',
+          mid: '#d5ae30',
+          dark: '#ba852c',
+        },
+        // Escalas para compatibilidad con componentes existentes
         beige: {
           50: '#faf8f6',
           100: '#f5f1eb',
@@ -19,8 +32,8 @@ export default {
           400: '#c4b8a8',
           500: '#a89885',
           600: '#8b7d6e',
-          700: '#706459', // Tono más oscuro para texto
-          800: '#554d44', // Tono aún más oscuro para títulos
+          700: '#706459',
+          800: '#554d44',
         },
         cream: {
           50: '#fefdfb',
@@ -30,28 +43,20 @@ export default {
           400: '#ebe2d4',
         },
         eucalyptus: {
-          50: '#f0f5f2',
-          100: '#e1ebe5',
-          200: '#c5d9cc',
-          300: '#9fbfae',
-          400: '#7aa392',
-          500: '#5c8776',
-          600: '#486d5f',
+          50: '#e8eeeb',
+          100: '#d1ddd7',
+          200: '#a3bbb3',
+          300: '#6b8f82',
+          400: '#4a6b5f',
+          500: '#3d594f',
+          600: '#324840',
         },
-        brandGold: '#D4AF37', // Dorado Cal.com / acentos de marca
-        gold: {
-          50: '#f9f7f2',
-          100: '#f0ebe0',
-          200: '#e2d6c4',
-          300: '#cfbc9e',
-          400: '#b89d75',
-          500: '#a0865c',
-          600: '#8b7049',
-        },
+        brandGold: '#c3952e', // Alias del dorado de marca (accent)
       },
       fontFamily: {
+        sans: ['Montserrat', 'system-ui', 'sans-serif'],
+        script: ['Tahu', '"Dancing Script"', 'cursive'], // Tahu desde public/fonts/Tahu-Regular.ttf
         serif: ['"Playfair Display"', 'Georgia', 'serif'],
-        sans: ['Lato', 'system-ui', 'sans-serif'],
       },
       borderRadius: {
         'spa': '0.5rem',

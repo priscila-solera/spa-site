@@ -1,5 +1,7 @@
 ---
 import { ViewTransitions } from 'astro:transitions';
+import Analytics from '@vercel/analytics/astro';
+import SpeedInsights from '@vercel/speed-insights/astro';
 import '../styles/global.css';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
@@ -98,6 +100,8 @@ const {
       <slot />
     </main>
     <Footer />
+    <Analytics />
+    <SpeedInsights />
     <script is:inline>
       document.body.addEventListener('click', function(e) {
         var btn = e.target && e.target.closest && e.target.closest('[data-cal-link]');

@@ -46,13 +46,16 @@ const {
         >
           <!-- src se asigna por JS tras un breve delay para no gastar ancho de banda en rebotes -->
         </video>
-        <!-- Overlay del poster: más oscuro para igualar el tono del video, misma transición -->
-        <img
-          class="hero-poster-overlay absolute inset-0 z-[1] h-full w-full object-cover opacity-80 brightness-90 transition-opacity duration-500 ease-out"
-          src={fallbackImage}
-          alt=""
-          aria-hidden="true"
-        />
+        <!-- Overlay del poster: oscurecido para igualar el tono del video -->
+        <div class="hero-poster-overlay absolute inset-0 z-[1] transition-opacity duration-500 ease-out">
+          <img
+            class="h-full w-full object-cover brightness-75"
+            src={fallbackImage}
+            alt=""
+            aria-hidden="true"
+          />
+          <div class="absolute inset-0 bg-black/35" aria-hidden="true"></div>
+        </div>
       </>
     ) : (
       <img

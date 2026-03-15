@@ -52,7 +52,7 @@ const servicesWithCategory = services.map((s) => ({
 
 <section
   id="servicios"
-  class="scroll-mt-20 bg-cream-100 px-4 py-24 sm:px-6 sm:py-32 lg:px-8"
+  class="scroll-mt-20 bg-cream-100 px-4 pt-24 pb-12 sm:px-6 sm:pt-20 sm:pb-20 lg:px-8"
   aria-labelledby="servicios-heading"
   data-reveal
 >
@@ -141,10 +141,10 @@ const servicesWithCategory = services.map((s) => ({
                   calLink={service.calLink ?? defaultCalLink}
                   serviceId={service.id}
                   variant="text"
-                  class="mt-3 shrink-0 p-0 text-accent transition-colors group-hover:text-accent/90 font-medium"
+                  class="group/link mt-3 shrink-0 p-0 text-secondary transition-colors hover:text-accent font-medium"
                 >
                   {service.ctaLabel || t('services.cta')}
-                  <span class="ml-1.5 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true">→</span>
+                  <span class="ml-1.5 transition-transform duration-300 group-hover/link:translate-x-1" aria-hidden="true">→</span>
                 </BookingButton>
               </div>
             </li>
@@ -493,10 +493,6 @@ const servicesWithCategory = services.map((s) => ({
       transform: translate3d(0, 0, 0) scale(1);
     }
   }
-  .service-card:hover [data-cal-link] {
-    color: theme('colors.accent');
-  }
-
   /* Descripción limitada a 4 líneas para tarjetas uniformes y CTA alineado */
   .service-card-desc {
     display: -webkit-box;

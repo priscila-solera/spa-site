@@ -51,7 +51,7 @@ export default function CalBookingOverlay({
           api("ui", {
             hideEventTypeDetails: false,
             theme: "auto",
-            styles: { branding: { brandColor: "#D4AF37" } },
+            styles: { branding: { brandColor: "#b8956e" } },
           });
         }
       } catch {}
@@ -148,7 +148,7 @@ export default function CalBookingOverlay({
           <button
             type="button"
             onClick={close}
-            className="rounded-full p-2 text-beige-600 transition-colors hover:bg-beige-200/60 hover:text-beige-800 focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/40"
+            className="rounded-full p-2 text-beige-600 transition-colors hover:bg-beige-200/60 hover:text-beige-800 focus:outline-none focus:ring-2 focus:ring-[#b8956e]/40"
             aria-label="Cerrar"
           >
             <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -156,7 +156,7 @@ export default function CalBookingOverlay({
             </svg>
           </button>
         </div>
-        <div className="h-[2px] shrink-0 bg-gradient-to-r from-transparent via-[#D4AF37]/60 to-transparent" aria-hidden="true" />
+        <div className="h-[2px] shrink-0 bg-gradient-to-r from-transparent via-[#b8956e]/60 to-transparent" aria-hidden="true" />
 
         {/* Contenido principal */}
         {step === "calendar" ? (

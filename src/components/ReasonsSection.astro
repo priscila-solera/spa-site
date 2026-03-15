@@ -3,70 +3,50 @@ import { getLangFromUrl, useTranslations } from '../i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+
+// Prueba: solo 2 fotos (habitaciones) o las 4. En .env: PUBLIC_REASONS_IMAGES=2 o 4 (por defecto 2).
+const numImages = Number(import.meta.env.PUBLIC_REASONS_IMAGES) || 2;
+const twoImagesOnly = numImages === 2;
+// Las 2 fotos de las habitaciones son image-2 (sala con vanity) e image-4 (sala con dos camas)
+const roomImages = [
+  { src: '/images/image-2.jpeg', alt: 'Ambiente del spa, sala de tratamientos.', speedY: '-0.3', intensity: 40 },
+  { src: '/images/image-4.jpeg', alt: 'Salas de bienestar en Blue Royale Spa.', speedY: '-0.2', intensity: 35 },
+];
+const allImages = [
+  { src: '/images/image-1.jpeg', alt: 'Blue Royale Spa experience.', speedY: '0.5', intensity: 45 },
+  { src: '/images/image-2.jpeg', alt: 'Blue Royale Spa ambiance.', speedY: '-0.3', intensity: 40 },
+  { src: '/images/image-3.jpeg', alt: 'Blue Royale Spa treatments.', speedY: '0.2', intensity: 30 },
+  { src: '/images/image-4.jpeg', alt: 'Blue Royale Spa wellness.', speedY: '-0.2', intensity: 35 },
+];
+const imagesToShow = twoImagesOnly ? roomImages : allImages;
+const gridClass = twoImagesOnly ? 'grid grid-cols-2 gap-4 sm:gap-6' : 'grid grid-cols-2 gap-4 sm:gap-6';
 ---
 
 <section
   id="por-que-elegirnos"
-  class="scroll-mt-20 bg-white px-4 py-24 sm:px-6 sm:py-32 lg:px-8"
+  class="scroll-mt-20 bg-white px-4 pt-6 pb-12 sm:px-6 sm:pt-20 sm:pb-20 lg:px-8"
   aria-labelledby="reasons-heading"
 >
-  <div class="mx-auto max-w-7xl grid gap-16 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)] lg:items-center">
+  <div class="mx-auto max-w-7xl grid gap-16 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] lg:items-center">
     <div
-      class="grid grid-cols-2 gap-4"
+      class={gridClass}
       data-scroll-reveal="left"
     >
-      <div
-        class="overflow-hidden rounded-2xl border border-black/8 bg-white/40 shadow-spa-soft"
-        data-parallax
-        data-parallax-speed-y="0.5"
-        data-parallax-intensity="45"
-      >
-        <img
-          src="/images/image-1.jpeg"
-          alt="Blue Royale Spa experience."
-          class="h-full w-full object-cover aspect-[3/4] opacity-90 hover:opacity-100 transition-opacity duration-500"
-          loading="lazy"
-        />
-      </div>
-      <div
-        class="overflow-hidden rounded-2xl border border-black/8 bg-white/40 shadow-spa-soft"
-        data-parallax
-        data-parallax-speed-y="-0.3"
-        data-parallax-intensity="40"
-      >
-        <img
-          src="/images/image-2.jpeg"
-          alt="Blue Royale Spa ambiance."
-          class="h-full w-full object-cover aspect-[3/4] opacity-90 hover:opacity-100 transition-opacity duration-500"
-          loading="lazy"
-        />
-      </div>
-      <div
-        class="overflow-hidden rounded-2xl border border-black/8 bg-white/40 shadow-spa-soft"
-        data-parallax
-        data-parallax-speed-y="0.2"
-        data-parallax-intensity="30"
-      >
-        <img
-          src="/images/image-3.jpeg"
-          alt="Blue Royale Spa treatments."
-          class="h-full w-full object-cover aspect-[3/4] opacity-90 hover:opacity-100 transition-opacity duration-500"
-          loading="lazy"
-        />
-      </div>
-      <div
-        class="overflow-hidden rounded-2xl border border-black/8 bg-white/40 shadow-spa-soft"
-        data-parallax
-        data-parallax-speed-y="-0.2"
-        data-parallax-intensity="35"
-      >
-        <img
-          src="/images/image-4.jpeg"
-          alt="Blue Royale Spa wellness."
-          class="h-full w-full object-cover aspect-[3/4] opacity-90 hover:opacity-100 transition-opacity duration-500"
-          loading="lazy"
-        />
-      </div>
+      {imagesToShow.map((img, i) => (
+        <div
+          class="overflow-hidden rounded-2xl border border-black/8 bg-white/40 shadow-spa-soft"
+          data-parallax
+          data-parallax-speed-y={img.speedY}
+          data-parallax-intensity={img.intensity}
+        >
+          <img
+            src={img.src}
+            alt={img.alt}
+            class="h-full w-full object-cover aspect-[3/4] sm:aspect-[4/5] opacity-90 hover:opacity-100 transition-opacity duration-500"
+            loading="lazy"
+          />
+        </div>
+      ))}
     </div>
 
     <div

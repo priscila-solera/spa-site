@@ -10,7 +10,7 @@ export default {
         // Paleta de lujo: beige, crema, verde eucalipto, dorado apagado
         primary: '#fefdfb', // Fondo principal muy claro (antes #F5F5F0)
         secondary: '#1C2B22', // Verde bosque profundo para textos / bloques oscuros
-        accent: '#D4AF37', // Dorado apagado para botones y detalles
+        accent: '#b8956e', // Nude/arena para botones y detalles (antes dorado)
         stone: '#bebdbc', // Gris neutro
         sand: '#e3d7ac', // Beige/tan
         gold: {
@@ -21,11 +21,11 @@ export default {
           400: '#b89d75',
           500: '#a0865c',
           600: '#8b7049',
-          light: '#fde483',
-          DEFAULT: '#D4AF37',
-          bright: '#fde25c',
-          mid: '#d5ae30',
-          dark: '#ba852c',
+          light: '#d4c4a8',
+          DEFAULT: '#b8956e',
+          bright: '#c4a77d',
+          mid: '#a8865e',
+          dark: '#8b7049',
         },
         // Escalas para compatibilidad con componentes existentes
         beige: {
@@ -55,7 +55,7 @@ export default {
           500: '#5c8776',
           600: '#486d5f',
         },
-        brandGold: '#D4AF37', // Dorado Cal.com / acentos de marca
+        brandGold: '#b8956e', // Nude/arena (CTAs y acentos)
       },
       fontFamily: {
         sans: ['Montserrat', 'system-ui', 'sans-serif'],

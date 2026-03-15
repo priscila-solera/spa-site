@@ -12,7 +12,7 @@ const reviews = data?.reviews ?? [];
 const placeName = data?.placeName ?? 'Google Maps';
 const placeUrl = data?.placeUrl ?? 'https://www.google.com/maps/search/Blue+Royale+Spa+Tamarindo';
 const hasReviews = reviews.length > 0;
-const GOLD = '#D4AF37';
+const GOLD = '#b8956e';
 // Texto máximo por reseña en la tarjeta (las fotos de Google no cargan en sitios externos, usamos inicial)
 const MAX_REVIEW_CHARS = 220;
 function truncateReview(text) {
@@ -23,7 +23,7 @@ function truncateReview(text) {
 
 <section
   id="testimonios"
-  class="scroll-mt-20 border-t border-black/[0.03] bg-primary px-4 py-24 sm:px-6 sm:py-32 lg:px-8"
+  class="scroll-mt-20 border-t border-black/[0.03] bg-primary px-4 pt-12 pb-8 sm:px-6 sm:pt-20 sm:pb-20 lg:px-8"
   aria-labelledby="testimonios-heading"
 >
   <div class="mx-auto max-w-7xl">

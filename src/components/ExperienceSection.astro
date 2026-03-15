@@ -7,7 +7,7 @@ const t = useTranslations(lang);
 
 <section
   id="experiencia"
-  class="experience-section scroll-mt-20 bg-white px-4 py-24 sm:px-6 sm:py-32 lg:px-8"
+  class="experience-section scroll-mt-20 bg-white px-4 pt-12 pb-6 sm:px-6 sm:pt-20 sm:pb-20 lg:px-8"
   aria-labelledby="experiencia-heading"
 >
   <div class="mx-auto max-w-7xl relative z-10">
@@ -96,13 +96,15 @@ const t = useTranslations(lang);
   .experience-section {
     background-image: url('/images/fondo.PNG');
     background-repeat: no-repeat;
-    background-position: 15% bottom;
+    /* Rama más arriba: justo debajo del texto y del botón Contact Us */
+    background-position: 10% 75%;
     background-size: min(55%, 420px) auto;
-    padding-bottom: 11rem;
+    padding-bottom: 3rem;
   }
   @media (min-width: 640px) {
     .experience-section {
-      padding-bottom: 12rem;
+      background-position: 15% 70%;
+      padding-bottom: 5rem;
     }
   }
 </style>

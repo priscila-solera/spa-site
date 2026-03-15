@@ -5,9 +5,9 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 ---
 
-<section class="extras-section relative bg-primary px-4 py-20 sm:px-6 sm:py-24 lg:px-8" aria-labelledby="extras-heading" id="extras">
+<section class="extras-section relative bg-primary px-4 pt-12 pb-12 sm:px-6 sm:pt-20 sm:pb-20 lg:px-8" aria-labelledby="extras-heading" id="extras">
   <div class="relative z-10 mx-auto max-w-7xl">
-    <header class="mx-auto max-w-3xl text-center mb-14">
+    <header class="mx-auto max-w-3xl text-center mb-10 sm:mb-14">
       <p class="editorial-subtitle">{t('extras.subtitle')}</p>
       <h2 id="extras-heading" class="section-heading mt-3">
         {t('extras.title')}

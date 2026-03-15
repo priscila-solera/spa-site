@@ -1,4 +1,5 @@
 ---
+import { languages } from '../i18n/ui';
 import { getLangFromUrl, useTranslations, useTranslatedPath } from '../i18n/utils';
 import LanguagePicker from './LanguagePicker.astro';
 
@@ -88,8 +89,21 @@ const navLinks = [
           </a>
         </li>
       ))}
-      <li class="py-4 flex justify-center">
-         <LanguagePicker />
+      <li class="border-b border-black/[0.04]" aria-label="Idioma / Language">
+        <div class="flex flex-col gap-0 py-2">
+          {Object.entries(languages).map(([id, name]) => (
+            <a
+              href={translatePath('/', id)}
+              data-astro-reload
+              class:list={[
+                'block py-3 px-4 text-base font-medium transition-colors',
+                id === lang ? 'text-secondary font-semibold' : 'text-secondary/80 hover:text-secondary',
+              ]}
+            >
+              {name}
+            </a>
+          ))}
+        </div>
       </li>
       <li class="pt-2">
         <button

@@ -13,6 +13,12 @@ const placeName = data?.placeName ?? 'Google Maps';
 const placeUrl = data?.placeUrl ?? 'https://www.google.com/maps/search/Blue+Royale+Spa+Tamarindo';
 const hasReviews = reviews.length > 0;
 const GOLD = '#D4AF37';
+// Texto máximo por reseña en la tarjeta (las fotos de Google no cargan en sitios externos, usamos inicial)
+const MAX_REVIEW_CHARS = 220;
+function truncateReview(text) {
+  if (!text || text.length <= MAX_REVIEW_CHARS) return text;
+  return text.slice(0, MAX_REVIEW_CHARS).trim().replace(/\s+\S*$/, '') + '…';
+}
 ---
 
 <section
@@ -47,23 +53,12 @@ const GOLD = '#D4AF37';
               data-scroll-delay={idx * 0.08 + 's'}
             >
               <div class="flex items-center gap-4">
-                {r.profilePhotoUrl ? (
-                  <img
-                    src={r.profilePhotoUrl}
-                    alt=""
-                    width="48"
-                    height="48"
-                    class="h-12 w-12 rounded-full object-cover border border-black/[0.05]"
-                    loading="lazy"
-                  />
-                ) : (
-                  <div
-                    class="flex h-12 w-12 items-center justify-center rounded-full bg-beige-100 text-beige-600"
-                    aria-hidden="true"
-                  >
-                    <span class="text-lg font-semibold">{r.authorName.charAt(0).toUpperCase()}</span>
-                  </div>
-                )}
+                <div
+                  class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-beige-200 text-beige-700 font-semibold border border-black/[0.06]"
+                  aria-hidden="true"
+                >
+                  <span class="text-lg">{r.authorName.charAt(0).toUpperCase()}</span>
+                </div>
                 <div class="min-w-0 flex-1">
                   <cite class="not-italic font-medium text-beige-800">{r.authorName}</cite>
                   {r.relativeTime && (
@@ -82,8 +77,8 @@ const GOLD = '#D4AF37';
                   ))}
                 </div>
               </div>
-              <blockquote class="mt-6 flex-1 font-serif text-lg leading-relaxed text-beige-600 italic">
-                "{r.text}"
+              <blockquote class="mt-6 flex-1 font-serif text-base leading-relaxed text-beige-600 italic line-clamp-5">
+                "{truncateReview(r.text)}"
               </blockquote>
             </li>
           ))}

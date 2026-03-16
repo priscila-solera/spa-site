@@ -28,7 +28,7 @@ export const ui = {
       'Blue Royal Spa is an intimate space designed to slow down, breathe deeply and reconnect with yourself. We combine holistic techniques with boutique hotel details: aromatherapy, soft music and a warm atmosphere that embraces you from the very first moment.',
     'philosophy.desc2': 'We work with high-quality products and naturally derived ingredients, always prioritizing long-term well-being over quick fixes. Each session begins with a brief conversation to tailor the treatment to how you feel that day.',
     'philosophy.priscila.name': 'Priscila Solera Castañeda',
-    'philosophy.priscila.bio': 'Priscila is a professional beautician, holistic therapist, and certified makeup artist, as well as founder and operator of Blue Royale. With over ten years in the beauty and spa industry, she has made her profession her passion. She is committed to exceeding every guest\'s expectations and to delivering memorable experiences in her native Costa Rica.',
+    'philosophy.priscila.bio': 'Priscila is a professional beautician, holistic therapist and certified makeup artist, as well as founder and operator of Blue Royale. With over ten years in the beauty and spa industry, she has made her profession her passion. She is committed to exceeding every guest\'s expectations and to delivering memorable experiences in her native Costa Rica.',
     'philosophy.list1': 'Custom-designed massages, facials and rituals.',
     'philosophy.list2': 'Personalized attention in a cozy and quiet environment.',
     'philosophy.list3': 'Nature-inspired ingredients and gentle scents.',
@@ -37,7 +37,7 @@ export const ui = {
 
     'services.subtitle': 'Treatments',
     'services.title': 'Our Signature Services',
-    'services.desc': 'Rituals, massages, and facials designed to restore balance and lightness to your body.',
+    'services.desc': 'Rituals, massages and facials designed to restore balance and lightness to your body.',
     'services.subdesc': 'Each experience is customized to your needs: deep relaxation, detox, facial glow, or muscle recovery.',
     'services.all': 'ALL SERVICES',
     'services.readMore': 'Read more',
@@ -58,13 +58,13 @@ export const ui = {
     'experience.years': 'Years of Experience',
     'experience.years.desc': 'Caring for body and mind.',
     'experience.treatments': 'Treatments',
-    'experience.treatments.desc': 'Rituals, massages, and facials.',
+    'experience.treatments.desc': 'Rituals, massages and facials.',
     'experience.booking': 'Booking',
     'experience.booking.desc': 'Schedule online anytime.',
     'experience.retreat.subtitle': 'The Retreat',
     'experience.retreat.title': 'The Blue Royale Experience',
-    'experience.retreat.desc1': 'A spa destination combining exceptional service, privacy, and comfort. Our team has been dedicated for years to positively impacting the life of every guest.',
-    'experience.retreat.desc2': 'We believe in holistic wellness and the connection between mind, body, and spirit. Each treatment is designed for you to surrender to calm and leave feeling renewed.',
+    'experience.retreat.desc1': 'A spa destination combining exceptional service, privacy and comfort. Our team has been dedicated for years to positively impacting the life of every guest.',
+    'experience.retreat.desc2': 'We believe in holistic wellness and the connection between mind, body and spirit. Each treatment is designed for you to surrender to calm and leave feeling renewed.',
     'experience.retreat.cta': 'Contact Us',
 
     'reasons.subtitle': 'Why Choose Us',
@@ -87,13 +87,13 @@ export const ui = {
     'extras.desc': 'Make-up, private experiences and curated products to complement your spa ritual.',
     'extras.makeup.title': 'Make-up & Hairstyling',
     'extras.makeup.body':
-      'Priscila is a certified make-up artist working with Sormé Co. products — cruelty free, ethically made, and free from harsh chemicals.\n\nWe offer make-up and hairstyling for weddings, formal gatherings, and special events. Pricing varies based on group size and services.',
+      'Priscila is a certified make-up artist working with Sormé Co. products — cruelty free, ethically made and free from harsh chemicals.\n\nWe offer make-up and hairstyling for weddings, formal gatherings and special events. Pricing varies based on group size and services.',
     'extras.home.title': 'Home Services & Private Parties',
     'extras.home.body':
-      'Ask about our home services and private spa parties. Home visits include an additional service fee, calculated based on group size, location, and chosen treatments.\n\nYou can also reserve the spa exclusively for you and your loved ones to celebrate and unwind.',
+      'Ask about our home services and private spa parties. Home visits include an additional service fee, calculated based on group size, location and chosen treatments.\n\nYou can also reserve the spa exclusively for you and your loved ones to celebrate and unwind.',
     'extras.shop.title': 'Gift Shop',
     'extras.shop.body':
-      'Visit our boutique gift shop curated by founder Priscila Solera Castañeda. Discover locally made organic creams, skin therapy lotions, and Basha luck and healing jewelry handcrafted in Costa Rica.',
+      'Visit our boutique gift shop curated by founder Priscila Solera Castañeda. Discover locally made organic creams, skin therapy lotions and Basha luck and healing jewelry handcrafted in Costa Rica.',
     'extras.cta': 'Contact us',
 
     'booking.subtitle': 'Schedule Your Moment',

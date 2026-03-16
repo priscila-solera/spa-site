@@ -17,7 +17,8 @@ const envVideo = import.meta.env.PUBLIC_HERO_VIDEO;
 const urlVideo = typeof envVideo === 'string' ? envVideo.trim() : '';
 const envPoster = import.meta.env.PUBLIC_HERO_POSTER;
 const urlPoster = typeof envPoster === 'string' ? envPoster.trim() : '';
-const defaultFallback = urlPoster || 'https://images.unsplash.com/photo-1515377905703-c4788e51af15?q=80&w=2070&auto=format&fit=crop';
+const defaultFallback =
+  urlPoster || 'https://images.unsplash.com/photo-1515377905703-c4788e51af15?q=80&w=2070&auto=format&fit=crop';
 const {
   calLink = import.meta.env.PUBLIC_CAL_LINK ?? 'daniel-torres-calvo',
   videoSrc = urlVideo || undefined,
@@ -72,7 +73,7 @@ const {
 
   <!-- Content -->
   <div class="relative z-10 flex flex-col items-center" data-scroll-reveal="up">
-    <p class="font-sans text-sm font-medium uppercase tracking-[0.3em] text-white/80 mb-4">
+    <p class="font-sans text-base sm:text-lg md:text-xl font-medium uppercase tracking-[0.3em] text-white/80 mb-4">
       {t('hero.subtitle')}
     </p>
     <h1 class="font-serif text-5xl font-medium tracking-tight text-white sm:text-6xl md:text-7xl lg:text-8xl">
@@ -80,6 +81,9 @@ const {
     </h1>
     <p class="mt-6 max-w-2xl text-lg text-white/90 leading-relaxed">
       {t('hero.desc')}
+    </p>
+    <p class="mt-3 text-sm font-medium tracking-[0.25em] text-white/80 uppercase">
+      {t('hero.location')}
     </p>
     <div class="mt-10">
       <BookingButton calLink={calLink} variant="primary" class="px-10 py-4 text-base font-semibold">
@@ -146,3 +150,4 @@ const {
     })();
   </script>
 )}
+

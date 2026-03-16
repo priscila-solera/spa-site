@@ -15,18 +15,21 @@ export const ui = {
 
     'hero.subtitle': 'Blue Royale Spa & Wellness',
     'hero.title': 'Connect & Renew',
-    'hero.desc': 'A sanctuary of peace in Tamarindo. Let us guide you on a journey of wellness for mind, body, and spirit.',
+    'hero.desc': 'A sanctuary of peace in Tamarindo. Let us guide you on a journey of wellness for mind, body and spirit.',
+    'hero.location': 'Tamarindo · Costa Rica',
     'hero.cta': 'Book Now',
 
     'philosophy.subtitle': 'Our Essence',
     'philosophy.title': 'A Boutique Retreat in Tamarindo',
-    'philosophy.intro1': 'Blue Royale Beauty and Spa is a wellness destination in Tamarindo, Costa Rica, offering exceptional service, privacy, and comfort. Our founder and team bring years of experience and are dedicated to making a meaningful difference in the lives of our guests.',
-    'philosophy.intro2': 'We are committed to wellbeing, beauty, and the connection between mind, body, and spirit.',
-    'philosophy.desc1': 'Blue Royale Spa is an intimate space designed to slow down, breathe deeply, and reconnect with yourself. We combine holistic techniques with boutique hotel details: aromatherapy, soft music, and a warm atmosphere that embraces you from the very first moment.',
+    'philosophy.intro1':
+      'Blue Royal Spa is a wellness destination in Tamarindo, Costa Rica. We offer exceptional service, privacy and comfort. Our founder and team bring years of experience and are dedicated to making a meaningful difference in the lives of our guests.',
+    'philosophy.intro2': 'We are committed to wellbeing, beauty and the connection between mind, body and spirit.',
+    'philosophy.desc1':
+      'Blue Royal Spa is an intimate space designed to slow down, breathe deeply and reconnect with yourself. We combine holistic techniques with boutique hotel details: aromatherapy, soft music and a warm atmosphere that embraces you from the very first moment.',
     'philosophy.desc2': 'We work with high-quality products and naturally derived ingredients, always prioritizing long-term well-being over quick fixes. Each session begins with a brief conversation to tailor the treatment to how you feel that day.',
     'philosophy.priscila.name': 'Priscila Solera Castañeda',
     'philosophy.priscila.bio': 'Priscila is a professional beautician, holistic therapist, and certified makeup artist, as well as founder and operator of Blue Royale. With over ten years in the beauty and spa industry, she has made her profession her passion. She is committed to exceeding every guest\'s expectations and to delivering memorable experiences in her native Costa Rica.',
-    'philosophy.list1': 'Custom-designed massages, facials, and rituals.',
+    'philosophy.list1': 'Custom-designed massages, facials and rituals.',
     'philosophy.list2': 'Personalized attention in a cozy and quiet environment.',
     'philosophy.list3': 'Nature-inspired ingredients and gentle scents.',
     'philosophy.list4': 'Central location in Tamarindo, ideal before or after the beach.',
@@ -66,9 +69,10 @@ export const ui = {
 
     'reasons.subtitle': 'Why Choose Us',
     'reasons.title': 'An Experience Thought Through in Detail',
-    'reasons.desc': 'More than just a treatment, at Blue Royale we design a small ritual around every appointment: a calm welcome, scent selection, perfect temperature, and therapists who listen to how you feel before starting.',
-    'reasons.list1': 'Treatments personalized to your stress level, muscle pain, and skin type.',
-    'reasons.list2': 'Rituals combining massage techniques, aromatherapy, and facial care.',
+    'reasons.desc':
+      'More than just a treatment. At Blue Royal Spa we design a small ritual around every appointment: a calm welcome scent, perfect temperature and therapists who listen to how you feel before starting.',
+    'reasons.list1': 'Treatments personalized to your stress level, muscle pain and skin type.',
+    'reasons.list2': 'Rituals combining massage techniques, aromatherapy and facial care.',
     'reasons.list3': 'Warm ambiance with soft lighting and cozy textures.',
     'reasons.list4': 'Ideal location in Tamarindo to complement your beach day or weekend getaway.',
 
@@ -80,7 +84,7 @@ export const ui = {
 
     'extras.subtitle': 'More Experiences',
     'extras.title': 'Beyond the Treatment Room',
-    'extras.desc': 'Make-up, private experiences, and curated products to complement your spa ritual.',
+    'extras.desc': 'Make-up, private experiences and curated products to complement your spa ritual.',
     'extras.makeup.title': 'Make-up & Hairstyling',
     'extras.makeup.body':
       'Priscila is a certified make-up artist working with Sormé Co. products — cruelty free, ethically made, and free from harsh chemicals.\n\nWe offer make-up and hairstyling for weddings, formal gatherings, and special events. Pricing varies based on group size and services.',
@@ -142,11 +146,12 @@ export const ui = {
     'hero.subtitle': 'Blue Royale Spa & Wellness',
     'hero.title': 'Conecta y Renueva',
     'hero.desc': 'Un santuario de paz en Tamarindo. Permítenos guiarte en un viaje de bienestar para mente, cuerpo y espíritu.',
+    'hero.location': 'Tamarindo · Costa Rica',
     'hero.cta': 'Reservar Ahora',
 
     'philosophy.subtitle': 'Nuestra Esencia',
     'philosophy.title': 'Un Refugio Boutique en Tamarindo',
-    'philosophy.intro1': 'Blue Royale Beauty and Spa es un destino de bienestar en Tamarindo, Costa Rica, que ofrece un servicio excepcional, privacidad y confort. Nuestra fundadora y equipo suman años de experiencia y están dedicados a impactar positivamente la vida de cada huésped.',
+    'philosophy.intro1': 'Blue Royal Spa es un destino de bienestar en Tamarindo, Costa Rica, que ofrece un servicio excepcional, privacidad y confort. Nuestra fundadora y equipo suman años de experiencia y están dedicados a impactar positivamente la vida de cada huésped.',
     'philosophy.intro2': 'Estamos comprometidos con el bienestar, la belleza y la conexión entre mente, cuerpo y espíritu.',
     'philosophy.desc1': 'Blue Royale Spa es un espacio íntimo pensado para bajar el ritmo, respirar profundo y volver a conectar contigo. Combinamos técnicas holísticas con detalles de hotel boutique: aromaterapia, música suave y un ambiente cálido que envuelve desde el primer momento.',
     'philosophy.desc2': 'Trabajamos con productos de alta calidad e ingredientes de origen natural, priorizando siempre el bienestar a largo plazo sobre los resultados rápidos. Cada sesión comienza con una breve conversación para adaptar el tratamiento a cómo te sientes ese día.',

@@ -57,9 +57,52 @@ export const serviceSchema = {
     },
     {
       name: 'calLink',
-      title: 'Enlace Cal.com',
+      title: 'Enlace Cal.com (por defecto)',
       type: 'string',
-      description: 'Usuario (ej. daniel-torres-calvo), evento (usuario/evento).',
+      description:
+        'Si no hay filas en “Reserva por terapeuta”, se usa este enlace. Formato: usuario/evento.',
+    },
+    {
+      name: 'therapistBooking',
+      title: 'Reserva por terapeuta',
+      type: 'array',
+      description:
+        'Una fila por terapeuta con su Cal (usuario/evento). Si vacío, se usa el enlace Cal del servicio arriba. En Cal.com: un event type por fila, destino en el calendario Google de esa persona.',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            {
+              name: 'therapist',
+              title: 'Terapeuta',
+              type: 'reference',
+              to: [{ type: 'therapist' }],
+              validation: (Rule) => Rule.required(),
+            },
+            {
+              name: 'calLink',
+              title: 'Enlace Cal.com',
+              type: 'string',
+              description: 'Mismo formato que arriba (ej. blueroyale/masaje-maria).',
+              validation: (Rule) => Rule.required(),
+            },
+          ],
+          preview: {
+            select: {
+              therapistName: 'therapist.name',
+              calLink: 'calLink',
+              media: 'therapist.image',
+            },
+            prepare({ therapistName, calLink, media }) {
+              return {
+                title: therapistName || 'Terapeuta',
+                subtitle: calLink,
+                media,
+              };
+            },
+          },
+        },
+      ],
     },
     {
       name: 'addons',

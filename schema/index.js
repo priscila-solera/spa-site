@@ -4,6 +4,14 @@
 import { serviceSchema } from './service.js';
 import { addonSchema } from './addon.js';
 import { categorySchema } from './category.js';
+import { therapistSchema } from './therapist.js';
 import { localeString, localeText } from './localeTypes.js';
 
-export const schemaTypes = [serviceSchema, addonSchema, categorySchema, localeString, localeText];
+export const schemaTypes = [
+  serviceSchema,
+  addonSchema,
+  categorySchema,
+  therapistSchema,
+  localeString,
+  localeText,
+];

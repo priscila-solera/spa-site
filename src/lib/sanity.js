@@ -46,6 +46,12 @@ const SERVICES_QUERY = `*[_type == "service"] | order(category->order asc, order
   image,
   "imageAlt": coalesce(imageAlt[$lang], imageAlt.en),
   calLink,
+  "therapistBooking": therapistBooking[]{
+    "therapistId": therapist->_id,
+    "order": coalesce(therapist->order, 0),
+    "name": therapist->name,
+    calLink
+  },
   "category": category->{
     "title": coalesce(title[$lang], title.en),
     order
@@ -78,6 +84,15 @@ export async function fetchServices(urlForBuilder, lang = 'en') {
         doc.image && typeof doc.image === 'object' && doc.image !== null
           ? urlForBuilder(doc.image).width(800).format('webp').quality(80).url()
           : defaultImage;
+      const therapistRows = Array.isArray(doc.therapistBooking) ? doc.therapistBooking : [];
+      const therapistOptions = therapistRows
+        .filter((row) => row?.therapistId && row?.calLink)
+        .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+        .map((row) => ({
+          id: row.therapistId,
+          name: row.name ?? '',
+          calLink: row.calLink,
+        }));
       return {
         id: doc._id,
         title: doc.title ?? '',
@@ -87,6 +102,7 @@ export async function fetchServices(urlForBuilder, lang = 'en') {
         imageAlt: doc.imageAlt ?? doc.title ?? 'Service',
         order: doc.order ?? 0,
         calLink: doc.calLink,
+        therapistOptions,
         ctaLabel: null, // Dejamos que el frontend use el default
         price: doc.price,
         duration: doc.duration,

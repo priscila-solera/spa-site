@@ -12,6 +12,12 @@ type Addon = {
   description?: string;
 };
 
+type TherapistOption = {
+  id: string;
+  name: string;
+  calLink: string;
+};
+
 type Service = {
   id: string;
   title: string;
@@ -24,15 +30,18 @@ type Service = {
   price?: string;
   duration?: string;
   addons?: Addon[];
+  /** Si hay filas, el cliente elige terapeuta y se usa su calLink en Cal.com */
+  therapistOptions?: TherapistOption[];
 };
 
-/** One booked line: main service + optional add-ons */
+/** One booked line: main service + optional add-ons + optional terapeuta */
 type CartLine = {
   serviceId: string;
   addonIds: string[];
+  therapistId?: string;
 };
 
-type Step = "service" | "addons" | "review" | "calendar";
+type Step = "service" | "addons" | "therapist" | "review" | "calendar";
 
 interface Props {
   defaultCalLink?: string;
@@ -41,6 +50,17 @@ interface Props {
 
 function getServiceById(services: Service[], id: string) {
   return services.find((s) => s.id === id) || null;
+}
+
+function resolveCalLinkForLine(line: CartLine, services: Service[], fallback: string): string {
+  const svc = getServiceById(services, line.serviceId);
+  if (!svc) return fallback;
+  const opts = svc.therapistOptions ?? [];
+  if (line.therapistId && opts.length > 0) {
+    const opt = opts.find((t) => t.id === line.therapistId);
+    if (opt?.calLink) return opt.calLink.trim();
+  }
+  return (svc.calLink || fallback).trim();
 }
 
 /**
@@ -67,6 +87,8 @@ export default function CalBookingOverlay({
   const [cart, setCart] = useState<CartLine[]>([]);
   const [selectedServiceId, setSelectedServiceId] = useState<string | null>(null);
   const [selectedAddons, setSelectedAddons] = useState<string[]>([]);
+  const [selectedTherapistId, setSelectedTherapistId] = useState<string | null>(null);
+  const [calLinkConflict, setCalLinkConflict] = useState<string | null>(null);
 
   useEffect(() => {
     (async function () {
@@ -108,10 +130,18 @@ export default function CalBookingOverlay({
       setCalLink(link);
       setSelectedServiceId(serviceId);
       setSelectedAddons([]);
+      setSelectedTherapistId(null);
+      setCalLinkConflict(null);
       setCart([]);
 
-      if (serviceId && link.includes("/")) {
+      const svc = serviceId ? getServiceById(services, serviceId) : null;
+      const therapistCount = svc?.therapistOptions?.length ?? 0;
+
+      /** Solo saltar al calendario si el servicio NO tiene terapeutas en Sanity (flujo corto legacy). */
+      if (serviceId && link.includes("/") && therapistCount === 0) {
         setStep("calendar");
+      } else if (serviceId && therapistCount > 0) {
+        setStep("addons");
       } else {
         setStep("service");
       }
@@ -120,7 +150,7 @@ export default function CalBookingOverlay({
     };
     window.addEventListener(EVENT_OPEN, handler as EventListener);
     return () => window.removeEventListener(EVENT_OPEN, handler as EventListener);
-  }, [defaultCalLink]);
+  }, [defaultCalLink, services]);
 
   const close = () => {
     setIsOpen(false);
@@ -128,6 +158,8 @@ export default function CalBookingOverlay({
     setCart([]);
     setSelectedServiceId(null);
     setSelectedAddons([]);
+    setSelectedTherapistId(null);
+    setCalLinkConflict(null);
   };
 
   const selectedService = selectedServiceId
@@ -142,16 +174,45 @@ export default function CalBookingOverlay({
     );
   };
 
-  /** After add-ons: save this service to the cart and go to review (summary) */
-  const continueToReview = () => {
+  /** After add-ons: terapeuta (si aplica) o ir al resumen */
+  const continueFromAddons = () => {
     if (!selectedServiceId) return;
-    setCart((c) => [...c, { serviceId: selectedServiceId, addonIds: [...selectedAddons] }]);
+    const svc = getServiceById(services, selectedServiceId);
+    const opts = svc?.therapistOptions ?? [];
+    if (opts.length > 1) {
+      setSelectedTherapistId(null);
+      setStep("therapist");
+      return;
+    }
+    const therapistId = opts.length === 1 ? opts[0].id : undefined;
+    setCart((c) => [...c, { serviceId: selectedServiceId, addonIds: [...selectedAddons], therapistId }]);
     setSelectedServiceId(null);
     setSelectedAddons([]);
     setStep("review");
   };
 
+  const continueFromTherapist = () => {
+    if (!selectedServiceId) return;
+    const svc = getServiceById(services, selectedServiceId);
+    const opts = svc?.therapistOptions ?? [];
+    if (opts.length <= 1) return;
+    if (!selectedTherapistId) return;
+    setCart((c) => [
+      ...c,
+      {
+        serviceId: selectedServiceId,
+        addonIds: [...selectedAddons],
+        therapistId: selectedTherapistId,
+      },
+    ]);
+    setSelectedServiceId(null);
+    setSelectedAddons([]);
+    setSelectedTherapistId(null);
+    setStep("review");
+  };
+
   const addAnotherService = () => {
+    setCalLinkConflict(null);
     setStep("service");
   };
 
@@ -188,6 +249,17 @@ export default function CalBookingOverlay({
       setCart((c) => c.slice(0, -1));
       setSelectedServiceId(last.serviceId);
       setSelectedAddons([...last.addonIds]);
+      const svc = getServiceById(services, last.serviceId);
+      const opts = svc?.therapistOptions ?? [];
+      if (opts.length > 1) {
+        setSelectedTherapistId(last.therapistId ?? null);
+        setStep("therapist");
+      } else {
+        setStep("addons");
+      }
+      return;
+    }
+    if (step === "therapist") {
       setStep("addons");
       return;
     }
@@ -195,6 +267,7 @@ export default function CalBookingOverlay({
       setStep("service");
       setSelectedServiceId(null);
       setSelectedAddons([]);
+      setSelectedTherapistId(null);
       return;
     }
     if (step === "service" && cart.length > 0) {
@@ -206,10 +279,22 @@ export default function CalBookingOverlay({
     step === "calendar" ||
     step === "review" ||
     step === "addons" ||
+    step === "therapist" ||
     (step === "service" && cart.length > 0);
 
   const goToCalendar = () => {
     if (cart.length === 0) return;
+    setCalLinkConflict(null);
+
+    const links = cart.map((line) => resolveCalLinkForLine(line, services, defaultCalLink));
+    const normalized = links.map((l) => toCalEmbedCalLink(l).split("?")[0]);
+    const unique = new Set(normalized);
+    if (unique.size > 1) {
+      setCalLinkConflict(
+        "These services use different calendars. Please book them separately, or choose the same therapist for each service when available.",
+      );
+      return;
+    }
 
     const parts = cart.map((line) => {
       const svc = getServiceById(services, line.serviceId);
@@ -219,12 +304,15 @@ export default function CalBookingOverlay({
         addons.length > 0
           ? ` + Add-ons: ${addons.map((a) => `${a.title} (${a.price})`).join(", ")}`
           : "";
-      return `${svc.title}${addonBit}`;
+      const therapist = line.therapistId
+        ? (svc.therapistOptions ?? []).find((t) => t.id === line.therapistId)?.name
+        : null;
+      const who = therapist ? ` · ${therapist}` : "";
+      return `${svc.title}${who}${addonBit}`;
     }).filter(Boolean);
 
     const finalNote = `[Appointment includes: ${parts.join(" | ")}]`;
-    const firstSvc = getServiceById(services, cart[0].serviceId);
-    const rawBase = (firstSvc?.calLink || defaultCalLink).trim().split("?")[0];
+    const rawBase = links[0].trim().split("?")[0];
     const basePath = toCalEmbedCalLink(rawBase);
     const nextLink = `${basePath}?notes=${encodeURIComponent(finalNote)}`;
 
@@ -238,7 +326,13 @@ export default function CalBookingOverlay({
     : { layout: "column_view" as const, useSlotsViewOnSmallScreen: "false" as const };
 
   const stepNumber =
-    step === "service" ? "1" : step === "addons" ? "2" : step === "review" ? "3" : "3";
+    step === "service"
+      ? "1"
+      : step === "addons" || step === "therapist"
+        ? "2"
+        : step === "review"
+          ? "3"
+          : "3";
 
   const stepTitle =
     step === "service"
@@ -247,14 +341,22 @@ export default function CalBookingOverlay({
         : "Choose your main service"
       : step === "addons"
         ? "Add extra pampering"
-        : step === "review"
-          ? "Review your appointment"
-          : "";
+        : step === "therapist"
+          ? "Choose your therapist"
+          : step === "review"
+            ? "Review your appointment"
+            : "";
 
   const renderLineBlock = (line: CartLine, index: number) => {
     const svc = getServiceById(services, line.serviceId);
     if (!svc) return null;
     const addons = (svc.addons || []).filter((a) => line.addonIds.includes(a.id));
+    const therapistName = line.therapistId
+      ? (svc.therapistOptions ?? []).find((t) => t.id === line.therapistId)?.name
+      : null;
+    const staffLine = therapistName
+      ? `With ${therapistName} · Tamarindo`
+      : "With any staff member · Tamarindo";
     return (
       <div
         key={`${line.serviceId}-${index}`}
@@ -263,7 +365,7 @@ export default function CalBookingOverlay({
         <div className="flex items-start justify-between gap-2">
           <p className="font-medium text-secondary">{svc.title}</p>
         </div>
-        <p className="mt-1 text-xs text-beige-500">With any staff member · Tamarindo</p>
+        <p className="mt-1 text-xs text-beige-500">{staffLine}</p>
         <div className="mt-2 space-y-1 text-xs">
           {svc.duration && (
             <p>
@@ -445,8 +547,55 @@ export default function CalBookingOverlay({
                       </button>
                       <button
                         type="button"
-                        onClick={continueToReview}
+                        onClick={continueFromAddons}
                         disabled={!selectedServiceId}
+                        className="inline-flex items-center justify-center rounded-full bg-secondary px-5 py-2.5 text-sm font-medium text-primary shadow-sm transition-colors hover:bg-secondary/90 disabled:opacity-50"
+                      >
+                        Continue
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {step === "therapist" && selectedService && (
+                  <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 py-4 [-webkit-overflow-scrolling:touch]">
+                    <p className="mb-3 text-sm text-beige-500">
+                      Select who you would like for this appointment:
+                    </p>
+                    <ul className="space-y-2">
+                      {(selectedService.therapistOptions ?? []).map((t) => {
+                        const isActive = selectedTherapistId === t.id;
+                        return (
+                          <li key={t.id}>
+                            <button
+                              type="button"
+                              onClick={() => setSelectedTherapistId(t.id)}
+                              className={`flex w-full items-center justify-between rounded-xl border px-4 py-3 text-left text-sm transition-colors ${isActive ? "border-secondary bg-secondary/5 text-secondary" : "border-beige-200 bg-white text-secondary"}`}
+                            >
+                              <span>{t.name}</span>
+                              <span
+                                className={`inline-flex h-5 w-5 items-center justify-center rounded-full border text-[0.65rem] ${isActive ? "border-secondary bg-secondary text-primary" : "border-beige-300 text-beige-500"}`}
+                                aria-hidden="true"
+                              >
+                                {isActive ? "✓" : ""}
+                              </span>
+                            </button>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                    <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
+                      <button
+                        type="button"
+                        onClick={() => setStep("addons")}
+                        className="text-xs font-medium text-beige-500 underline-offset-2 hover:underline"
+                      >
+                        Back to add-ons
+                      </button>
+                      <button
+                        type="button"
+                        onClick={continueFromTherapist}
+                        disabled={!selectedTherapistId}
                         className="inline-flex items-center justify-center rounded-full bg-secondary px-5 py-2.5 text-sm font-medium text-primary shadow-sm transition-colors hover:bg-secondary/90 disabled:opacity-50"
                       >
                         Continue
@@ -473,6 +622,12 @@ export default function CalBookingOverlay({
                             >
                               <div>
                                 <p className="font-medium text-secondary">{svc.title}</p>
+                                {line.therapistId ? (
+                                  <p className="mt-0.5 text-xs text-beige-500">
+                                    {(svc.therapistOptions ?? []).find((t) => t.id === line.therapistId)?.name ||
+                                      "Therapist"}
+                                  </p>
+                                ) : null}
                                 {line.addonIds.length > 0 && (
                                   <p className="mt-0.5 text-xs text-beige-500">
                                     {line.addonIds.length} add-on{line.addonIds.length > 1 ? "s" : ""}
@@ -509,7 +664,7 @@ export default function CalBookingOverlay({
                     </p>
                   )}
                   {cart.map((line, i) => renderLineBlock(line, i))}
-                  {step === "addons" && selectedService && (
+                  {(step === "addons" || step === "therapist") && selectedService && (
                     <div className="mt-2 rounded-xl border border-dashed border-[#b8956e]/50 bg-white/60 p-3">
                       <p className="text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-[#b8956e]">
                         Adding now
@@ -556,6 +711,11 @@ export default function CalBookingOverlay({
                 <div className="shrink-0 border-t border-beige-200/80 px-5 py-3">
                   {step === "review" ? (
                     <div className="flex flex-col gap-3">
+                      {calLinkConflict ? (
+                        <p className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-center text-xs text-amber-900">
+                          {calLinkConflict}
+                        </p>
+                      ) : null}
                       <button
                         type="button"
                         onClick={addAnotherService}

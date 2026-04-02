@@ -1,6 +1,7 @@
 # Despliega el Sanity Studio (sanity.io) cuando cambia el CMS o el esquema.
 # Requisito en GitHub: Settings → Secrets → SANITY_AUTH_TOKEN (token con permiso de deploy).
 # Crear token: https://www.sanity.io/manage → proyecto → API → Tokens → Add API token (Editor o deploy).
+# Disparo manual: Actions → Deploy Sanity Studio → Run workflow (rama default).
 
 name: Deploy Sanity Studio
 
@@ -11,7 +12,12 @@ on:
       - 'studio/**'
       - 'schema/**'
       - '.github/workflows/deploy-sanity-studio.yml'
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      note:
+        description: 'Nota opcional (solo aparece en el log del job)'
+        required: false
+        default: ''
 
 jobs:
   deploy:
@@ -21,6 +27,13 @@ jobs:
         working-directory: studio
     steps:
       - uses: actions/checkout@v4
+
+      - name: Info
+        run: |
+          echo "event=${{ github.event_name }}"
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "note=${{ github.event.inputs.note }}"
+          fi
 
       - uses: actions/setup-node@v4
         with:

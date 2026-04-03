@@ -10,7 +10,7 @@ import { schemaTypes } from '../schema/index.js';
 export default defineConfig({
   name: 'blue-royale-studio',
   title: 'Blue Royale Spa',
-  projectId: 'fcrjghqs',
+  projectId: 'du617ir5',
   dataset: 'production',
   basePath: '/studio',
   plugins: [structureTool()],

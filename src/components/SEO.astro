@@ -16,6 +16,8 @@ interface Props {
   jsonLd?: object;
   /** Locale OG (ej. es_CR, en_CR). */
   locale?: string;
+  /** URL absoluta de la version alternativa del idioma (para hreflang). */
+  altUrl?: string;
 }
 
 const {
@@ -26,11 +28,17 @@ const {
   type = 'website',
   jsonLd,
   locale = 'es_CR',
+  altUrl,
 } = Astro.props;
 
 const site = Astro.site?.href ?? Astro.url.origin;
 const canonicalUrl = canonical ?? new URL(Astro.url.pathname, site).href;
 const ogImage = image?.startsWith('http') ? image : image ? new URL(image, site).href : `${site}/og-default.jpg`;
+
+const isEs = locale === 'es_CR';
+const enUrl = isEs ? (altUrl ?? site) : canonicalUrl;
+const esUrl = isEs ? canonicalUrl : (altUrl ?? `${site}es/`);
+const alternateLocale = isEs ? 'en_CR' : 'es_CR';
 
 const localBusiness = {
   '@context': 'https://schema.org',
@@ -80,12 +88,16 @@ const scriptLd = jsonLd ?? localBusiness;
 <title>{title}</title>
 <meta name="description" content={description} />
 <link rel="canonical" href={canonicalUrl} />
+<link rel="alternate" hreflang="en" href={enUrl} />
+<link rel="alternate" hreflang="es" href={esUrl} />
+<link rel="alternate" hreflang="x-default" href={enUrl} />
 <meta property="og:type" content={type} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:url" content={canonicalUrl} />
 <meta property="og:image" content={ogImage} />
 <meta property="og:locale" content={locale} />
+<meta property="og:locale:alternate" content={alternateLocale} />
 <meta property="og:site_name" content="Blue Royale Spa" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={title} />

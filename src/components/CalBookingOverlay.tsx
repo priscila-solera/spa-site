@@ -347,7 +347,7 @@ export default function CalBookingOverlay({
             ? "Review your appointment"
             : "";
 
-  const renderLineBlock = (line: CartLine, index: number) => {
+  const renderLineBlock = (line: CartLine) => {
     const svc = getServiceById(services, line.serviceId);
     if (!svc) return null;
     const addons = (svc.addons || []).filter((a) => line.addonIds.includes(a.id));
@@ -359,7 +359,7 @@ export default function CalBookingOverlay({
       : "With any staff member · Tamarindo";
     return (
       <div
-        key={`${line.serviceId}-${index}`}
+        key={line.serviceId}
         className="mb-4 border-b border-beige-200/80 pb-4 last:mb-0 last:border-0 last:pb-0"
       >
         <div className="flex items-start justify-between gap-2">
@@ -617,7 +617,7 @@ export default function CalBookingOverlay({
                           if (!svc) return null;
                           return (
                             <li
-                              key={`${line.serviceId}-${i}`}
+                              key={line.serviceId}
                               className="flex items-center justify-between gap-3 rounded-xl border border-beige-200/90 bg-cream-50/50 px-4 py-3 text-sm"
                             >
                               <div>
@@ -663,7 +663,7 @@ export default function CalBookingOverlay({
                       Select a service on the left to see your appointment summary here.
                     </p>
                   )}
-                  {cart.map((line, i) => renderLineBlock(line, i))}
+                  {cart.map((line) => renderLineBlock(line))}
                   {(step === "addons" || step === "therapist") && selectedService && (
                     <div className="mt-2 rounded-xl border border-dashed border-[#b8956e]/50 bg-white/60 p-3">
                       <p className="text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-[#b8956e]">

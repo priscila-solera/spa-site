@@ -1,0 +1,33 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Book an Appointment | Blue Royale Spa"
+  description="Book your appointment at Blue Royale Spa. Massages, facials and holistic rituals in Tamarindo, Costa Rica."
+  lang="en"
+>
+  <section class="flex min-h-[80vh] flex-col items-center justify-center px-4 py-24 text-center">
+    <p class="editorial-subtitle mb-4">Reservations</p>
+    <h1 class="section-heading mb-6">Book your appointment</h1>
+    <p class="mx-auto max-w-md text-base text-beige-600 leading-relaxed">
+      Contact us via WhatsApp or email and we'll be happy to schedule your visit.
+    </p>
+    <div class="mt-10 flex flex-wrap justify-center gap-4">
+      <a
+        href="https://wa.me/50684872727"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center rounded-spa-lg bg-accent px-6 py-3 text-sm font-medium text-white shadow-spa hover:bg-accent/90"
+      >
+        WhatsApp +506 8487 2727
+      </a>
+      <a
+        href="mailto:blueroyalespa@gmail.com"
+        class="inline-flex items-center rounded-spa-lg border border-beige-300 bg-transparent px-6 py-3 text-sm font-medium text-beige-500 hover:bg-cream-100"
+      >
+        blueroyalespa@gmail.com
+      </a>
+    </div>
+  </section>
+</BaseLayout>

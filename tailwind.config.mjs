@@ -55,7 +55,6 @@ export default {
           500: '#5c8776',
           600: '#486d5f',
         },
-        brandGold: '#b8956e', // Nude/arena (CTAs y acentos)
       },
       fontFamily: {
         sans: ['Montserrat', 'system-ui', 'sans-serif'],

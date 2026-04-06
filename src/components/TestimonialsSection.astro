@@ -23,7 +23,7 @@ const hasReviews = Array.isArray(reviews) && reviews.length > 0;
           href="https://www.google.com/maps/search/Blue+Royale+Spa+Tamarindo"
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center gap-2 rounded-full border border-beige-200 bg-cream-100 px-4 py-2 text-sm text-beige-600 shadow-sm transition-colors hover:border-brandGold/40 hover:bg-cream-200"
+          class="inline-flex items-center gap-2 rounded-full border border-beige-200 bg-cream-100 px-4 py-2 text-sm text-beige-600 shadow-sm transition-colors hover:border-gold/40 hover:bg-cream-200"
           aria-label="Ver reseñas en Google"
         >
           <svg class="h-5 w-5" viewBox="0 0 24 24" aria-hidden="true">
@@ -46,7 +46,7 @@ const hasReviews = Array.isArray(reviews) && reviews.length > 0;
           <li
             class="rounded-2xl border border-black/[0.06] bg-cream-100 p-6 shadow-sm transition-shadow hover:shadow-md sm:p-8"
           >
-            <div class="flex gap-1 text-brandGold" aria-hidden="true">
+            <div class="flex gap-1 text-gold" aria-hidden="true">
               {Array.from({ length: Math.min(5, r.stars) }).map(() => (
                 <span aria-hidden="true">★</span>
               ))}

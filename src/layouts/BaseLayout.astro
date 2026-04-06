@@ -100,6 +100,12 @@ const {
         if (!btn) return;
         var link = btn.getAttribute('data-cal-link');
         if (!link || typeof link !== 'string') return;
+
+        // Debounce: prevent multiple rapid dispatches within 300ms
+        if (btn._calDebounce) return;
+        btn._calDebounce = true;
+        setTimeout(function() { btn._calDebounce = false; }, 300);
+
         var serviceId = btn.getAttribute('data-service-id') || null;
         e.preventDefault();
         e.stopPropagation();

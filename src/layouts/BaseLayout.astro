@@ -223,13 +223,11 @@ const {
             observer.observe(el);
           });
         } catch (_) {
-          // Si algo falla, simplemente mostramos todo sin animación.
-          document
-            .querySelectorAll
-            ?.('[data-scroll-reveal]')
-            .forEach(function (el) {
-              el.classList.add('is-visible');
-            });
+          // Si algo falla, mostramos todo sin animación.
+          var fallbackNodes = document.querySelectorAll('[data-scroll-reveal]');
+          for (var i = 0; i < fallbackNodes.length; i++) {
+            fallbackNodes[i].classList.add('is-visible');
+          }
         }
       })();
     </script>

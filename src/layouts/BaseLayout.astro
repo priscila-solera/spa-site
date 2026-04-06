@@ -209,6 +209,18 @@ const {
           );
           if (!nodes.length) return;
 
+          // Skip animations if user prefers reduced motion
+          var prefersReduced = window.matchMedia
+            ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
+            : false;
+
+          if (prefersReduced) {
+            nodes.forEach(function (el) {
+              el.classList.add('is-visible');
+            });
+            return;
+          }
+
           nodes.forEach(function (el) {
             var delay = el.getAttribute('data-scroll-delay');
             if (delay) {

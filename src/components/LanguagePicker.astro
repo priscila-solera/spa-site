@@ -12,7 +12,7 @@ const tpath = useTranslatedPath(lang);
     class="navbar-link flex items-center gap-1 text-sm font-medium text-primary/80 transition-colors duration-300 hover:text-primary"
     aria-label={`Language: ${languages[lang]}`}
     aria-expanded="false"
-    aria-haspopup="listbox"
+    aria-haspopup="menu"
   >
     <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m4 13-4-4-4 4M1 19h12M12 19l4-4-4-4"></path>
@@ -25,7 +25,7 @@ const tpath = useTranslatedPath(lang);
   <div
     id="lang-picker-menu"
     class="absolute top-full right-0 mt-2 hidden w-32 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5"
-    role="listbox"
+    role="menu"
     aria-label="Select language"
   >
     <ul class="py-1">
@@ -34,6 +34,7 @@ const tpath = useTranslatedPath(lang);
           <a
             href={tpath('/', id)}
             data-lang-link
+            role="menuitem"
             class:list={[
               "block px-4 py-2 text-sm",
               id === lang ? "font-semibold text-secondary" : "text-gray-700 hover:bg-gray-100",

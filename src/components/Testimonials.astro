@@ -67,7 +67,7 @@ function truncateReview(text) {
                 </div>
                 <div
                   role="img"
-                  aria-label={`${r.rating} de 5 estrellas`}
+                  aria-label={lang === 'es' ? `${r.rating} de 5 estrellas` : `${r.rating} out of 5 stars`}
                   class="flex gap-0.5"
                 >
                   {[1, 2, 3, 4, 5].map((star) => (

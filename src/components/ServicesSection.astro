@@ -333,6 +333,8 @@ const servicesWithCategory = services.map((s) => ({
     const closeButtons = section.querySelectorAll('[data-close-modal]');
     const contents = section.querySelectorAll('.service-modal-content');
 
+    let lastTrigger = null;
+
     function openModal(serviceId) {
       if (!modal) return;
       contents.forEach((el) => {
@@ -341,6 +343,11 @@ const servicesWithCategory = services.map((s) => ({
       modal.classList.remove('hidden');
       modal.setAttribute('aria-hidden', 'false');
       document.body.style.overflow = 'hidden';
+      // Move focus to first focusable element inside modal
+      const focusable = modal.querySelectorAll(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+      if (focusable.length) focusable[0].focus();
     }
 
     function closeModal() {
@@ -348,12 +355,20 @@ const servicesWithCategory = services.map((s) => ({
       modal.classList.add('hidden');
       modal.setAttribute('aria-hidden', 'true');
       document.body.style.overflow = '';
+      // Return focus to the button that opened the modal
+      if (lastTrigger) {
+        lastTrigger.focus();
+        lastTrigger = null;
+      }
     }
 
     openButtons.forEach((btn) => {
       btn.addEventListener('click', () => {
         const id = btn.getAttribute('data-service-id');
-        if (id) openModal(id);
+        if (id) {
+          lastTrigger = btn;
+          openModal(id);
+        }
       });
     });
 

@@ -44,6 +44,7 @@ const gridClass = twoImagesOnly ? 'grid grid-cols-2 gap-4 sm:gap-6' : 'grid grid
             alt={img.alt}
             class="h-full w-full object-cover aspect-[3/4] sm:aspect-[4/5] opacity-90 hover:opacity-100 transition-opacity duration-500"
             loading="lazy"
+            decoding="async"
           />
         </div>
       ))}

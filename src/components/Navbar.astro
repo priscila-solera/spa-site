@@ -121,8 +121,6 @@ const navLinks = [
 </header>
 
 <script>
-  import { navigate } from 'astro:transitions/client';
-
   const navbar = document.getElementById('navbar');
   const menuToggle = document.getElementById('menu-toggle');
   const mobileMenu = document.getElementById('mobile-menu');
@@ -162,12 +160,42 @@ const navLinks = [
     });
   });
 
-  // Use navigate() for language links to preserve View Transitions
-  document.querySelectorAll('[data-lang-link]').forEach((link) => {
+  /** Solo menú móvil: el LanguagePicker de escritorio maneja sus propios enlaces (evita doble navigate). Recarga completa evita página en blanco con View Transitions. */
+  mobileMenu?.querySelectorAll('[data-lang-link]').forEach((link) => {
     link.addEventListener('click', (e) => {
       e.preventDefault();
-      navigate((link as HTMLAnchorElement).href);
+      window.location.assign((link as HTMLAnchorElement).href);
     });
+  });
+
+  function normalizePathname(pathname: string): string {
+    if (!pathname || pathname === '/') return '/';
+    return pathname.endsWith('/') ? pathname.slice(0, -1) : pathname;
+  }
+
+  /** Mismo destino que la home actual: scroll arriba (y quitar #) en lugar de recargar */
+  const logoLink = document.querySelector('a.navbar-logo');
+  logoLink?.addEventListener('click', (e) => {
+    const a = e.currentTarget as HTMLAnchorElement;
+    let targetPath = '';
+    try {
+      targetPath = new URL(a.getAttribute('href') || '', window.location.origin).pathname;
+    } catch {
+      return;
+    }
+    if (normalizePathname(window.location.pathname) !== normalizePathname(targetPath)) return;
+
+    e.preventDefault();
+    mobileMenu?.classList.add('hidden');
+    mobileMenu?.setAttribute('aria-hidden', 'true');
+    iconMenu?.classList.remove('hidden');
+    iconClose?.classList.add('hidden');
+    menuToggle?.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+    if (window.location.hash) {
+      history.replaceState(null, '', window.location.pathname + window.location.search);
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
   // Navegación suave para enlaces de la home (inicio, secciones con #...)

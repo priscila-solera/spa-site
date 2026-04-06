@@ -49,8 +49,6 @@ const tpath = useTranslatedPath(lang);
 </div>
 
 <script>
-  import { navigate } from 'astro:transitions/client';
-
   const toggle = document.getElementById('lang-picker-toggle');
   const menu = document.getElementById('lang-picker-menu');
   const items = menu?.querySelectorAll('a');
@@ -98,8 +96,8 @@ const tpath = useTranslatedPath(lang);
   menu?.querySelectorAll('[data-lang-link]').forEach((link) => {
     link.addEventListener('click', (e) => {
       e.preventDefault();
-      navigate((link as HTMLAnchorElement).href);
       closeMenu();
+      window.location.assign((link as HTMLAnchorElement).href);
     });
   });
 

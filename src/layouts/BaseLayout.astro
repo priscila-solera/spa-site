@@ -68,28 +68,10 @@ const {
     />
     <script src="https://app.cal.com/embed/embed.js" data-cal-origin="https://cal.com" async></script>
     <script is:inline>
-      // Forzar scroll al inicio de manera agresiva y persistente
-      if ('scrollRestoration' in history) {
-        history.scrollRestoration = 'manual';
-      }
-
-      const forceScrollTop = () => {
+      // Restaurar scroll al inicio en cada navegacion con View Transitions
+      document.addEventListener('astro:after-swap', () => {
         window.scrollTo(0, 0);
-        document.body.scrollTop = 0;
-        document.documentElement.scrollTop = 0;
-      };
-
-      forceScrollTop();
-
-      document.addEventListener('DOMContentLoaded', forceScrollTop);
-      window.addEventListener('load', () => {
-        forceScrollTop();
-        // Un último intento después de un breve retraso para asegurar
-        setTimeout(forceScrollTop, 10);
       });
-
-      // Manejar también las transiciones de vista de Astro
-      document.addEventListener('astro:after-swap', forceScrollTop);
     </script>
   </head>
   <body class="min-h-screen bg-primary overflow-x-hidden">

@@ -15,11 +15,29 @@ export async function getStaticPaths() {
 const { service } = Astro.props;
 const { Content } = await service.render();
 
-// Usar el enlace específico del servicio o el general como fallback
 const calLink = service.data.calLink || import.meta.env.PUBLIC_CAL_LINK || 'daniel-torres-calvo';
+
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: service.data.title,
+  description: service.data.description,
+  image: service.data.image,
+  provider: {
+    '@type': 'LocalBusiness',
+    name: 'Blue Royale Beauty & Spa',
+    url: 'https://www.blueroyalespa.com',
+  },
+};
 ---
 
-<BaseLayout title={`${service.data.title} | Blue Royale Spa`} description={service.data.description}>
+<BaseLayout
+  title={`${service.data.title} | Blue Royale Spa`}
+  description={service.data.description}
+  canonicalUrl={Astro.url.href}
+  jsonLd={serviceSchema}
+  lang="es"
+>
   <article>
     {/* Hero Section */}
     <div class="relative h-[60vh] min-h-[400px] w-full overflow-hidden bg-secondary">

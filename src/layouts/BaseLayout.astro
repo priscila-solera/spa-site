@@ -31,6 +31,8 @@ interface Props {
   ogType?: string;
   /** Idioma del documento (html lang). */
   lang: 'en' | 'es';
+  /** URL absoluta de la versión alternativa del idioma (para hreflang). */
+  altUrl?: string;
 }
 
 const {
@@ -41,6 +43,7 @@ const {
   jsonLd,
   ogType,
   lang,
+  altUrl,
 } = Astro.props;
 ---
 
@@ -58,6 +61,7 @@ const {
       type={ogType}
       locale={lang === 'es' ? 'es_CR' : 'en_CR'}
       jsonLd={jsonLd}
+      altUrl={altUrl}
     />
     <!-- Tipografía: Montserrat (sans), Playfair Display (serif – logo/títulos), Dancing Script (script) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />

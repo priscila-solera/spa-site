@@ -96,7 +96,7 @@ const navLinks = [
           {Object.entries(languages).map(([id, name]) => (
             <a
               href={translatePath('/', id)}
-              data-astro-reload
+              data-lang-link
               class:list={[
                 'block py-3 px-4 text-base font-medium transition-colors',
                 id === lang ? 'text-secondary font-semibold' : 'text-secondary/80 hover:text-secondary',
@@ -121,6 +121,8 @@ const navLinks = [
 </header>
 
 <script>
+  import { navigate } from 'astro:transitions/client';
+
   const navbar = document.getElementById('navbar');
   const menuToggle = document.getElementById('menu-toggle');
   const mobileMenu = document.getElementById('mobile-menu');
@@ -157,6 +159,14 @@ const navLinks = [
       iconClose?.classList.add('hidden');
       menuToggle?.setAttribute('aria-expanded', 'false');
       document.body.style.overflow = '';
+    });
+  });
+
+  // Use navigate() for language links to preserve View Transitions
+  document.querySelectorAll('[data-lang-link]').forEach((link) => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      navigate((link as HTMLAnchorElement).href);
     });
   });
 

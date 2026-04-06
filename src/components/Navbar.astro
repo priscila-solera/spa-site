@@ -78,8 +78,7 @@ const navLinks = [
   <div
     id="mobile-menu"
     class="hidden border-t border-cream-200/20 bg-primary/95 backdrop-blur-md md:hidden"
-    role="dialog"
-    aria-label="Mobile menu"
+    aria-hidden="true"
   >
     <ul class="flex flex-col gap-0 px-4 py-4" role="list">
       {navLinks.map((link) => (
@@ -138,10 +137,12 @@ const navLinks = [
 
   function toggleMobileMenu() {
     const isOpen = mobileMenu?.classList.toggle('hidden');
-    menuToggle?.setAttribute('aria-expanded', String(!isOpen));
-    iconMenu?.classList.toggle('hidden', !isOpen);
-    iconClose?.classList.toggle('hidden', isOpen);
-    document.body.style.overflow = isOpen ? '' : 'hidden';
+    const menuIsVisible = !isOpen;
+    menuToggle?.setAttribute('aria-expanded', String(menuIsVisible));
+    mobileMenu?.setAttribute('aria-hidden', String(!menuIsVisible));
+    iconMenu?.classList.toggle('hidden', menuIsVisible);
+    iconClose?.classList.toggle('hidden', !menuIsVisible);
+    document.body.style.overflow = menuIsVisible ? 'hidden' : '';
   }
 
   window.addEventListener('scroll', updateNavbarScroll, { passive: true });
@@ -151,6 +152,7 @@ const navLinks = [
   mobileMenu?.querySelectorAll('a').forEach((link) => {
     link.addEventListener('click', () => {
       mobileMenu?.classList.add('hidden');
+      mobileMenu?.setAttribute('aria-hidden', 'true');
       iconMenu?.classList.remove('hidden');
       iconClose?.classList.add('hidden');
       menuToggle?.setAttribute('aria-expanded', 'false');

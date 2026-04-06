@@ -7,18 +7,33 @@ const tpath = useTranslatedPath(lang);
 ---
 
 <div class="relative">
-  <button id="lang-picker-toggle" class="navbar-link flex items-center gap-1 text-sm font-medium text-primary/80 transition-colors duration-300 hover:text-primary" aria-label="Language picker">
-    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m4 13-4-4-4 4M1 19h12M12 19l4-4-4-4"></path></svg>
-    {languages[lang]}
-    <svg class="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+  <button
+    id="lang-picker-toggle"
+    class="navbar-link flex items-center gap-1 text-sm font-medium text-primary/80 transition-colors duration-300 hover:text-primary"
+    aria-label={`Language: ${languages[lang]}`}
+    aria-expanded="false"
+    aria-haspopup="listbox"
+  >
+    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m4 13-4-4-4 4M1 19h12M12 19l4-4-4-4"></path>
+    </svg>
+    <span aria-hidden="true">{languages[lang]}</span>
+    <svg class="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+    </svg>
   </button>
-  <div id="lang-picker-menu" class="absolute top-full right-0 mt-2 hidden w-32 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5">
-    <ul class="py-1" role="list">
+  <div
+    id="lang-picker-menu"
+    class="absolute top-full right-0 mt-2 hidden w-32 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5"
+    role="listbox"
+    aria-label="Select language"
+  >
+    <ul class="py-1">
       {Object.entries(languages).map(([id, name]) => (
         <li>
           <a
             href={tpath('/', id)}
-            data-astro-reload
+            data-lang-link
             class:list={[
               "block px-4 py-2 text-sm",
               id === lang ? "font-semibold text-secondary" : "text-gray-700 hover:bg-gray-100",
@@ -33,16 +48,63 @@ const tpath = useTranslatedPath(lang);
 </div>
 
 <script>
+  import { navigate } from 'astro:transitions/client';
+
   const toggle = document.getElementById('lang-picker-toggle');
   const menu = document.getElementById('lang-picker-menu');
+  const items = menu?.querySelectorAll('a');
+
+  function openMenu() {
+    menu?.classList.remove('hidden');
+    toggle?.setAttribute('aria-expanded', 'true');
+    (items?.[0] as HTMLElement)?.focus();
+  }
+
+  function closeMenu() {
+    menu?.classList.add('hidden');
+    toggle?.setAttribute('aria-expanded', 'false');
+  }
 
   toggle?.addEventListener('click', () => {
-    menu?.classList.toggle('hidden');
+    const isHidden = menu?.classList.contains('hidden');
+    isHidden ? openMenu() : closeMenu();
+  });
+
+  toggle?.addEventListener('keydown', (e: KeyboardEvent) => {
+    if (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      openMenu();
+    }
+  });
+
+  menu?.addEventListener('keydown', (e: KeyboardEvent) => {
+    const itemsArr = Array.from(items ?? []) as HTMLElement[];
+    const focused = document.activeElement as HTMLElement;
+    const idx = itemsArr.indexOf(focused);
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      itemsArr[(idx + 1) % itemsArr.length]?.focus();
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      itemsArr[(idx - 1 + itemsArr.length) % itemsArr.length]?.focus();
+    } else if (e.key === 'Escape') {
+      closeMenu();
+      toggle?.focus();
+    }
+  });
+
+  menu?.querySelectorAll('[data-lang-link]').forEach((link) => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      navigate((link as HTMLAnchorElement).href);
+      closeMenu();
+    });
   });
 
   document.addEventListener('click', (e) => {
     if (!toggle?.contains(e.target as Node) && !menu?.contains(e.target as Node)) {
-      menu?.classList.add('hidden');
+      closeMenu();
     }
   });
 </script>

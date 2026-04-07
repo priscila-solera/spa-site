@@ -168,9 +168,17 @@ const t = useTranslations(lang);
     statusDiv.className = 'hidden mt-4 rounded-spa border px-4 py-3 text-sm';
 
     try {
+      const fd = new FormData(form);
       const response = await fetch('/api/contact', {
         method: 'POST',
-        body: new FormData(form),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nombre: fd.get('nombre'),
+          servicio: fd.get('servicio'),
+          horario: fd.get('horario'),
+          mensaje: fd.get('mensaje'),
+          website: fd.get('website'),
+        }),
       });
 
       let data: { success?: boolean; error?: string } = {};

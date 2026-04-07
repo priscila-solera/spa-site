@@ -94,13 +94,23 @@ const t = useTranslations(lang);
           ></textarea>
         </div>
 
+        {/* Honeypot anti-spam — oculto visualmente y para screen readers */}
+        <input
+          type="text"
+          name="website"
+          tabindex="-1"
+          autocomplete="off"
+          aria-hidden="true"
+          style="position: absolute; left: -9999px; opacity: 0; pointer-events: none;"
+        />
+
         <div class="sm:col-span-2 mt-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <p class="text-xs text-beige-500 sm:max-w-xs leading-relaxed">
             {t('booking.info')}
           </p>
           <button
             type="submit"
-            class="inline-flex w-full items-center justify-center gap-2 rounded-spa-lg border border-accent bg-accent px-8 py-3.5 text-sm font-medium text-white shadow-md transition-all duration-300 hover:bg-accent/90 hover:border-accent/90 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 sm:w-auto"
+            class="inline-flex w-full items-center justify-center gap-2 rounded-spa-lg border border-accent bg-accent px-8 py-3.5 text-sm font-medium text-white shadow-md transition-all duration-300 hover:bg-accent/90 hover:border-accent/90 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 sm:w-auto disabled:opacity-60 disabled:cursor-not-allowed"
           >
             <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -109,6 +119,8 @@ const t = useTranslations(lang);
           </button>
         </div>
       </form>
+
+      <div id="form-status" role="alert" aria-live="polite" class="hidden mt-4 rounded-spa border px-4 py-3 text-sm"></div>
     </div>
 
     <div
@@ -134,32 +146,49 @@ const t = useTranslations(lang);
   </div>
 </section>
 
-<script define:vars={{ t }}>
-  const form = document.getElementById('booking-form') as HTMLFormElement;
+<script>
+  const form = document.getElementById('booking-form') as HTMLFormElement | null;
+  const statusDiv = document.getElementById('form-status') as HTMLDivElement | null;
+  const submitBtn = form?.querySelector('button[type="submit"]') as HTMLButtonElement | null;
 
-  form?.addEventListener('submit', (e) => {
+  form?.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const formData = new FormData(form);
-    const nombre = formData.get('nombre') as string;
-    const servicio = formData.get('servicio') as string || t('booking.service.general');
-    const horario = formData.get('horario') as string;
-    const mensaje = formData.get('mensaje') as string;
+    if (!submitBtn || !statusDiv) return;
 
-    const spaEmail = 'info@blueroyalespa.com';
+    const originalHTML = submitBtn.innerHTML;
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = `
+      <svg class="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+      </svg>
+      Enviando...
+    `;
+    statusDiv.className = 'hidden mt-4 rounded-spa border px-4 py-3 text-sm';
 
-    const subject = t('booking.email.subject')
-      .replace('{service}', servicio)
-      .replace('{name}', nombre);
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        body: new FormData(form),
+      });
 
-    const body = t('booking.email.body')
-      .replace('{name}', nombre)
-      .replace('{service}', servicio)
-      .replace('{time}', horario || 'To be discussed')
-      .replace('{notes}', mensaje || 'None');
+      const data = await response.json();
 
-    const mailtoLink = `mailto:${spaEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-
-    window.location.href = mailtoLink;
+      if (response.ok && data.success) {
+        statusDiv.className = 'mt-4 rounded-spa border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700';
+        statusDiv.textContent = '¡Mensaje enviado! Te contactaremos pronto.';
+        form.reset();
+      } else {
+        statusDiv.className = 'mt-4 rounded-spa border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700';
+        statusDiv.textContent = data.error || 'Hubo un error. Por favor intenta de nuevo.';
+      }
+    } catch {
+      statusDiv.className = 'mt-4 rounded-spa border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700';
+      statusDiv.textContent = 'Error de conexión. Verifica tu internet e intenta de nuevo.';
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = originalHTML;
+    }
   });
 </script>

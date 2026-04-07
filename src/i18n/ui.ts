@@ -122,6 +122,9 @@ export const ui = {
     'booking.cta': 'Send Request',
     'booking.email.subject': 'Appointment Request',
     'booking.email.body': 'Hello Blue Royale Spa,\n\nI would like to request an appointment with the following details:\n\n- Name: {name}\n- Service of Interest: {service}\n- Preferred Time: {time}\n\nAdditional Notes:\n{notes}\n\nLooking forward to your confirmation.\nThank you.',
+    'booking.form.success': 'Message sent! We will contact you soon.',
+    'booking.form.error': 'An error occurred. Please try again.',
+    'booking.form.error.connection': 'Connection error. Check your internet and try again.',
 
     'contact.subtitle': 'Get in Touch',
     'contact.title': 'Contact Us',
@@ -235,6 +238,9 @@ export const ui = {
     'booking.cta': 'Enviar Solicitud',
     'booking.email.subject': 'Solicitud de Cita',
     'booking.email.body': 'Hola Blue Royale Spa,\n\nMe gustaría solicitar una cita con los siguientes detalles:\n\n- Nombre: {name}\n- Servicio de interés: {service}\n- Horario preferido: {time}\n\nNotas adicionales:\n{notes}\n\nQuedo a la espera de su confirmación.\nGracias.',
+    'booking.form.success': '¡Mensaje enviado! Te contactaremos pronto.',
+    'booking.form.error': 'Hubo un error. Por favor intenta de nuevo.',
+    'booking.form.error.connection': 'Error de conexión. Verifica tu internet e intenta de nuevo.',
 
     'contact.subtitle': 'Escríbenos',
     'contact.title': 'Contacto',

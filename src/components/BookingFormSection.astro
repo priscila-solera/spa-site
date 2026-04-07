@@ -146,7 +146,11 @@ const t = useTranslations(lang);
   </div>
 </section>
 
-<script>
+<script define:vars={{
+  msgSuccess: t('booking.form.success'),
+  msgError: t('booking.form.error'),
+  msgErrorConnection: t('booking.form.error.connection'),
+}}>
   const form = document.getElementById('booking-form') as HTMLFormElement | null;
   const statusDiv = document.getElementById('form-status') as HTMLDivElement | null;
   const submitBtn = form?.querySelector('button[type="submit"]') as HTMLButtonElement | null;
@@ -187,21 +191,21 @@ const t = useTranslations(lang);
       } catch {
         // response was not JSON (e.g. 404 HTML page from Vercel)
         statusDiv.className = 'mt-4 rounded-spa border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700';
-        statusDiv.textContent = `Error del servidor (${response.status}). Intenta de nuevo.`;
+        statusDiv.textContent = `${msgError} (${response.status})`;
         return;
       }
 
       if (response.ok && data.success) {
         statusDiv.className = 'mt-4 rounded-spa border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700';
-        statusDiv.textContent = '¡Mensaje enviado! Te contactaremos pronto.';
+        statusDiv.textContent = msgSuccess;
         form.reset();
       } else {
         statusDiv.className = 'mt-4 rounded-spa border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700';
-        statusDiv.textContent = data.error || 'Hubo un error. Por favor intenta de nuevo.';
+        statusDiv.textContent = data.error || msgError;
       }
     } catch {
       statusDiv.className = 'mt-4 rounded-spa border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700';
-      statusDiv.textContent = 'Error de conexión. Verifica tu internet e intenta de nuevo.';
+      statusDiv.textContent = msgErrorConnection;
     } finally {
       submitBtn.disabled = false;
       submitBtn.innerHTML = originalHTML;

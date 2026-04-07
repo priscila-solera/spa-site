@@ -173,7 +173,15 @@ const t = useTranslations(lang);
         body: new FormData(form),
       });
 
-      const data = await response.json();
+      let data: { success?: boolean; error?: string } = {};
+      try {
+        data = await response.json();
+      } catch {
+        // response was not JSON (e.g. 404 HTML page from Vercel)
+        statusDiv.className = 'mt-4 rounded-spa border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700';
+        statusDiv.textContent = `Error del servidor (${response.status}). Intenta de nuevo.`;
+        return;
+      }
 
       if (response.ok && data.success) {
         statusDiv.className = 'mt-4 rounded-spa border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700';

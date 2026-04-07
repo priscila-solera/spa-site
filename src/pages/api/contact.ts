@@ -1,5 +1,4 @@
 import type { APIRoute } from 'astro';
-import { Resend } from 'resend';
 
 export const prerender = false;
 
@@ -20,7 +19,6 @@ export const POST: APIRoute = async ({ request }) => {
   const mensaje = formData.get('mensaje')?.toString().trim() ?? '';
   const website = formData.get('website')?.toString() ?? ''; // honeypot
 
-  // Honeypot: si viene con valor, es spam — responder 200 silenciosamente
   if (website) {
     return new Response(JSON.stringify({ success: true }), {
       status: 200,
@@ -46,8 +44,6 @@ export const POST: APIRoute = async ({ request }) => {
     });
   }
 
-  const resend = new Resend(apiKey);
-
   const emailHtml = `
     <h2>Nueva solicitud de cita — Blue Royale Spa</h2>
     <p><strong>Nombre:</strong> ${nombre}</p>
@@ -56,23 +52,31 @@ export const POST: APIRoute = async ({ request }) => {
     <p><strong>Notas:</strong> ${mensaje || 'Ninguna'}</p>
   `;
 
-  try {
-    await resend.emails.send({
+  const res = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${apiKey}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
       from: 'Blue Royale Spa <onboarding@resend.dev>',
-      to: contactEmail,
+      to: [contactEmail],
       subject: `Solicitud de cita de ${nombre} — ${servicio || 'Servicio general'}`,
       html: emailHtml,
-    });
+    }),
+  });
 
-    return new Response(JSON.stringify({ success: true }), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' },
-    });
-  } catch (err) {
-    console.error('Error enviando email:', err);
+  if (!res.ok) {
+    const err = await res.text();
+    console.error('Resend error:', res.status, err);
     return new Response(JSON.stringify({ error: 'No se pudo enviar el mensaje. Intenta de nuevo.' }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' },
     });
   }
+
+  return new Response(JSON.stringify({ success: true }), {
+    status: 200,
+    headers: { 'Content-Type': 'application/json' },
+  });
 };

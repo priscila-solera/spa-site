@@ -105,13 +105,6 @@ export const serviceSchema = {
       ],
     },
     {
-      name: 'addons',
-      title: 'Add-ons Disponibles',
-      type: 'array',
-      of: [{ type: 'reference', to: [{ type: 'addon' }] }],
-      description: 'Selecciona los add-ons que se pueden añadir a este servicio.',
-    },
-    {
       name: 'order',
       title: 'Orden',
       type: 'number',

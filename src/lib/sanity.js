@@ -50,6 +50,7 @@ const SERVICES_QUERY = `*[_type == "service"] | order(category->order asc, order
     "therapistId": therapist->_id,
     "order": coalesce(therapist->order, 0),
     "name": therapist->name,
+    "active": therapist->active,
     calLink
   },
   "category": category->{
@@ -86,7 +87,7 @@ export async function fetchServices(urlForBuilder, lang = 'en') {
           : defaultImage;
       const therapistRows = Array.isArray(doc.therapistBooking) ? doc.therapistBooking : [];
       const therapistOptions = therapistRows
-        .filter((row) => row?.therapistId && row?.calLink)
+        .filter((row) => row?.therapistId && row?.calLink && row?.active !== false)
         .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
         .map((row) => ({
           id: row.therapistId,

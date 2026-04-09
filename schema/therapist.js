@@ -25,6 +25,13 @@ export const therapistSchema = {
       description: 'Orden de aparición al elegir terapeuta (menor primero).',
       initialValue: 0,
     },
+    {
+      name: 'active',
+      title: 'Terapeuta activo',
+      type: 'boolean',
+      description: 'Desactiva para ocultar este terapeuta en todos los servicios.',
+      initialValue: true,
+    },
   ],
   orderings: [
     { title: 'Orden manual', name: 'orderAsc', by: [{ field: 'order', direction: 'asc' }] },

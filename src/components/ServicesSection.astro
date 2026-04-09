@@ -99,6 +99,7 @@ const servicesWithCategory = services.map((s) => ({
 
         <!-- Grid de servicios (se filtran por JS) -->
         <ul
+          id="services-grid"
           class="services-reveal services-grid grid gap-x-8 gap-y-16 sm:grid-cols-2 lg:grid-cols-4 mt-12"
           role="list"
         >
@@ -152,6 +153,22 @@ const servicesWithCategory = services.map((s) => ({
             </li>
           ))}
         </ul>
+
+        <!-- Show more / show less -->
+        <div id="show-more-container" class="mt-12 flex justify-center" style="display: none">
+          <button
+            type="button"
+            id="show-more-btn"
+            class="inline-flex items-center gap-2 rounded-full border border-beige-300 bg-white px-8 py-3 text-sm font-medium text-beige-700 shadow-sm transition-all hover:border-secondary hover:text-secondary hover:shadow-md"
+            data-show-more-label={t('services.showMore')}
+            data-show-less-label={t('services.showLess')}
+          >
+            <span id="show-more-label">{t('services.showMore')}</span>
+            <svg id="show-more-icon" class="h-4 w-4 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+        </div>
       </div>
 
       <!-- Modal: detalle del servicio (duración, precio, descripción, política, contacto, reserva) -->
@@ -299,9 +316,28 @@ const servicesWithCategory = services.map((s) => ({
     const tabs = section.querySelectorAll('.treatments-tab');
     const cards = section.querySelectorAll('.service-card');
     const grid = section.querySelector('.services-grid');
+    const showMoreContainer = section.querySelector('#show-more-container');
+    const showMoreBtn = section.querySelector('#show-more-btn');
+    const showMoreLabel = section.querySelector('#show-more-label');
+    const showMoreIcon = section.querySelector('#show-more-icon');
+    const INITIAL_COUNT = 8;
+    let expanded = false;
+
+    function applyShowMore(visibleCards) {
+      visibleCards.forEach((card, idx) => {
+        if (idx >= INITIAL_COUNT) {
+          card.setAttribute('data-show-more-hidden', '');
+          card.style.display = 'none';
+        }
+      });
+      if (showMoreContainer) {
+        showMoreContainer.style.display = visibleCards.length > INITIAL_COUNT ? 'flex' : 'none';
+      }
+    }
 
     function setActiveTab(activeButton) {
       const filter = activeButton.getAttribute('data-filter') ?? '';
+      expanded = false;
 
       tabs.forEach((tab) => {
         const isActive = tab === activeButton;
@@ -309,16 +345,56 @@ const servicesWithCategory = services.map((s) => ({
         tab.setAttribute('aria-selected', String(isActive));
       });
 
+      // Reset show-more state
+      cards.forEach((card) => card.removeAttribute('data-show-more-hidden'));
+
+      // Apply category filter
       cards.forEach((card) => {
         const category = card.getAttribute('data-category') ?? '';
         const show = filter === '' || category === filter;
         card.style.display = show ? '' : 'none';
       });
 
+      // Apply show-more limit
+      const visibleCards = Array.from(cards).filter((c) => c.style.display !== 'none');
+      applyShowMore(visibleCards);
+
+      // Reset button label/icon
+      if (showMoreLabel && showMoreBtn) {
+        showMoreLabel.textContent = showMoreBtn.getAttribute('data-show-more-label');
+      }
+      if (showMoreIcon) showMoreIcon.style.transform = '';
+
       if (grid) {
         grid.classList.remove('revealed');
         grid.classList.add('revealed');
       }
+    }
+
+    if (showMoreBtn && showMoreContainer) {
+      showMoreBtn.addEventListener('click', () => {
+        if (!expanded) {
+          // Expand: show all hidden cards
+          cards.forEach((card) => {
+            if (card.hasAttribute('data-show-more-hidden')) {
+              card.removeAttribute('data-show-more-hidden');
+              card.style.display = '';
+            }
+          });
+          expanded = true;
+          if (showMoreLabel) showMoreLabel.textContent = showMoreBtn.getAttribute('data-show-less-label');
+          if (showMoreIcon) showMoreIcon.style.transform = 'rotate(180deg)';
+        } else {
+          // Collapse: hide cards beyond initial count
+          const visibleCards = Array.from(cards).filter((c) => c.style.display !== 'none');
+          applyShowMore(visibleCards);
+          expanded = false;
+          if (showMoreLabel) showMoreLabel.textContent = showMoreBtn.getAttribute('data-show-more-label');
+          if (showMoreIcon) showMoreIcon.style.transform = '';
+          // Scroll back to top of grid
+          if (grid) grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
     }
 
     tabs.forEach((tab) => {

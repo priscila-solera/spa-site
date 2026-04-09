@@ -52,6 +52,8 @@ export const ui = {
     'services.contactEmail': 'Blueroyalespa@gmail.com',
     'services.cta': 'Book Appointment',
     'services.loading': 'Loading services...',
+    'services.showMore': 'Show more',
+    'services.showLess': 'Show less',
 
     'experience.satisfaction': 'Satisfaction',
     'experience.satisfaction.desc': 'Clients who return and recommend us.',
@@ -183,6 +185,8 @@ export const ui = {
     'services.contactEmail': 'Blueroyalespa@gmail.com',
     'services.cta': 'Reservar Cita',
     'services.loading': 'Cargando servicios...',
+    'services.showMore': 'Ver más',
+    'services.showLess': 'Ver menos',
 
     'experience.satisfaction': 'Satisfacción',
     'experience.satisfaction.desc': 'Clientes que vuelven y recomiendan.',

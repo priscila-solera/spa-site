@@ -57,15 +57,16 @@ const SERVICES_QUERY = `*[_type == "service"] | order(category->order asc, order
     "title": coalesce(title[$lang], title.en),
     order
   },
-  "addons": addons[]->{
-    _id,
-    "title": coalesce(title[$lang], title.en),
-    "slug": slug.current,
-    price,
-    "description": coalesce(description[$lang], description.en)
-  },
   order
   // ctaLabel eliminado de la consulta
+}`;
+
+const ADDONS_QUERY = `*[_type == "addon"] | order(coalesce(order, 0) asc) {
+  _id,
+  "title": coalesce(title[$lang], title.en),
+  "slug": slug.current,
+  price,
+  "description": coalesce(description[$lang], description.en)
 }`;
 
 /**
@@ -77,8 +78,20 @@ export async function fetchServices(urlForBuilder, lang = 'en') {
   const client = getSanityClient();
   if (!client) return null;
   try {
-    const docs = await client.fetch(SERVICES_QUERY, { lang });
+    const [docs, addonDocs] = await Promise.all([
+      client.fetch(SERVICES_QUERY, { lang }),
+      client.fetch(ADDONS_QUERY, { lang }),
+    ]);
     if (!Array.isArray(docs) || docs.length === 0) return null;
+    const globalAddons = Array.isArray(addonDocs)
+      ? addonDocs.map((addon) => ({
+          id: addon._id,
+          title: addon.title,
+          slug: addon.slug,
+          price: addon.price,
+          description: addon.description,
+        }))
+      : [];
     const defaultImage = 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800&q=80';
     return docs.map((doc) => {
       const imgSrc =
@@ -108,13 +121,7 @@ export async function fetchServices(urlForBuilder, lang = 'en') {
         price: doc.price,
         duration: doc.duration,
         category: doc.category ? { title: doc.category.title, order: doc.category.order } : { title: 'General', order: 999 },
-        addons: doc.addons ? doc.addons.map(addon => ({
-          id: addon._id,
-          title: addon.title,
-          slug: addon.slug,
-          price: addon.price,
-          description: addon.description
-        })) : [],
+        addons: globalAddons,
       };
     });
   } catch {

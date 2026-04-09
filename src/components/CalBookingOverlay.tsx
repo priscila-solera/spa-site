@@ -69,12 +69,14 @@ function resolveCalLinkForLine(line: CartLine, services: Service[], fallback: st
  */
 function toCalEmbedCalLink(raw: string): string {
   let t = raw.trim();
+  const hadLeadingSlash = t.startsWith("/");
   t = t.replace(/^https?:\/\/(www\.)?(cal\.com|app\.cal\.com)\//i, "");
   const qi = t.indexOf("?");
   const pathOnly = qi === -1 ? t : t.slice(0, qi);
   const query = qi === -1 ? "" : t.slice(qi);
   const path = pathOnly.replace(/^\/+/, "").trim();
-  return path ? `${path}${query}` : t;
+  const prefix = hadLeadingSlash && !raw.startsWith("http") ? "/" : "";
+  return path ? `${prefix}${path}${query}` : t;
 }
 
 export default function CalBookingOverlay({

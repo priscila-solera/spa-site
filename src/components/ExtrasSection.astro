@@ -5,7 +5,7 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 ---
 
-<section class="extras-section relative bg-primary px-4 pt-12 pb-12 sm:px-6 sm:pt-20 sm:pb-20 lg:px-8" aria-labelledby="extras-heading" id="extras">
+<section class="relative bg-primary px-4 pt-12 pb-12 sm:px-6 sm:pt-20 sm:pb-20 lg:px-8" aria-labelledby="extras-heading" id="extras">
   <div class="relative z-10 mx-auto max-w-7xl">
     <header class="mx-auto max-w-3xl text-center mb-10 sm:mb-14">
       <p class="editorial-subtitle">{t('extras.subtitle')}</p>
@@ -68,30 +68,6 @@ const t = useTranslations(lang);
     </div>
   </div>
 </section>
-
-<style>
-  .extras-section::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    width: 70%;
-    max-width: 900px;
-    height: 28rem;
-    background-image: url('/images/fondo.PNG');
-    background-repeat: no-repeat;
-    background-position: right bottom;
-    background-size: contain;
-    transform: scaleX(-1);
-    pointer-events: none;
-  }
-  @media (min-width: 640px) {
-    .extras-section::after {
-      height: 32rem;
-      width: 65%;
-    }
-  }
-</style>
 
 <script>
   document.querySelectorAll('.extras-cta').forEach((link) => {

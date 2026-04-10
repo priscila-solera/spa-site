@@ -138,6 +138,7 @@ export const ui = {
 
     'footer.rights': '© {year} Blue Royale Beauty & Spa. All rights reserved.',
     'footer.design': 'Web design by',
+    'footer.whatsapp.label': 'Chat with us on WhatsApp',
 
     'whatsapp.text': 'Hello, I am visiting your website and would like information about your services.',
   },
@@ -270,6 +271,7 @@ export const ui = {
 
     'footer.rights': '© {year} Blue Royale Beauty & Spa. Todos los derechos reservados.',
     'footer.design': 'Diseño web por',
+    'footer.whatsapp.label': 'Escríbenos por WhatsApp',
 
     'whatsapp.text': 'Hola, vengo de la web y me gustaría información sobre sus servicios.',
   },

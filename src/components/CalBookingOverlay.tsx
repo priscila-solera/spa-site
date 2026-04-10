@@ -32,6 +32,7 @@ type Service = {
   addons?: Addon[];
   /** Si hay filas, el cliente elige terapeuta y se usa su calLink en Cal.com */
   therapistOptions?: TherapistOption[];
+  category?: { title: string; order?: number };
 };
 
 /** One booked line: main service + optional add-ons + optional terapeuta */
@@ -92,6 +93,23 @@ export default function CalBookingOverlay({
   const [selectedTherapistId, setSelectedTherapistId] = useState<string | null>(null);
   const [calLinkConflict, setCalLinkConflict] = useState<string | null>(null);
 
+  // Category tabs
+  const categories = Array.from(
+    new Map(
+      services
+        .filter((s) => s.category?.title)
+        .sort((a, b) => (a.category?.order ?? 999) - (b.category?.order ?? 999))
+        .map((s) => [s.category!.title, s.category!])
+    ).values()
+  );
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(
+    () => categories[0]?.title ?? null
+  );
+
+  const filteredServices = selectedCategory
+    ? services.filter((s) => s.category?.title === selectedCategory)
+    : services;
+
   useEffect(() => {
     (async function () {
       try {
@@ -135,6 +153,7 @@ export default function CalBookingOverlay({
       setSelectedTherapistId(null);
       setCalLinkConflict(null);
       setCart([]);
+      setSelectedCategory(categories[0]?.title ?? null);
 
       const svc = serviceId ? getServiceById(services, serviceId) : null;
       const therapistCount = svc?.therapistOptions?.length ?? 0;
@@ -466,40 +485,64 @@ export default function CalBookingOverlay({
                 </div>
 
                 {step === "service" && (
-                  <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 py-4 [-webkit-overflow-scrolling:touch]">
-                    <ul className="divide-y divide-beige-200/80">
-                      {services.map((service) => (
-                        <li key={service.id}>
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setSelectedServiceId(service.id);
-                              setStep("addons");
-                            }}
-                            className="flex w-full items-center justify-between gap-4 py-4 text-left transition-colors hover:bg-cream-50"
-                          >
-                            <div>
-                              <p className="font-medium text-secondary">{service.title}</p>
-                              {service.description && (
-                                <p className="mt-1 line-clamp-2 text-sm text-beige-500">{service.description}</p>
-                              )}
-                              <div className="mt-1 flex flex-wrap gap-3 text-xs text-beige-500">
-                                {service.duration && <span>{service.duration}</span>}
-                                {service.price && (
-                                  <span className="font-semibold text-secondary">{service.price}</span>
-                                )}
-                              </div>
-                            </div>
-                            <span
-                              className="ml-2 inline-flex h-6 w-6 items-center justify-center rounded-full border border-beige-300 text-xs text-secondary"
-                              aria-hidden="true"
+                  <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
+                    {/* Category tabs */}
+                    {categories.length > 1 && (
+                      <div className="shrink-0 overflow-x-auto border-b border-beige-200/80 px-5 py-2 [-webkit-overflow-scrolling:touch]">
+                        <div className="flex gap-2 pb-1">
+                          {categories.map((cat) => (
+                            <button
+                              key={cat.title}
+                              type="button"
+                              onClick={() => setSelectedCategory(cat.title)}
+                              className={`shrink-0 rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${
+                                selectedCategory === cat.title
+                                  ? "bg-secondary text-primary"
+                                  : "border border-beige-200 text-beige-600 hover:border-secondary hover:text-secondary"
+                              }`}
                             >
-                              &gt;
-                            </span>
-                          </button>
-                        </li>
-                      ))}
-                    </ul>
+                              {cat.title}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    {/* Filtered service list */}
+                    <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 py-4 [-webkit-overflow-scrolling:touch]">
+                      <ul className="divide-y divide-beige-200/80">
+                        {filteredServices.map((service) => (
+                          <li key={service.id}>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setSelectedServiceId(service.id);
+                                setStep("addons");
+                              }}
+                              className="flex w-full items-center justify-between gap-4 py-4 text-left transition-colors hover:bg-cream-50"
+                            >
+                              <div>
+                                <p className="font-medium text-secondary">{service.title}</p>
+                                {service.description && (
+                                  <p className="mt-1 line-clamp-2 text-sm text-beige-500">{service.description}</p>
+                                )}
+                                <div className="mt-1 flex flex-wrap gap-3 text-xs text-beige-500">
+                                  {service.duration && <span>{service.duration}</span>}
+                                  {service.price && (
+                                    <span className="font-semibold text-secondary">{service.price}</span>
+                                  )}
+                                </div>
+                              </div>
+                              <span
+                                className="ml-2 inline-flex h-6 w-6 items-center justify-center rounded-full border border-beige-300 text-xs text-secondary"
+                                aria-hidden="true"
+                              >
+                                &gt;
+                              </span>
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   </div>
                 )}
 

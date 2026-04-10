@@ -3,7 +3,7 @@
  * Run: node scripts/patch-therapists.mjs
  */
 
-const TOKEN = 'skzS3XzAlVjPcENeBXlpMCRVS7OayRyuDrEZpDgZKcdw8xlD3qvUNBLXhoHVThZiWpVKCgZqxTfxbeNBEhuYo7yILONsWANo4eSEw3rZyDik8v6aweOmuGyd1kMyhdGY4HyOf7b2oHqyE3A9ht9eLOLHB010zJKqk7sfmoPZC4p2lL1JkrrU';
+const TOKEN = process.env.SANITY_TOKEN; // Set via: SANITY_TOKEN=xxx node scripts/patch-therapists.mjs
 const PROJECT_ID = 'du617ir5';
 const DATASET = 'production';
 

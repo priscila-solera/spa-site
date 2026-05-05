@@ -2,15 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Tahu! Regular (script) – public/fonts/Tahu!.ttf */
-@font-face {
-  font-family: 'Tahu';
-  src: url('/fonts/Tahu%21.ttf') format('truetype');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
 @layer base {
   html {
     scroll-behavior: smooth;

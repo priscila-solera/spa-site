@@ -58,7 +58,7 @@ export default {
       },
       fontFamily: {
         sans: ['Montserrat', 'system-ui', 'sans-serif'],
-        script: ['Tahu', '"Dancing Script"', 'cursive'], // Tahu desde public/fonts/Tahu-Regular.ttf
+        script: ['"Dancing Script"', 'cursive'],
         serif: ['"Playfair Display"', 'Georgia', 'serif'],
       },
       borderRadius: {

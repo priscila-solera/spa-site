@@ -25,7 +25,7 @@ const t = useTranslations(lang);
         </p>
       </div>
 
-      <form id="booking-form" class="mt-8 grid gap-6 sm:grid-cols-2">
+      <form id="booking-form" method="post" class="mt-8 grid gap-6 sm:grid-cols-2">
         <div class="sm:col-span-2">
           <label for="nombre" class="block text-xs font-semibold uppercase tracking-[0.15em] text-beige-500 mb-2">
             {t('booking.name')}
@@ -151,64 +151,66 @@ const t = useTranslations(lang);
   msgError: t('booking.form.error'),
   msgErrorConnection: t('booking.form.error.connection'),
 }}>
-  const form = document.getElementById('booking-form') as HTMLFormElement | null;
-  const statusDiv = document.getElementById('form-status') as HTMLDivElement | null;
-  const submitBtn = form?.querySelector('button[type="submit"]') as HTMLButtonElement | null;
+  (function () {
+    var form = document.getElementById('booking-form');
+    var statusDiv = document.getElementById('form-status');
+    var submitBtn = form ? form.querySelector('button[type="submit"]') : null;
 
-  form?.addEventListener('submit', async (e) => {
-    e.preventDefault();
+    if (!form || !(form instanceof HTMLFormElement) || !statusDiv || !submitBtn) return;
 
-    if (!submitBtn || !statusDiv) return;
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
 
-    const originalHTML = submitBtn.innerHTML;
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = `
-      <svg class="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
-        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
-      </svg>
-      Enviando...
-    `;
-    statusDiv.className = 'hidden mt-4 rounded-spa border px-4 py-3 text-sm';
+      var originalHTML = submitBtn.innerHTML;
+      submitBtn.disabled = true;
+      submitBtn.innerHTML =
+        '<svg class="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">' +
+        '<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>' +
+        '<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>' +
+        '</svg> Enviando...';
+      statusDiv.className = 'hidden mt-4 rounded-spa border px-4 py-3 text-sm';
 
-    try {
-      const fd = new FormData(form);
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          nombre: fd.get('nombre'),
-          servicio: fd.get('servicio'),
-          horario: fd.get('horario'),
-          mensaje: fd.get('mensaje'),
-          website: fd.get('website'),
-        }),
-      });
-
-      let data: { success?: boolean; error?: string } = {};
       try {
-        data = await response.json();
-      } catch {
-        // response was not JSON (e.g. 404 HTML page from Vercel)
-        statusDiv.className = 'mt-4 rounded-spa border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700';
-        statusDiv.textContent = `${msgError} (${response.status})`;
-        return;
-      }
+        var fd = new FormData(form);
+        var response = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            nombre: fd.get('nombre'),
+            servicio: fd.get('servicio'),
+            horario: fd.get('horario'),
+            mensaje: fd.get('mensaje'),
+            website: fd.get('website'),
+          }),
+        });
 
-      if (response.ok && data.success) {
-        statusDiv.className = 'mt-4 rounded-spa border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700';
-        statusDiv.textContent = msgSuccess;
-        form.reset();
-      } else {
+        var data = {};
+        try {
+          data = await response.json();
+        } catch (parseErr) {
+          statusDiv.className =
+            'mt-4 rounded-spa border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700';
+          statusDiv.textContent = msgError + ' (' + response.status + ')';
+          return;
+        }
+
+        if (response.ok && data.success) {
+          statusDiv.className =
+            'mt-4 rounded-spa border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700';
+          statusDiv.textContent = msgSuccess;
+          form.reset();
+        } else {
+          statusDiv.className =
+            'mt-4 rounded-spa border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700';
+          statusDiv.textContent = data.error || msgError;
+        }
+      } catch (err) {
         statusDiv.className = 'mt-4 rounded-spa border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700';
-        statusDiv.textContent = data.error || msgError;
+        statusDiv.textContent = msgErrorConnection;
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalHTML;
       }
-    } catch {
-      statusDiv.className = 'mt-4 rounded-spa border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700';
-      statusDiv.textContent = msgErrorConnection;
-    } finally {
-      submitBtn.disabled = false;
-      submitBtn.innerHTML = originalHTML;
-    }
-  });
+    });
+  })();
 </script>

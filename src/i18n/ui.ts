@@ -120,7 +120,8 @@ export const ui = {
     'booking.time.placeholder': 'e.g. Saturday morning',
     'booking.notes': 'Additional Notes',
     'booking.notes.placeholder': 'Any preferences, allergies, or special conditions?',
-    'booking.info': 'Clicking send will open your email client to confirm details. We\'ll respond shortly.',
+    'booking.info':
+      'We\'ll email you to confirm your request. Please allow a moment after tapping Send.',
     'booking.cta': 'Send Request',
     'booking.email.subject': 'Appointment Request',
     'booking.email.body': 'Hello Blue Royale Spa,\n\nI would like to request an appointment with the following details:\n\n- Name: {name}\n- Service of Interest: {service}\n- Preferred Time: {time}\n\nAdditional Notes:\n{notes}\n\nLooking forward to your confirmation.\nThank you.',
@@ -239,7 +240,8 @@ export const ui = {
     'booking.time.placeholder': 'Ej. Sábado por la mañana',
     'booking.notes': 'Notas Adicionales',
     'booking.notes.placeholder': '¿Alguna preferencia, alergia o condición especial?',
-    'booking.info': 'Al enviar la solicitud, se abrirá tu correo para confirmar los detalles. Te responderemos a la brevedad.',
+    'booking.info':
+      'Te contactaremos por correo para confirmar tu solicitud. Espera unos segundos tras pulsar Enviar.',
     'booking.cta': 'Enviar Solicitud',
     'booking.email.subject': 'Solicitud de Cita',
     'booking.email.body': 'Hola Blue Royale Spa,\n\nMe gustaría solicitar una cita con los siguientes detalles:\n\n- Nombre: {name}\n- Servicio de interés: {service}\n- Horario preferido: {time}\n\nNotas adicionales:\n{notes}\n\nQuedo a la espera de su confirmación.\nGracias.',

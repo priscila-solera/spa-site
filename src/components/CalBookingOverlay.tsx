@@ -653,8 +653,7 @@ export default function CalBookingOverlay({
                   <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
                     <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 py-4 [-webkit-overflow-scrolling:touch]">
                       <p className="mb-4 text-sm text-beige-600">
-                        You can add more services before choosing your time. Everything will be sent in one booking
-                        request.
+                        Review your selection and pick your time.
                       </p>
                       <ul className="space-y-3">
                         {cart.map((line, i) => {
@@ -763,16 +762,6 @@ export default function CalBookingOverlay({
                       ) : null}
                       <button
                         type="button"
-                        onClick={addAnotherService}
-                        className="flex w-full items-center justify-center gap-2 rounded-xl border-2 border-secondary px-4 py-3 text-sm font-semibold text-secondary transition-colors hover:bg-secondary/5"
-                      >
-                        <span className="text-lg leading-none" aria-hidden="true">
-                          +
-                        </span>
-                        Add another service
-                      </button>
-                      <button
-                        type="button"
                         onClick={goToCalendar}
                         disabled={cart.length === 0}
                         className="inline-flex w-full items-center justify-center rounded-full bg-secondary px-5 py-3 text-sm font-medium text-primary shadow-sm transition-colors hover:bg-secondary/90 disabled:opacity-50"
@@ -782,7 +771,7 @@ export default function CalBookingOverlay({
                     </div>
                   ) : (
                     <p className="text-center text-xs text-beige-500">
-                      Continue to review, then add more services or pick your time.
+                      Continue to review and pick your time.
                     </p>
                   )}
                 </div>

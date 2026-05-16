@@ -46,11 +46,13 @@ const SERVICES_QUERY = `*[_type == "service"] | order(category->order asc, order
   image,
   "imageAlt": coalesce(imageAlt[$lang], imageAlt.en),
   calLink,
+  calEventType,
   "therapistBooking": therapistBooking[]{
     "therapistId": therapist->_id,
     "order": coalesce(therapist->order, 0),
     "name": therapist->name,
     "active": therapist->active,
+    "calUsername": therapist->calUsername,
     calLink
   },
   "category": category->{
@@ -100,12 +102,14 @@ export async function fetchServices(urlForBuilder, lang = 'en') {
           : defaultImage;
       const therapistRows = Array.isArray(doc.therapistBooking) ? doc.therapistBooking : [];
       const therapistOptions = therapistRows
-        .filter((row) => row?.therapistId && row?.calLink && row?.active !== false)
+        .filter((row) => row?.therapistId && (row?.calUsername || row?.calLink) && row?.active !== false)
         .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
         .map((row) => ({
           id: row.therapistId,
           name: row.name ?? '',
-          calLink: row.calLink,
+          calLink: row.calUsername && doc.calEventType
+            ? `${row.calUsername}/${doc.calEventType}`
+            : row.calLink ?? '',
         }));
       return {
         id: doc._id,

@@ -26,6 +26,12 @@ export const therapistSchema = {
       initialValue: 0,
     },
     {
+      name: 'calUsername',
+      title: 'Username de Cal.com',
+      type: 'string',
+      description: 'Username de la terapeuta en Cal.com (ej: blue-royale-spa-yalile). Se combina con el event type del servicio para formar el enlace de reserva.',
+    },
+    {
       name: 'active',
       title: 'Terapeuta activo',
       type: 'boolean',

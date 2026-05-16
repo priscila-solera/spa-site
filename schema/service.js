@@ -56,18 +56,25 @@ export const serviceSchema = {
       type: 'localeString',
     },
     {
-      name: 'calLink',
-      title: 'Enlace Cal.com (por defecto)',
+      name: 'calEventType',
+      title: 'Event type de Cal.com',
       type: 'string',
       description:
-        'Si no hay filas en “Reserva por terapeuta”, se usa este enlace. Formato: usuario/evento.',
+        'Slug del event type en Cal.com (ej: appointment-60). Se combina con el username de cada terapeuta para formar su enlace de reserva.',
+    },
+    {
+      name: 'calLink',
+      title: 'Enlace Cal.com (fallback sin terapeutas)',
+      type: 'string',
+      description:
+        'Solo si no hay terapeutas en la lista de abajo. Formato: usuario/evento.',
     },
     {
       name: 'therapistBooking',
       title: 'Reserva por terapeuta',
       type: 'array',
       description:
-        'Una fila por terapeuta con su Cal (usuario/evento). Si vacío, se usa el enlace Cal del servicio arriba. En Cal.com: un event type por fila, destino en el calendario Google de esa persona.',
+        'Una fila por terapeuta que ofrece este servicio. El enlace se construye automáticamente con el username de la terapeuta y el event type del servicio.',
       of: [
         {
           type: 'object',
@@ -79,24 +86,17 @@ export const serviceSchema = {
               to: [{ type: 'therapist' }],
               validation: (Rule) => Rule.required(),
             },
-            {
-              name: 'calLink',
-              title: 'Enlace Cal.com',
-              type: 'string',
-              description: 'Mismo formato que arriba (ej. blueroyale/masaje-maria).',
-              validation: (Rule) => Rule.required(),
-            },
           ],
           preview: {
             select: {
               therapistName: 'therapist.name',
-              calLink: 'calLink',
+              calUsername: 'therapist.calUsername',
               media: 'therapist.image',
             },
-            prepare({ therapistName, calLink, media }) {
+            prepare({ therapistName, calUsername, media }) {
               return {
                 title: therapistName || 'Terapeuta',
-                subtitle: calLink,
+                subtitle: calUsername || '(sin username)',
                 media,
               };
             },

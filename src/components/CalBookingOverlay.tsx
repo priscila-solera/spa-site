@@ -3,6 +3,7 @@ import Cal, { getCalApi } from "@calcom/embed-react";
 
 const EVENT_OPEN = "open-cal-booking";
 const NAMESPACE = "booking";
+const ADDON_DURATION_MINS = 20; // each add-on adds this many minutes
 
 type Addon = {
   id: string;
@@ -78,6 +79,35 @@ function toCalEmbedCalLink(raw: string): string {
   const path = pathOnly.replace(/^\/+/, "").trim();
   const prefix = hadLeadingSlash && !raw.startsWith("http") ? "/" : "";
   return path ? `${prefix}${path}${query}` : t;
+}
+
+/** Replaces the trailing number in an appointment slug for the calculated duration.
+ * "username/appointment-60", 40 → "username/appointment-100"
+ * Falls back to original link if no appointment-N pattern is found.
+ */
+function adjustCalLinkDuration(calLink: string, extraMinutes: number): string {
+  if (extraMinutes <= 0) return calLink;
+  return calLink.replace(/(appointment-)(\d+)/, (_, prefix, num) => {
+    const total = Math.ceil((parseInt(num, 10) + extraMinutes) / 10) * 10;
+    return `${prefix}${total}`;
+  });
+}
+
+/** Extracts the numeric duration from a service's cal link, e.g. "username/appointment-90" → 90.
+ * Assumes all therapists for a service share the same base duration slug — uses first entry as representative.
+ */
+function extractBaseMinsFromService(svc: Service): number | null {
+  const link = svc.therapistOptions?.[0]?.calLink ?? svc.calLink ?? '';
+  const m = link.match(/appointment-(\d+)/);
+  return m ? parseInt(m[1], 10) : null;
+}
+
+/** Formats minutes as "Xhr Ymin" or "Ymin". */
+function formatMinutes(minutes: number): string {
+  if (minutes < 60) return `${minutes} min`;
+  const h = Math.floor(minutes / 60);
+  const m = minutes % 60;
+  return m > 0 ? `${h} hr ${m} min` : `${h} hr`;
 }
 
 export default function CalBookingOverlay({
@@ -335,7 +365,9 @@ export default function CalBookingOverlay({
     const finalNote = `[Appointment includes: ${parts.join(" | ")}]`;
     const rawBase = links[0].trim().split("?")[0];
     const basePath = toCalEmbedCalLink(rawBase);
-    const nextLink = `${basePath}?notes=${encodeURIComponent(finalNote)}`;
+    const totalExtraMinutes = cart.reduce((sum, line) => sum + line.addonIds.length * ADDON_DURATION_MINS, 0);
+    const adjustedPath = adjustCalLinkDuration(basePath, totalExtraMinutes);
+    const nextLink = `${adjustedPath}?notes=${encodeURIComponent(finalNote)}`;
 
     setCalLink(nextLink);
     setStep("calendar");
@@ -378,6 +410,12 @@ export default function CalBookingOverlay({
     const staffLine = therapistName
       ? `With ${therapistName} · Tamarindo`
       : "With any staff member · Tamarindo";
+    const addonExtra = line.addonIds.length * ADDON_DURATION_MINS;
+    const baseMins = extractBaseMinsFromService(svc);
+    const totalMins =
+      baseMins !== null && addonExtra > 0
+        ? Math.ceil((baseMins + addonExtra) / 10) * 10
+        : null;
     return (
       <div
         key={line.serviceId}
@@ -390,7 +428,11 @@ export default function CalBookingOverlay({
         <div className="mt-2 space-y-1 text-xs">
           {svc.duration && (
             <p>
-              <span className="font-semibold text-secondary">Duration:</span> {svc.duration}
+              <span className="font-semibold text-secondary">Duration:</span>{" "}
+              {totalMins !== null ? formatMinutes(totalMins) : svc.duration}
+              {totalMins !== null && (
+                <span className="ml-1 text-[#b8956e]">(+{addonExtra} min)</span>
+              )}
             </p>
           )}
           {svc.price && (
@@ -715,12 +757,27 @@ export default function CalBookingOverlay({
                       </p>
                       <p className="mt-1 font-medium text-secondary">{selectedService.title}</p>
                       <div className="mt-2 space-y-1 text-xs">
-                        {selectedService.duration && (
-                          <p>
-                            <span className="font-semibold text-secondary">Duration:</span>{" "}
-                            {selectedService.duration}
-                          </p>
-                        )}
+                        {selectedService.duration && (() => {
+                          const baseMins = extractBaseMinsFromService(selectedService);
+                          const addonExtra = selectedAddons.length * ADDON_DURATION_MINS;
+                          const totalMins =
+                            baseMins !== null && addonExtra > 0
+                              ? Math.ceil((baseMins + addonExtra) / 10) * 10
+                              : null;
+                          return (
+                            <p>
+                              <span className="font-semibold text-secondary">Duration:</span>{" "}
+                              {totalMins !== null
+                                ? formatMinutes(totalMins)
+                                : selectedService.duration}
+                              {addonExtra > 0 && (
+                                <span className="ml-1 text-[#b8956e]">
+                                  {totalMins !== null ? `(+${addonExtra} min)` : `(+${addonExtra} min with add-ons)`}
+                                </span>
+                              )}
+                            </p>
+                          );
+                        })()}
                         {selectedService.price && (
                           <p>
                             <span className="font-semibold text-secondary">Base price:</span>{" "}

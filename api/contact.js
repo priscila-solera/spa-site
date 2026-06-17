@@ -15,7 +15,7 @@ export default async function handler(req, res) {
   }
 
   const apiKey = process.env.RESEND_API_KEY;
-  const contactEmail = process.env.CONTACT_EMAIL ?? 'blueroyalespa@gmail.com';
+  const contactEmail = process.env.CONTACT_EMAIL ?? 'priscilasolera@blueroyalespa.com';
 
   if (!apiKey) {
     console.error('RESEND_API_KEY no configurado');

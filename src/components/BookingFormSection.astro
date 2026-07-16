@@ -41,6 +41,36 @@ const t = useTranslations(lang);
         </div>
 
         <div class="sm:col-span-1">
+          <label for="email" class="block text-xs font-semibold uppercase tracking-[0.15em] text-beige-500 mb-2">
+            {t('booking.email')}
+          </label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            required
+            autocomplete="email"
+            class="w-full rounded-spa border border-beige-200 bg-white px-4 py-3 text-sm text-beige-800 shadow-sm outline-none ring-0 transition-all focus:border-accent focus:ring-1 focus:ring-accent/30 placeholder:text-beige-300"
+            placeholder={t('booking.email.placeholder')}
+          />
+        </div>
+
+        <div class="sm:col-span-1">
+          <label for="telefono" class="block text-xs font-semibold uppercase tracking-[0.15em] text-beige-500 mb-2">
+            {t('booking.phone')}
+          </label>
+          <input
+            id="telefono"
+            name="telefono"
+            type="tel"
+            required
+            autocomplete="tel"
+            class="w-full rounded-spa border border-beige-200 bg-white px-4 py-3 text-sm text-beige-800 shadow-sm outline-none ring-0 transition-all focus:border-accent focus:ring-1 focus:ring-accent/30 placeholder:text-beige-300"
+            placeholder={t('booking.phone.placeholder')}
+          />
+        </div>
+
+        <div class="sm:col-span-1">
           <label for="servicio" class="block text-xs font-semibold uppercase tracking-[0.15em] text-beige-500 mb-2">
             {t('booking.service')}
           </label>
@@ -48,6 +78,7 @@ const t = useTranslations(lang);
             <select
               id="servicio"
               name="servicio"
+              required
               class="w-full appearance-none rounded-spa border border-beige-200 bg-white px-4 py-3 text-sm text-beige-800 shadow-sm outline-none ring-0 transition-all focus:border-accent focus:ring-1 focus:ring-accent/30 cursor-pointer"
             >
               <option value="" disabled selected>{t('booking.service.placeholder')}</option>
@@ -76,6 +107,7 @@ const t = useTranslations(lang);
             id="horario"
             name="horario"
             type="text"
+            required
             class="w-full rounded-spa border border-beige-200 bg-white px-4 py-3 text-sm text-beige-800 shadow-sm outline-none ring-0 transition-all focus:border-accent focus:ring-1 focus:ring-accent/30 placeholder:text-beige-300"
             placeholder={t('booking.time.placeholder')}
           />
@@ -89,6 +121,7 @@ const t = useTranslations(lang);
             id="mensaje"
             name="mensaje"
             rows="3"
+            required
             class="w-full rounded-spa border border-beige-200 bg-white px-4 py-3 text-sm text-beige-800 shadow-sm outline-none ring-0 transition-all focus:border-accent focus:ring-1 focus:ring-accent/30 placeholder:text-beige-300 resize-none"
             placeholder={t('booking.notes.placeholder')}
           ></textarea>
@@ -177,6 +210,8 @@ const t = useTranslations(lang);
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             nombre: fd.get('nombre'),
+            email: fd.get('email'),
+            telefono: fd.get('telefono'),
             servicio: fd.get('servicio'),
             horario: fd.get('horario'),
             mensaje: fd.get('mensaje'),

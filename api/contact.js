@@ -3,7 +3,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { nombre, servicio, horario, mensaje, website } = req.body;
+  const { nombre, email, telefono, servicio, horario, mensaje, website } = req.body;
 
   // Honeypot anti-spam
   if (website) {
@@ -12,6 +12,21 @@ export default async function handler(req, res) {
 
   if (!nombre || !nombre.trim()) {
     return res.status(400).json({ error: 'El nombre es requerido.' });
+  }
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+    return res.status(400).json({ error: 'Un correo electrónico válido es requerido.' });
+  }
+  if (!telefono || !telefono.trim()) {
+    return res.status(400).json({ error: 'El teléfono es requerido.' });
+  }
+  if (!servicio || !servicio.trim()) {
+    return res.status(400).json({ error: 'El servicio es requerido.' });
+  }
+  if (!horario || !horario.trim()) {
+    return res.status(400).json({ error: 'El horario preferido es requerido.' });
+  }
+  if (!mensaje || !mensaje.trim()) {
+    return res.status(400).json({ error: 'Las notas adicionales son requeridas.' });
   }
 
   const apiKey = process.env.RESEND_API_KEY;
@@ -26,9 +41,11 @@ export default async function handler(req, res) {
   const emailHtml = `
     <h2>Nueva solicitud de cita — Blue Royale Spa</h2>
     <p><strong>Nombre:</strong> ${nombre}</p>
-    <p><strong>Servicio de interés:</strong> ${servicio || 'No especificado'}</p>
-    <p><strong>Horario preferido:</strong> ${horario || 'No especificado'}</p>
-    <p><strong>Notas:</strong> ${mensaje || 'Ninguna'}</p>
+    <p><strong>Correo:</strong> ${email}</p>
+    <p><strong>Teléfono:</strong> ${telefono}</p>
+    <p><strong>Servicio de interés:</strong> ${servicio}</p>
+    <p><strong>Horario preferido:</strong> ${horario}</p>
+    <p><strong>Notas:</strong> ${mensaje}</p>
   `;
 
   const response = await fetch('https://api.resend.com/emails', {
@@ -40,7 +57,8 @@ export default async function handler(req, res) {
     body: JSON.stringify({
       from: fromEmail,
       to: [contactEmail],
-      subject: `Solicitud de cita de ${nombre} — ${servicio || 'Servicio general'}`,
+      reply_to: email.trim(),
+      subject: `Solicitud de cita de ${nombre} — ${servicio}`,
       html: emailHtml,
     }),
   });
